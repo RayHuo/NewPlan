@@ -1,0 +1,3 @@
+(K(b2)&DK(~a1)&DK(a2))|(K(T)&DK(~a1)&DK(a2)&DK(a3))|(K(b1&b2)&DK(a2))|(K(b1)&DK(a2)&DK(a3))|(K(T)&DK(a4)).
+
+( K(a1) -> K(b1) ) & DK(a2) & ( K(b2) | DK(a3) ) | DK(a4).

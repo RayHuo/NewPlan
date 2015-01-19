@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <data xmlns="http://www.netbeans.org/ns/make-project-private/1">
+        <activeConfTypeElem>1</activeConfTypeElem>
+        <activeConfIndexElem>0</activeConfIndexElem>
+    </data>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="3">
+        <file>
+            <url>init.cpp</url>
+            <bookmark id="2">
+                <name/>
+                <line>71</line>
+                <key/>
+            </bookmark>
+            <bookmark id="3">
+                <name/>
+                <line>72</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/xhd/Desktop/newplan/EpisDNF.cpp</file>
+            <file>file:/home/xhd/Desktop/newplan/plan.h</file>
+            <file>file:/home/xhd/Desktop/newplan/Progression.cpp</file>
+            <file>file:/home/xhd/Desktop/newplan/atoms.h</file>
+            <file>file:/home/xhd/Desktop/newplan/init.cpp</file>
+            <file>file:/home/xhd/Desktop/newplan/atoms.cpp</file>
+            <file>file:/home/xhd/Desktop/newplan/parse/parse.y</file>
+            <file>file:/home/xhd/Desktop/newplan/sample1.in</file>
+            <file>file:/home/xhd/Desktop/newplan/parse/lex.l</file>
+            <file>file:/home/xhd/Desktop/newplan/EpisCNF.cpp</file>
+            <file>file:/home/xhd/Desktop/newplan/Vocabulary.cpp</file>
+            <file>file:/home/xhd/Desktop/newplan/parse.cpp</file>
+            <file>file:/home/xhd/Desktop/newplan/plan.cpp</file>
+            <file>file:/home/xhd/Desktop/newplan/EpisCNF.h</file>
+            <file>file:/home/xhd/Desktop/newplan/structs.h</file>
+            <file>file:/home/xhd/Desktop/newplan/Progression.h</file>
+            <file>file:/home/xhd/Desktop/newplan/sample.in</file>
+            <file>file:/home/xhd/Desktop/newplan/parse.h</file>
+            <file>file:/home/xhd/Desktop/newplan/init.h</file>
+            <file>file:/home/xhd/Desktop/newplan/formulatab.cpp</file>
+            <file>file:/home/xhd/Desktop/newplan/main.cpp</file>
+            <file>file:/home/xhd/Desktop/newplan/formulatab.h</file>
+            <file>file:/home/xhd/Desktop/newplan/lex.cpp</file>
+            <file>file:/home/xhd/Desktop/newplan/EpisDNF.h</file>
+        </group>
+    </open-files>
+</project-private>
