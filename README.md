@@ -60,3 +60,5 @@ enum AtomType {
 	kConjunt,
 };
 ```
+	7. 文件名
+		小写加下划线
