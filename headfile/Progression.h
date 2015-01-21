@@ -14,6 +14,7 @@
 #include <vector>
 #include "structs.h"
 #include "EpisDNF.h"
+#include "EpisCNF.h"
 
 using namespace std;
 

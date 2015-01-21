@@ -12,7 +12,10 @@
 //#include <list>
 #include "EpisCNF.h"
 
+using namespace std; 
 
+struct OnticAction;
+struct EpisAction;
 
 //认知项的形式为：一个K和若干个K^的合取，需要注意若干个K的合取可以合成变为一个K
 class EpisTerm {
@@ -30,8 +33,8 @@ public:
     bool isempty();
 
     // new added
-//    EpisTerm ontic_prog(const OnticAction &ontic_action); //在当前EpisTerm上做物理动作的演进，并且返回演进结果
-//    vector<EpisTerm> epistemic_prog(const EpisAction &epis_action); //在当前EpisTerm上做观察动作的演进，并且返回结果
+    EpisTerm ontic_prog(const OnticAction &ontic_action); //在当前EpisTerm上做物理动作的演进，并且返回演进结果
+    vector<EpisTerm> epistemic_prog(const EpisAction &epis_action); //在当前EpisTerm上做观察动作的演进，并且返回结果
 
     PropDNF group_pel(const list<PropDNF> &);    // new version delete this
 };
@@ -50,8 +53,8 @@ public:
     void show();
 
     // new added
-//    EpisDNF ontic_prog(const OnticAction &ontic_action); //在当前知识库上做物理动作的演进，并且返回演进结果
-//    vector<EpisDNF> epistemic_prog(const EpisAction &epis_action); //在当前知识库上做观察动作的演进，并且返回结果
+    EpisDNF ontic_prog(const OnticAction &ontic_action); //在当前知识库上做物理动作的演进，并且返回演进结果
+    vector<EpisDNF> epistemic_prog(const EpisAction &epis_action); //在当前知识库上做观察动作的演进，并且返回结果
 };
 
 

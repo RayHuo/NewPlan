@@ -14,7 +14,9 @@
 
 
 using namespace std;
- 
+
+struct OnticAction;
+struct EpisAction;
 
 class PropTerm {
 public:
@@ -48,9 +50,9 @@ public:
     list<PropTerm> prop_terms; //存储了多个命题项，这就构成了命题层面的DNF
 
     // new added
-//    PropDNF ontic_prog(const OnticAction &ontic_action); //在当前PropDNF上做物理动作的演进，并且返回演进结果
-//    vector<PropDNF> epistemic_prog(const EpisAction &epis_action); //在当前PropDNF上做观察动作的演进，并且返回结果
-//    PropDNF convect_IPIA(); //将DNF转为质蕴含形式
+    PropDNF ontic_prog(const OnticAction &ontic_action); //在当前PropDNF上做物理动作的演进，并且返回演进结果
+    vector<PropDNF> epistemic_prog(const EpisAction &epis_action); //在当前PropDNF上做观察动作的演进，并且返回结果
+    PropDNF convect_IPIA(); //将DNF转为质蕴含形式
 };
 
 //以下4个数据结构完全和PropTerm、PropDNF、EpisTerm、EpisDNF对应
