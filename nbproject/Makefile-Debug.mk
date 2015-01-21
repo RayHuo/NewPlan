@@ -35,17 +35,17 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/_ext/554467558/EpisCNF.o \
-	${OBJECTDIR}/_ext/554467558/EpisDNF.o \
-	${OBJECTDIR}/_ext/554467558/Progression.o \
-	${OBJECTDIR}/_ext/554467558/Vocabulary.o \
-	${OBJECTDIR}/_ext/554467558/atoms.o \
-	${OBJECTDIR}/_ext/554467558/formulatab.o \
-	${OBJECTDIR}/_ext/554467558/init.o \
-	${OBJECTDIR}/_ext/554467558/lex.o \
-	${OBJECTDIR}/_ext/554467558/parse.o \
-	${OBJECTDIR}/_ext/554467558/plan.o \
-	${OBJECTDIR}/main.o
+	${OBJECTDIR}/sources/EpisCNF.o \
+	${OBJECTDIR}/sources/EpisDNF.o \
+	${OBJECTDIR}/sources/Progression.o \
+	${OBJECTDIR}/sources/Vocabulary.o \
+	${OBJECTDIR}/sources/atoms.o \
+	${OBJECTDIR}/sources/formulatab.o \
+	${OBJECTDIR}/sources/init.o \
+	${OBJECTDIR}/sources/lex.o \
+	${OBJECTDIR}/sources/main.o \
+	${OBJECTDIR}/sources/parse.o \
+	${OBJECTDIR}/sources/plan.o
 
 
 # C Compiler Flags
@@ -72,60 +72,60 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/newplan: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/newplan ${OBJECTFILES} ${LDLIBSOPTIONS}
 
-${OBJECTDIR}/_ext/554467558/EpisCNF.o: /home/xhd/Desktop/newplan/EpisCNF.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/554467558
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/554467558/EpisCNF.o /home/xhd/Desktop/newplan/EpisCNF.cpp
+${OBJECTDIR}/sources/EpisCNF.o: sources/EpisCNF.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iheadfile -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/EpisCNF.o sources/EpisCNF.cpp
 
-${OBJECTDIR}/_ext/554467558/EpisDNF.o: /home/xhd/Desktop/newplan/EpisDNF.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/554467558
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/554467558/EpisDNF.o /home/xhd/Desktop/newplan/EpisDNF.cpp
+${OBJECTDIR}/sources/EpisDNF.o: sources/EpisDNF.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iheadfile -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/EpisDNF.o sources/EpisDNF.cpp
 
-${OBJECTDIR}/_ext/554467558/Progression.o: /home/xhd/Desktop/newplan/Progression.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/554467558
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/554467558/Progression.o /home/xhd/Desktop/newplan/Progression.cpp
+${OBJECTDIR}/sources/Progression.o: sources/Progression.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iheadfile -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/Progression.o sources/Progression.cpp
 
-${OBJECTDIR}/_ext/554467558/Vocabulary.o: /home/xhd/Desktop/newplan/Vocabulary.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/554467558
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/554467558/Vocabulary.o /home/xhd/Desktop/newplan/Vocabulary.cpp
+${OBJECTDIR}/sources/Vocabulary.o: sources/Vocabulary.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iheadfile -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/Vocabulary.o sources/Vocabulary.cpp
 
-${OBJECTDIR}/_ext/554467558/atoms.o: /home/xhd/Desktop/newplan/atoms.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/554467558
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/554467558/atoms.o /home/xhd/Desktop/newplan/atoms.cpp
+${OBJECTDIR}/sources/atoms.o: sources/atoms.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iheadfile -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/atoms.o sources/atoms.cpp
 
-${OBJECTDIR}/_ext/554467558/formulatab.o: /home/xhd/Desktop/newplan/formulatab.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/554467558
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/554467558/formulatab.o /home/xhd/Desktop/newplan/formulatab.cpp
+${OBJECTDIR}/sources/formulatab.o: sources/formulatab.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iheadfile -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/formulatab.o sources/formulatab.cpp
 
-${OBJECTDIR}/_ext/554467558/init.o: /home/xhd/Desktop/newplan/init.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/554467558
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/554467558/init.o /home/xhd/Desktop/newplan/init.cpp
+${OBJECTDIR}/sources/init.o: sources/init.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iheadfile -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/init.o sources/init.cpp
 
-${OBJECTDIR}/_ext/554467558/lex.o: /home/xhd/Desktop/newplan/lex.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/554467558
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/554467558/lex.o /home/xhd/Desktop/newplan/lex.cpp
+${OBJECTDIR}/sources/lex.o: sources/lex.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iheadfile -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/lex.o sources/lex.cpp
 
-${OBJECTDIR}/_ext/554467558/parse.o: /home/xhd/Desktop/newplan/parse.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/554467558
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/554467558/parse.o /home/xhd/Desktop/newplan/parse.cpp
+${OBJECTDIR}/sources/main.o: sources/main.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iheadfile -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/main.o sources/main.cpp
 
-${OBJECTDIR}/_ext/554467558/plan.o: /home/xhd/Desktop/newplan/plan.cpp 
-	${MKDIR} -p ${OBJECTDIR}/_ext/554467558
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/_ext/554467558/plan.o /home/xhd/Desktop/newplan/plan.cpp
+${OBJECTDIR}/sources/parse.o: sources/parse.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iheadfile -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/parse.o sources/parse.cpp
 
-${OBJECTDIR}/main.o: main.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/main.o main.cpp
+${OBJECTDIR}/sources/plan.o: sources/plan.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iheadfile -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/plan.o sources/plan.cpp
 
 # Subprojects
 .build-subprojects:

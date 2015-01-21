@@ -1,84 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="94">
+<configurationDescriptor version="89">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <itemPath>/home/xhd/Desktop/newplan/EpisCNF.h</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/EpisDNF.h</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/Progression.h</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/Vocabulary.h</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/atoms.h</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/formulatab.h</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/init.h</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/parse.h</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/plan.h</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/structs.h</itemPath>
+      <itemPath>headfile/EpisCNF.h</itemPath>
+      <itemPath>headfile/EpisDNF.h</itemPath>
+      <itemPath>headfile/Progression.h</itemPath>
+      <itemPath>headfile/Vocabulary.h</itemPath>
+      <itemPath>headfile/atoms.h</itemPath>
+      <itemPath>headfile/formulatab.h</itemPath>
+      <itemPath>headfile/init.h</itemPath>
+      <itemPath>headfile/plan.h</itemPath>
+      <itemPath>headfile/structs.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="parse" displayName="parse" projectFiles="true">
+      <itemPath>parse/generate.sh</itemPath>
+      <itemPath>parse/lex.l</itemPath>
+      <itemPath>parse/parse.y</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
-      <logicalFolder name="parse" displayName="parse" projectFiles="true">
-        <itemPath>/home/xhd/Desktop/newplan/parse/generate.sh</itemPath>
-        <itemPath>/home/xhd/Desktop/newplan/parse/lex.l</itemPath>
-        <itemPath>/home/xhd/Desktop/newplan/parse/parse.y</itemPath>
-      </logicalFolder>
-      <logicalFolder name="test" displayName="test" projectFiles="true">
-        <logicalFolder name="blocks" displayName="blocks" projectFiles="true">
-          <itemPath>/home/xhd/Desktop/newplan/test/blocks/blocks_domain.pddl</itemPath>
-          <itemPath>/home/xhd/Desktop/newplan/test/blocks/blocks_p3.pddl</itemPath>
-        </logicalFolder>
-        <logicalFolder name="btc" displayName="btc" projectFiles="true">
-          <itemPath>/home/xhd/Desktop/newplan/test/btc/btc_domain.pddl</itemPath>
-          <itemPath>/home/xhd/Desktop/newplan/test/btc/btc_p20.pddl</itemPath>
-          <itemPath>/home/xhd/Desktop/newplan/test/btc/btc_p30.pddl</itemPath>
-          <itemPath>/home/xhd/Desktop/newplan/test/btc/btc_p50.pddl</itemPath>
-        </logicalFolder>
-        <logicalFolder name="demo" displayName="demo" projectFiles="true">
-          <itemPath>/home/xhd/Desktop/newplan/test/demo/demo_domain.pddl</itemPath>
-          <itemPath>/home/xhd/Desktop/newplan/test/demo/demo_p.pddl</itemPath>
-        </logicalFolder>
-        <logicalFolder name="dispose" displayName="dispose" projectFiles="true">
-          <itemPath>/home/xhd/Desktop/newplan/test/dispose/dispose_domain.pddl</itemPath>
-          <itemPath>/home/xhd/Desktop/newplan/test/dispose/dispose_p2-1.pddl</itemPath>
-          <itemPath>/home/xhd/Desktop/newplan/test/dispose/dispose_p2-2.pddl</itemPath>
-          <itemPath>/home/xhd/Desktop/newplan/test/dispose/dispose_p3-1.pddl</itemPath>
-        </logicalFolder>
-        <logicalFolder name="doors" displayName="doors" projectFiles="true">
-          <itemPath>/home/xhd/Desktop/newplan/test/doors/door_domain.pddl</itemPath>
-          <itemPath>/home/xhd/Desktop/newplan/test/doors/door_newdomain.pddl</itemPath>
-          <itemPath>/home/xhd/Desktop/newplan/test/doors/door_p2.pddl</itemPath>
-          <itemPath>/home/xhd/Desktop/newplan/test/doors/door_p5.pddl</itemPath>
-          <itemPath>/home/xhd/Desktop/newplan/test/doors/door_pnew.pddl</itemPath>
-        </logicalFolder>
-        <logicalFolder name="push" displayName="push" projectFiles="true">
-          <itemPath>/home/xhd/Desktop/newplan/test/push/push.pddl</itemPath>
-          <itemPath>/home/xhd/Desktop/newplan/test/push/push_domain.pddl</itemPath>
-        </logicalFolder>
-        <logicalFolder name="unix" displayName="unix" projectFiles="true">
-          <itemPath>/home/xhd/Desktop/newplan/test/unix/unix_domain.pddl</itemPath>
-          <itemPath>/home/xhd/Desktop/newplan/test/unix/unix_p1.pddl</itemPath>
-          <itemPath>/home/xhd/Desktop/newplan/test/unix/unix_p2.pddl</itemPath>
-        </logicalFolder>
-      </logicalFolder>
-      <itemPath>/home/xhd/Desktop/newplan/sample.in</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/sample1.in</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/sample_test.in</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <itemPath>/home/xhd/Desktop/newplan/EpisCNF.cpp</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/EpisDNF.cpp</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/Progression.cpp</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/Vocabulary.cpp</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/atoms.cpp</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/formulatab.cpp</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/init.cpp</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/lex.cpp</itemPath>
-      <itemPath>main.cpp</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/parse.cpp</itemPath>
-      <itemPath>/home/xhd/Desktop/newplan/plan.cpp</itemPath>
+      <itemPath>sources/EpisCNF.cpp</itemPath>
+      <itemPath>sources/EpisDNF.cpp</itemPath>
+      <itemPath>sources/Progression.cpp</itemPath>
+      <itemPath>sources/Vocabulary.cpp</itemPath>
+      <itemPath>sources/atoms.cpp</itemPath>
+      <itemPath>sources/formulatab.cpp</itemPath>
+      <itemPath>sources/init.cpp</itemPath>
+      <itemPath>sources/lex.cpp</itemPath>
+      <itemPath>sources/main.cpp</itemPath>
+      <itemPath>sources/parse.cpp</itemPath>
+      <itemPath>sources/parse.h</itemPath>
+      <itemPath>sources/plan.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="test" displayName="test" projectFiles="true">
+      <logicalFolder name="blocks" displayName="blocks" projectFiles="true">
+        <itemPath>test/blocks/blocks_domain.pddl</itemPath>
+        <itemPath>test/blocks/blocks_p3.pddl</itemPath>
+      </logicalFolder>
+      <logicalFolder name="btc" displayName="btc" projectFiles="true">
+        <itemPath>test/btc/btc_domain.pddl</itemPath>
+        <itemPath>test/btc/btc_p20.pddl</itemPath>
+        <itemPath>test/btc/btc_p30.pddl</itemPath>
+        <itemPath>test/btc/btc_p50.pddl</itemPath>
+      </logicalFolder>
+      <logicalFolder name="demo" displayName="demo" projectFiles="true">
+        <itemPath>test/demo/demo_domain.pddl</itemPath>
+        <itemPath>test/demo/demo_p.pddl</itemPath>
+      </logicalFolder>
+      <logicalFolder name="dispose" displayName="dispose" projectFiles="true">
+        <itemPath>test/dispose/dispose_domain.pddl</itemPath>
+        <itemPath>test/dispose/dispose_p2-1.pddl</itemPath>
+        <itemPath>test/dispose/dispose_p2-2.pddl</itemPath>
+        <itemPath>test/dispose/dispose_p3-1.pddl</itemPath>
+      </logicalFolder>
+      <logicalFolder name="doors" displayName="doors" projectFiles="true">
+        <itemPath>test/doors/door_domain.pddl</itemPath>
+        <itemPath>test/doors/door_newdomain.pddl</itemPath>
+        <itemPath>test/doors/door_p2.pddl</itemPath>
+        <itemPath>test/doors/door_p5.pddl</itemPath>
+        <itemPath>test/doors/door_pnew.pddl</itemPath>
+      </logicalFolder>
+      <logicalFolder name="push" displayName="push" projectFiles="true">
+        <itemPath>test/push/push.pddl</itemPath>
+        <itemPath>test/push/push_domain.pddl</itemPath>
+      </logicalFolder>
+      <logicalFolder name="sample" displayName="sample" projectFiles="true">
+        <itemPath>test/sample/sample.in</itemPath>
+        <itemPath>test/sample/sample1.in</itemPath>
+        <itemPath>test/sample/sample_test.in</itemPath>
+      </logicalFolder>
+      <logicalFolder name="unix" displayName="unix" projectFiles="true">
+        <itemPath>test/unix/unix_domain.pddl</itemPath>
+        <itemPath>test/unix/unix_p1.pddl</itemPath>
+        <itemPath>test/unix/unix_p2.pddl</itemPath>
+      </logicalFolder>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -93,243 +95,134 @@
     </logicalFolder>
   </logicalFolder>
   <sourceRootList>
-    <Elem>/home/xhd/Desktop/newplan/test</Elem>
-    <Elem>/home/xhd/Desktop/newplan/parse</Elem>
+    <Elem>parse</Elem>
+    <Elem>test</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>headfile</pElem>
+          </incDir>
+        </ccTool>
       </compileType>
-      <item path="/home/xhd/Desktop/newplan/EpisCNF.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <folder path="SourceFiles">
+        <ccTool>
+          <incDir>
+            <pElem>headfile</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <item path="headfile/EpisCNF.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/EpisCNF.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="headfile/EpisDNF.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/EpisDNF.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="headfile/Progression.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/EpisDNF.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="headfile/Vocabulary.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/Progression.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="headfile/atoms.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/Progression.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="headfile/formulatab.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/Vocabulary.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="headfile/init.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/Vocabulary.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="headfile/plan.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/atoms.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="headfile/structs.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/atoms.h" ex="false" tool="3" flavor2="0">
+      <item path="parse/generate.sh" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/formulatab.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="parse/lex.l" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/formulatab.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="parse/parse.y" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/init.cpp" ex="false" tool="1" flavor2="0">
+      <item path="sources/EpisCNF.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/init.h" ex="false" tool="3" flavor2="0">
+      <item path="sources/EpisDNF.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/lex.cpp" ex="false" tool="1" flavor2="0">
+      <item path="sources/Progression.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/parse.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="sources/Vocabulary.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/parse.h" ex="false" tool="3" flavor2="0">
+      <item path="sources/atoms.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/parse/generate.sh"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="sources/formulatab.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/parse/lex.l"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="sources/init.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/parse/parse.y"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="sources/lex.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/plan.cpp" ex="false" tool="1" flavor2="0">
+      <item path="sources/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/plan.h" ex="false" tool="3" flavor2="0">
+      <item path="sources/parse.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/sample.in"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="sources/parse.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/sample1.in"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="sources/plan.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/sample_test.in"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/blocks/blocks_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/structs.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/blocks/blocks_p3.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/blocks/blocks_domain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/btc/btc_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/blocks/blocks_p3.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/btc/btc_p20.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/btc/btc_domain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/btc/btc_p30.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/btc/btc_p20.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/btc/btc_p50.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/btc/btc_p30.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/demo/demo_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/btc/btc_p50.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/demo/demo_p.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/demo/demo_domain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/dispose/dispose_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/demo/demo_p.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/dispose/dispose_p2-1.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/dispose/dispose_domain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/dispose/dispose_p2-2.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/dispose/dispose_p2-1.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/dispose/dispose_p3-1.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/dispose/dispose_p2-2.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/doors/door_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/dispose/dispose_p3-1.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/doors/door_newdomain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/doors/door_domain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/doors/door_p2.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/doors/door_newdomain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/doors/door_p5.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/doors/door_p2.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/doors/door_pnew.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/doors/door_p5.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/push/push.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/doors/door_pnew.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/push/push_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/push/push.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/sample/sample.in" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/push/push_domain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/sample/sample1.in" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/unix/unix_domain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/sample/sample_test.in" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/unix/unix_p1.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/unix/unix_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/unix/unix_p2.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/unix/unix_p1.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="test/unix/unix_p2.pddl" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
@@ -348,226 +241,103 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
-      <item path="/home/xhd/Desktop/newplan/EpisCNF.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="headfile/EpisCNF.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/EpisCNF.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="headfile/EpisDNF.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/EpisDNF.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="headfile/Progression.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/EpisDNF.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="headfile/Vocabulary.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/Progression.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="headfile/atoms.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/Progression.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="headfile/formulatab.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/Vocabulary.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="headfile/init.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/Vocabulary.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="headfile/plan.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/atoms.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="headfile/structs.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/atoms.h" ex="false" tool="3" flavor2="0">
+      <item path="parse/generate.sh" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/formulatab.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="parse/lex.l" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/formulatab.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="parse/parse.y" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/init.cpp" ex="false" tool="1" flavor2="0">
+      <item path="sources/EpisCNF.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/init.h" ex="false" tool="3" flavor2="0">
+      <item path="sources/EpisDNF.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/lex.cpp" ex="false" tool="1" flavor2="0">
+      <item path="sources/Progression.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/parse.cpp"
-            ex="false"
-            tool="1"
-            flavor2="0">
+      <item path="sources/Vocabulary.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/parse.h" ex="false" tool="3" flavor2="0">
+      <item path="sources/atoms.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/parse/generate.sh"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="sources/formulatab.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/parse/lex.l"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="sources/init.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/parse/parse.y"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="sources/lex.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/plan.cpp" ex="false" tool="1" flavor2="0">
+      <item path="sources/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/plan.h" ex="false" tool="3" flavor2="0">
+      <item path="sources/parse.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/sample.in"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="sources/parse.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/sample1.in"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="sources/plan.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/sample_test.in"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/blocks/blocks_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/structs.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/blocks/blocks_p3.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/blocks/blocks_domain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/btc/btc_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/blocks/blocks_p3.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/btc/btc_p20.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/btc/btc_domain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/btc/btc_p30.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/btc/btc_p20.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/btc/btc_p50.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/btc/btc_p30.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/demo/demo_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/btc/btc_p50.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/demo/demo_p.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/demo/demo_domain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/dispose/dispose_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/demo/demo_p.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/dispose/dispose_p2-1.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/dispose/dispose_domain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/dispose/dispose_p2-2.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/dispose/dispose_p2-1.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/dispose/dispose_p3-1.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/dispose/dispose_p2-2.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/doors/door_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/dispose/dispose_p3-1.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/doors/door_newdomain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/doors/door_domain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/doors/door_p2.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/doors/door_newdomain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/doors/door_p5.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/doors/door_p2.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/doors/door_pnew.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/doors/door_p5.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/push/push.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/doors/door_pnew.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/push/push_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/push/push.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/sample/sample.in" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/push/push_domain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/sample/sample1.in" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/unix/unix_domain.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/sample/sample_test.in" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/unix/unix_p1.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/unix/unix_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="/home/xhd/Desktop/newplan/test/unix/unix_p2.pddl"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="test/unix/unix_p1.pddl" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="main.cpp" ex="false" tool="1" flavor2="0">
+      <item path="test/unix/unix_p2.pddl" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
