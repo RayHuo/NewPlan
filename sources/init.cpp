@@ -20,10 +20,18 @@ Init::~Init(){
 
 void Init::exec(){
     //cout<<"init exec"<<endl;
-    yyin = fopen("sample.in", "r");
+    yyin = fopen("test/sample/sample.in", "r");
+    if(!yyin) {
+        printf("Cannot Open first input file!\n");
+        exit(0);
+    }
     yyparse();
     fclose(yyin);
-    yyin = fopen("sample1.in", "r");
+    yyin = fopen("test/sample/sample1.in", "r");
+    if(!yyin) {
+        printf("Cannot Open Second input file!\n");
+        exit(0);
+    }
     yyparse();
     fclose(yyin);
     /*

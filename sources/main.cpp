@@ -29,15 +29,9 @@ map< string,vector<int> > grounding_map;
 vector<OnticAction> ontic_actions;
 vector<EpisAction> epis_acitons;
 
-class xhd{
-public :
-int i;
-};
 
 int main(int argc, char **argv){
-
-
-    
+  
     Plan p(argv);
     p.exec_plan();
     p.BuildPlan();

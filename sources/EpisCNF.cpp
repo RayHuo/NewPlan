@@ -6,9 +6,14 @@
  */
 //#define xx 0
 //#if xx
+//#ifndef EPISCNF_H
+//#define	EPISCNF_H
+#include <boost/dynamic_bitset.hpp>
+#include <list>
+#include <iostream>
+#include "atoms.h"
 #include "EpisCNF.h"
 #include "EpisDNF.h"
-#include "atoms.h"
 
 PropTerm PropClause::negation()
 {
@@ -75,6 +80,5 @@ void PropDNF::show() const{
     }
     cout<<"    end_show_PropDNF:"<<endl;
 }
-
 
 //#endif
