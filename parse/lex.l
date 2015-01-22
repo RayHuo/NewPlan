@@ -4,7 +4,7 @@ extern "C" {
 	int yywrap(void);
 	int yylex(void);
 }
-extern int context_flag;/* 0 - not in any atom, 1 - in an atom*/
+extern int context_flag;/* 0 - not in any atom, 1  - in an atom*/
 
 %}
 
