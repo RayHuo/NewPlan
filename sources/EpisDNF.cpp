@@ -8,6 +8,8 @@
 //#if xx
 #include "EpisDNF.h"
 #include "atoms.h"
+#include <boost/dynamic_bitset.hpp>
+#include <vector>
 
 bool PropTerm::consistent() const
 {

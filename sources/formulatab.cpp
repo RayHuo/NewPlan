@@ -19,3 +19,7 @@ int Formulatab::addAtom(_formula* f){
 _formula* Formulatab::getAtom(int id){
     return formula_list[id];
 }
+
+vector<_formula*> Formulatab::get_formula_list() const {
+    return formula_list;
+}

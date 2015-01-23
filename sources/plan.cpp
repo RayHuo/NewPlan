@@ -30,7 +30,7 @@ Plan::Plan(char **argv){
     
     //in.exec(argv);
     in.exec();
-    in.showmaps();
+//    in.showmaps();
     cout<<"plan argv end init exec"<<endl;
     Node fnd;
     fnd.kb = in.init;

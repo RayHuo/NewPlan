@@ -33,8 +33,8 @@ vector<EpisAction> epis_acitons;
 int main(int argc, char **argv){
   
     Plan p(argv);
-    p.exec_plan();
-    p.BuildPlan();
+//    p.exec_plan();
+//    p.BuildPlan();
 
     
     return 0;

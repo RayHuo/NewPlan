@@ -74,7 +74,7 @@ public:
     //判断是否已存在
     bool check_if_add_to_vector(int i, vector<int> v);
     _formula* get_pre_match(_formula*);
-    //
+    //建立当前公式里的原子在Atom中的对应关系，并返回其在Atom中的id集合。
     vector<int> gen_and_nums(_formula* f);
 
     
@@ -128,7 +128,7 @@ public:
     //此处进行k后部分合取到dk后的操作，逻辑上的问题杨睿让这么写的
     void checkInit();
 
-    
+    void showground();
     void showmaps();
     void show(pre p);
     void print_f(_formula* f);
