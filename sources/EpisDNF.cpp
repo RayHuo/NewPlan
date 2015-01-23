@@ -146,6 +146,115 @@ PropDNF PropDNF::compose(const PropDNF& propDNF)
     return result;
 }
 
+
+void PropDNF::convect_IPIA() {
+    assert(! prop_terms.empty());
+    list<PropTerm>::const_iterator it = prop_terms.begin();
+    list<PropTerm> pi;
+    pi.push_back(*it);
+    for (++ it; it != prop_terms.end(); ++ it) {
+        // Algorithm 1: Incremental prime implicant algorithm
+        PropTerm t = *it;
+        list<PropTerm> segma;
+        segma.push_back(t);
+        // delete operation
+        bool is_t_delete = delete_operation_in_IPIA(t, pi, segma);
+        if (! is_t_delete) {
+            for (size_t l = 0; l < t.literals.size(); ++ l) {
+                if (! t.literals.test(l)) {
+                    continue;
+                }
+                // 存在 t'属于pi，t''属于segma，
+                // 且 (l属于t') && (~l属于t'') || (~l属于t') && (l属于t'')
+                size_t _l = (l % 2 == 0) ? l + 1 : l - 1;
+                for (list<PropTerm>::iterator it_pi = pi.begin();
+                        it_pi != pi.end(); ++ it_pi) {
+                    for (list<PropTerm>::iterator it_segma = segma.begin();
+                            it_segma != segma.end(); ++ it_segma) {
+                        if (it_pi->literals.test(l) && it_segma->literals.test(_l) ||
+                                it_pi->literals.test(_l) && it_segma->literals.test(l)) {
+                            // t* = term(t', t'', l);
+                            PropTerm tx = *it_pi;
+                            tx.literals |= it_segma->literals;
+                            tx.literals.reset(l);
+                            tx.literals.reset(~l);
+                            // segma = segma \cup {t*}
+                            if (tx.consistent())
+                                segma.push_back(tx);
+                        }
+                    }
+                }
+                // delete operation，需要保证没有重复的元素
+                delete_operation_in_IPIA(t, pi, segma);
+            }
+        }
+        // pi = pi \cup segma, update it for the next iteration
+        pi.insert(pi.end(), segma.begin(), segma.end());
+    }
+    prop_terms = pi;
+}
+// 
+bool PropDNF::delete_operation_in_IPIA(const PropTerm &t, list<PropTerm> &pi, 
+        list<PropTerm> &segma) {
+    // 化简pi和segma，删除重复元素
+    PropDNF pi_helper;  pi_helper.prop_terms = pi;      
+    pi_helper.min();    pi = pi_helper.prop_terms;
+    PropDNF segma_helper;       segma_helper.prop_terms = segma;
+    segma_helper.min();         segma = segma_helper.prop_terms;
+    // 处理pi
+    for (list<PropTerm>::iterator it = pi.begin(); it != pi.end(); /*手动处理迭代器*/) {
+        bool is_delete = false;
+        for (list<PropTerm>::iterator it_pi = pi.begin();
+                (! is_delete) && (it_pi != pi.end()); ++ it_pi) {
+            if (it == it_pi)
+                continue;
+            if (it_pi->entails(*it)) {
+                is_delete = true;
+                it = pi.erase(it);
+            }
+        }
+        for (list<PropTerm>::iterator it_segma = segma.begin();
+                (! is_delete) && (it_segma != segma.end()); ++ it_segma) {
+            if (it_segma->entails(*it)) {
+                is_delete = true;
+                it = pi.erase(it);
+            }
+        }
+        if (! is_delete)
+            ++ it;
+    }
+    // 处理segma
+    for (list<PropTerm>::iterator it = segma.begin(); it != segma.end(); /*手动处理迭代器*/) {
+        bool is_delete = false;
+        for (list<PropTerm>::iterator it_pi = pi.begin();
+                (! is_delete) && (it_pi != pi.end()); ++ it_pi) {
+            if (it_pi->entails(*it)) {
+                is_delete = true;
+                it = segma.erase(it);
+            }
+        }
+        for (list<PropTerm>::iterator it_segma = segma.begin();
+                (! is_delete) && (it_segma != segma.end()); ++ it_segma) {
+            if (it == it_segma)
+                continue;
+            if (it_segma->entails(*it)) {
+                is_delete = true;
+                it = segma.erase(it);
+            }
+        }
+        if (! is_delete)
+            ++ it;
+    }
+    bool is_t_delete = true;
+    for (list<PropTerm>::const_iterator it = segma.begin(); it != segma.end(); ++ it) {
+        if (it->equals(t)) {
+            is_t_delete = false;
+            break;
+        }
+    }
+    return is_t_delete;
+}
+
 bool EpisTerm::consistent() const
 {
     if (!pos_propDNF.consistent())
@@ -272,7 +381,13 @@ bool EpisTerm::isempty(){
     return false;
 }
 
-
+void EpisTerm::convert_IPIA() {
+    pos_propDNF.convert_IPIA();
+    for (list<PropDNF>::iterator it = neg_propDNFs.begin();
+            it != neg_propDNFs.end(); ++ it) {
+        it->convert_IPIA();
+    }
+}
 
 //??EpisDNF |= EpisDNF ==> EpisDNF | !EpisDNF sat??
 bool EpisDNF::entails(const EpisDNF& episDNF) const
@@ -386,6 +501,13 @@ void EpisDNF::show(){
     cout<<"end_show-EpisDNF"<<endl;
         
     
+}
+
+void EpisDNF::convert_IPIA() {
+    for (list<EpisTerm>::iterator it = epis_terms.begin();
+            it != epis_terms.end(); ++ it) {
+        it->convert_IPIA();
+    }
 }
 
 

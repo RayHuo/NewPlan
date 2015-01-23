@@ -13,7 +13,6 @@
 #include <iostream>
 #include "atoms.h"
 #include "EpisCNF.h"
-#include "EpisDNF.h"
 
 PropTerm PropClause::negation()
 {

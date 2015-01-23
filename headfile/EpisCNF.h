@@ -10,50 +10,14 @@
 #include <boost/dynamic_bitset.hpp>
 #include <list>
 #include <iostream>
-//#include "EpisDNF.h"
-
+#include "EpisDNF.h"
 
 using namespace std;
 
 struct OnticAction;
 struct EpisAction;
-
-class PropTerm {
-public:
-    PropTerm(int l){literals.resize(l);};
-    PropTerm(){};
-    
-    //PropTerm(const PropTerm &);
-    ~PropTerm(){};
-    inline bool consistent() const; //判断该命题项是否一致
-    inline bool entails(const PropTerm &) const; //判断该命题项能够推出另外一个命题项
-    inline bool equals(const PropTerm &) const;  //判断两个命题项是否等价
-    PropTerm& min(); //化简命题项，在这里其实就是若该命题项中同时出现一个原子的正负文字两个方面，那么该命题项就是False
-    boost::dynamic_bitset<> literals;  //一个原子对应两位，那两位分别表示该原子构成的正文字和负文字
-
-    // new added
-    PropTerm ontic_prog(const OnticAction &ontic_action); //在当前PropTerm上做物理动作的演进，并且返回演进结果
-    vector<PropTerm> epistemic_prog(const EpisAction &epis_action); //在当前PropTerm上做观察动作的演进，并且返回结果
-    
-    PropTerm compose(const PropTerm &);  // new version delete this
-};
-
-
-class PropDNF {
-public:
-    inline bool consistent() const; //判断该命题DNF是否一致
-    inline bool entails(const PropDNF &) const; //判断该命题DNF是否可以推出另外一个命题DNF
-    inline bool equals(const PropDNF &) const; //判断两个命题DNF是否等价
-    PropDNF& min(); //化简命题DNF，即若PropTerm1能够推出PropTerm2， 则从prop_terms中把PropTerm1删除
-    PropDNF compose(const PropDNF &); //将两个命题DNF合并成一个命题DNF
-    void show() const;
-    list<PropTerm> prop_terms; //存储了多个命题项，这就构成了命题层面的DNF
-
-    // new added
-    PropDNF ontic_prog(const OnticAction &ontic_action); //在当前PropDNF上做物理动作的演进，并且返回演进结果
-    vector<PropDNF> epistemic_prog(const EpisAction &epis_action); //在当前PropDNF上做观察动作的演进，并且返回结果
-    PropDNF convect_IPIA(); //将DNF转为质蕴含形式
-};
+class PropTerm;
+class PropDNF;
 
 //以下4个数据结构完全和PropTerm、PropDNF、EpisTerm、EpisDNF对应
 class PropClause
