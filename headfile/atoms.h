@@ -11,7 +11,7 @@
 using namespace std;
 
 class Atoms{
-private:
+public:
     Atoms();
     ~Atoms();
     vector<string> atoms_str;

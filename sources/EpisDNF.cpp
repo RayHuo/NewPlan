@@ -162,6 +162,7 @@ void PropDNF::convert_IPIA() {
         // delete operation
         bool is_t_delete = delete_operation_in_IPIA(t, pi, segma);
         if (! is_t_delete) {
+            list<PropTerm> new_to_segma;
             for (size_t l = 0; l < t.literals.size(); ++ l) {
                 if (! t.literals.test(l)) {
                     continue;
@@ -179,16 +180,17 @@ void PropDNF::convert_IPIA() {
                             PropTerm tx = *it_pi;
                             tx.literals |= it_segma->literals;
                             tx.literals.reset(l);
-                            tx.literals.reset(~l);
+                            tx.literals.reset(_l);
                             // segma = segma \cup {t*}
-                            if (tx.consistent())
-                                segma.push_back(tx);
+                            if (tx.consistent()) 
+                                new_to_segma.push_back(tx);
                         }
                     }
                 }
-                // delete operation，需要保证没有重复的元素
-                delete_operation_in_IPIA(t, pi, segma);
             }
+            segma.insert(segma.end(), new_to_segma.begin(), new_to_segma.end());
+            // delete operation，需要保证没有重复的元素
+            delete_operation_in_IPIA(t, pi, segma);
         }
         // pi = pi \cup segma, update it for the next iteration
         pi.insert(pi.end(), segma.begin(), segma.end());
@@ -203,56 +205,39 @@ bool PropDNF::delete_operation_in_IPIA(const PropTerm &t, list<PropTerm> &pi,
     pi_helper.min();    pi = pi_helper.prop_terms;
     PropDNF segma_helper;       segma_helper.prop_terms = segma;
     segma_helper.min();         segma = segma_helper.prop_terms;
-    // 处理pi
-    for (list<PropTerm>::iterator it = pi.begin(); it != pi.end(); /*手动处理迭代器*/) {
-        bool is_delete = false;
-        for (list<PropTerm>::iterator it_pi = pi.begin();
-                (! is_delete) && (it_pi != pi.end()); ++ it_pi) {
-            if (it == it_pi)
-                continue;
-            if (it_pi->entails(*it)) {
-                is_delete = true;
-                it = pi.erase(it);
-            }
+    // pi \cup segma
+    list<PropTerm> both;
+    both.insert(both.end(), pi.begin(), pi.end());
+    both.insert(both.end(), segma.begin(), segma.end());
+    //处理pi
+    for (list<PropTerm>::iterator it = pi.begin(); it != pi.end(); ) {
+        int count = 0;
+        for (list<PropTerm>::const_iterator it_both = both.begin();
+                it_both != both.end(); ++ it_both) {
+            if (it_both->entails(*it))
+                ++ count;
         }
-        for (list<PropTerm>::iterator it_segma = segma.begin();
-                (! is_delete) && (it_segma != segma.end()); ++ it_segma) {
-            if (it_segma->entails(*it)) {
-                is_delete = true;
-                it = pi.erase(it);
-            }
-        }
-        if (! is_delete)
+        if (count > 1)
+            it = pi.erase(it);
+        else
             ++ it;
     }
     // 处理segma
-    for (list<PropTerm>::iterator it = segma.begin(); it != segma.end(); /*手动处理迭代器*/) {
-        bool is_delete = false;
-        for (list<PropTerm>::iterator it_pi = pi.begin();
-                (! is_delete) && (it_pi != pi.end()); ++ it_pi) {
-            if (it_pi->entails(*it)) {
-                is_delete = true;
-                it = segma.erase(it);
-            }
+    bool is_t_delete = false;
+    for (list<PropTerm>::iterator it = segma.begin(); it != segma.end(); ) {
+        int count = 0;
+        for (list<PropTerm>::const_iterator it_both = both.begin();
+                it_both != both.end(); ++ it_both) {
+            if (it_both->entails(*it))
+                ++ count;
         }
-        for (list<PropTerm>::iterator it_segma = segma.begin();
-                (! is_delete) && (it_segma != segma.end()); ++ it_segma) {
-            if (it == it_segma)
-                continue;
-            if (it_segma->entails(*it)) {
-                is_delete = true;
-                it = segma.erase(it);
-            }
+        if (count > 1) {
+            if (it->equals(t))
+                is_t_delete = true;
+            it = segma.erase(it);
         }
-        if (! is_delete)
+        else
             ++ it;
-    }
-    bool is_t_delete = true;
-    for (list<PropTerm>::const_iterator it = segma.begin(); it != segma.end(); ++ it) {
-        if (it->equals(t)) {
-            is_t_delete = false;
-            break;
-        }
     }
     return is_t_delete;
 }
