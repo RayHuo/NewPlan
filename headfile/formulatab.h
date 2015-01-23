@@ -24,6 +24,7 @@ public:
     static Formulatab& instance();
     int addAtom(_formula*);
     _formula* getAtom(int id);
+    vector<_formula*> get_formula_list() const;
 };
 
 

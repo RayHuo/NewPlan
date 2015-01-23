@@ -42,9 +42,12 @@ int Atoms::atoms_length(){
 void Atoms::show(){
     for(int i = 0; i < length; i++)
         cout<<"i: "<<i+1<<" str: "<<atoms_str[i]<<endl;
-    for(map<int,int>::iterator it = vac_to_atom.begin(); it != vac_to_atom.end(); it++){
-        cout<<it->first<<it->second<<endl;
-    }
+    cout<<"str end"<<endl;
+    //cout<<vac_to_atom.size()<<endl;
+    //for(map<int,int>::iterator it = vac_to_atom.begin(); it != vac_to_atom.end(); it++){
+    //    cout<<it->first<<" "<<it->second<<endl;
+    //}
+    cout<<"end atom show"<<endl;
 }
 
 void Atoms::gen_vac_to_atom(){
@@ -61,5 +64,10 @@ void Atoms::gen_vac_to_atom(){
 
 
 int Atoms::get_true_num(int id){
-    return vac_to_atom[id];
+    string s = Vocabulary::instance().getAtom(id);
+    int k = query_atoms(s);
+    if(k == -1)
+        return add_atoms(s);
+    else
+        return k;
 }

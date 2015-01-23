@@ -20,34 +20,25 @@ Init::~Init(){
 
 void Init::exec(){
     //cout<<"init exec"<<endl;
-    yyin = fopen("test/sample/sample.in", "r");
-    if(!yyin) {
-        printf("Cannot Open first input file!\n");
-        exit(0);
-    }
+    yyin = fopen("test/unix/unix_domain.pddl", "r");
     yyparse();
     fclose(yyin);
-    yyin = fopen("test/sample/sample1.in", "r");
-    if(!yyin) {
-        printf("Cannot Open Second input file!\n");
-        exit(0);
-    }
+    yyin = fopen("test/unix/unix_p1.pddl", "r");
     yyparse();
     fclose(yyin);
-    /*
-     * cout<<"\n\n\nprint actions\n";
-    for(int i = 0 ; i < actions_f.size(); i++)
-        print_f(actions_f[i]);
-    cout<<"\n\n\nprint init\n";
-    print_f(init_f);
-    cout<<"\n\n\nprint goal\n";
-    print_f(goal_f);
-    cout<<"---"<<endl;
-     * */
+    //cout<<"\n\n\nprint actions\n";
+    //for(int i = 0 ; i < actions_f.size(); i++)
+        //print_f(actions_f[i]);
+    //cout<<"\n\n\nprint init\n";
+    //print_f(init_f);
+    //cout<<"\n\n\nprint goal\n";
+    //print_f(goal_f);
+    //cout<<"---\n\n\n\n"<<endl;
+    
     //print_f(init_f);
     make_actions();
     
-    Atoms::instance().gen_vac_to_atom();
+    //Atoms::instance().gen_vac_to_atom();
     //showmaps();
     /*bitset<5> bt;
     cout<<bt<<endl;
@@ -66,6 +57,7 @@ void Init::exec(){
     literal.operator |=(literals);
     cout<<literal<<endl;
     */
+    //showground();
     getEpisiDNFInitAndGoal();
     genActionPreCnd();
     //if(literals.is_subset_of(literal))cout<<"x"<<endl;
@@ -122,12 +114,27 @@ void Init::gen_ontic_actions(_formula* f){
         vector<string> match_str;
         match_data.clear();
         get_str(0, match_str, para_str);
+        //cout<<"\n\nshow para"<<endl;
+        //for(int i = 0; i < para_str.size(); i++){
+        //    cout<<i<<" : "<<para_str[i]<<" ";
+        //}
+        //cout<<endl;
+        //for(int i = 0; i < match_data.size(); i++){
+        //    for(int j = 0; j < match_data[i].size(); j++)
+        //       cout<<j<<" : "<<match_data[i][j]<<" ";
+        //    cout<<endl;
+        //}
+        
+        //cout<<endl;   
+        
+        
         for(int i = 0; i < match_data.size(); i++){
             eba.pre_f = gen_pre_by_match(f->subformula_r->subformula_r->subformula_l->subformula_l, para_str,match_data[i]);
             eba.con_eff = gen_con_eff_by_match(f->subformula_r->subformula_r->subformula_r->subformula_l, para_str,match_data[i]);
             eba.name = eff_name;
             eba.act_num = ontic_actions.size();
             eba.para_match = match_data[i];
+            //show(eba.pre_f);
             ontic_actions.push_back(eba);
         } 
     }     
@@ -495,21 +502,28 @@ bool Init::check_if_add_to_vector(int i, vector<int> v){
     return true;
 }
 
-
-void Init::showmaps(){
-    //Vocabulary::instance().showVocabulary();
+void Init::showground(){
     cout<<"grounding_map"<<endl;
     for(map<string,vector<int> >::iterator it = grounding_map.begin(); it != grounding_map.end(); it++){
         cout<<it->first<<":";
         for(int i = 0; i < it->second.size(); i++)
-            cout<<it->second[i]<<" ";
+            cout<<Vocabulary::instance().getAtom(it->second[i])<<" ";
         cout<<endl;
     }    
     Atoms::instance().show();
+}
+
+void Init::showmaps(){
+    //Vocabulary::instance().showVocabulary();
+    showground();
     
     cout<<"\nshow act"<<endl;
     for(int i = 0; i < ontic_actions.size(); i++){
         cout<<"act_num: "<<ontic_actions[i].act_num<<" act_name: "<<ontic_actions[i].name<<endl;
+        cout<<"show match: "<<endl;
+        for(int j = 0; j < ontic_actions[i].para_match.size(); j++)
+            cout<<ontic_actions[i].para_match[j]<<" ";
+        cout<<endl;
         cout<<"act_con: "<<endl;
         for(int m = 0; m < ontic_actions[i].con_eff.size(); m++){
             for(int j = 0; j < ontic_actions[i].con_eff[m].add.size(); j++)
@@ -638,7 +652,11 @@ PropDNF Init::getPropDNF(_formula* f){
     //cout<<endl;
     if(f->formula_type == K_atom)
         f = Formulatab::instance().getAtom(f->pid)->subformula_l;
+    //cout<<"process f : "<<endl;
+    //print_f(f);
     _formula* fm = convertToConjuntiveNormalForm(f);
+    //cout<<"process cnf f : "<<endl;
+    //print_f(fm);
     //print_f(fm);
     //cout<<endl;
     vector<_formula*> result;
@@ -649,25 +667,27 @@ PropDNF Init::getPropDNF(_formula* f){
     //    cout<<endl;   
     //}
     vector< set<int> > vs = convertToSATInput(result);
+
+    //cout<<"\n show this vs cnf "<<vs.size()<<endl;
+    //cout<<vs.size()<<endl;
+    //absorb(vs);
+    //for(int i = 0; i < vs.size(); i++){
+    //    for(set<int>::iterator it = vs[i].begin(); it != vs[i].end(); it++){
+    //        cout<<*it<<" ";
+    //    }
+    //    cout<<endl;
+    //}
     
-    /* cout<<"\n show this vs cnf "<<vs.size()<<endl;
-    for(int i = 0; i < vs.size(); i++){
-        for(set<int>::iterator it = vs[i].begin(); it != vs[i].end(); it++){
-            cout<<*it<<" ";
-        }
-        cout<<endl;
-    }
-     */
     vs = vcnf_to_vdnf(vs);
     absorb(vs);
     
     
     //cout<<"\n show this vs dnf"<<vs.size()<<endl;
     //for(int i = 0; i < vs.size(); i++){
-    //    for(set<int>::iterator it = vs[i].begin(); it != vs[i].end(); it++){
-    //        cout<<*it<<" ";
-    //    }
-    //    cout<<endl;
+     //   for(set<int>::iterator it = vs[i].begin(); it != vs[i].end(); it++){
+     //       cout<<*it<<" ";
+     //   }
+     //   cout<<endl;
     //}
      
     //cout<<"showvs"<<endl;
@@ -691,6 +711,7 @@ PropTerm Init::getPropTerm(set<int> s){
     PropTerm p(Atoms::instance().atoms_length()*2);
     //for(int i = 0; i < literalsLegnth; i++)
         //p.literals.push_back(false);
+    //cout<<"lit length : "<<Atoms::instance().atoms_length()<<endl;
     //cout<<s.size()<<endl;
     int temp = 0;
     for(set<int>::iterator it = s.begin(); it != s.end(); it++){
@@ -698,9 +719,9 @@ PropTerm Init::getPropTerm(set<int> s){
         //cout<<Atoms::instance().get_true_num(*it)<<" ";
         //cout<<Atoms::instance().get_true_num(*it*(-1))<<" ";
         if(*it>0)
-            p.literals[(Atoms::instance().get_true_num(*it)-1)*2] = 1;
+            p.literals[(*it-1)*2] = 1;
         else
-            p.literals[(Atoms::instance().get_true_num(*it * (-1))-1)*2+1] = 1;
+            p.literals[(*it * (-1)-1)*2+1] = 1;
     }
     //cout<<endl;
     //cout<<p.literals<<endl;
@@ -914,12 +935,19 @@ vector< set<int> > Init::convertToSATInput(vector<_formula*> cnfDlp) {
 }
 
 void Init::convertCNFformulaToLits(_formula* rule, set<int>& lits) {
-    if(rule->formula_type == K_atom || rule->formula_type == ONE_ATOM_STATE_F ||rule->formula_type == STATE_F) {
-        lits.insert(rule->pid);
+    if(rule->formula_type == K_atom || rule->formula_type == ONE_ATOM_STATE_F) {
+        lits.insert(Atoms::instance().get_true_num(rule->pid));
+        return;
+    }
+    if(rule->formula_type == STATE_F){
+        lits.insert(gen_bddnum_by_state(rule));
         return;
     }
     if(rule->formula_type == NEGA_F){
-        lits.insert(rule->subformula_l->pid*(-1));
+        set<int> se;
+        convertCNFformulaToLits(rule->subformula_l, se);
+        lits.insert((*(se.begin()))*(-1));
+        //lits.insert(rule->subformula_l->pid*(-1));
         //convertCNFformulaToLits(rule->subformula_l, lits);
         //set<int> se;
         //se.insert((*lits.begin())*(-1));
@@ -940,8 +968,8 @@ void Init::deleteFormula(_formula* _fml) {
     case ONE_ATOM_STATE_F:
     case STATE_F:        
         break;
-    case CONJ_F:
-    case DISJ_F:
+    case AND_F:
+    case OR_F:
         assert(_fml->subformula_r);
         deleteFormula(_fml->subformula_r);
     }
@@ -951,7 +979,7 @@ void Init::deleteFormula(_formula* _fml) {
 
 
 void Init::divideCNFFormula(_formula* fml, vector<_formula*>& division) {
-    if(fml->formula_type == CONJ_F||fml->formula_type == AND_F) {
+    if(fml->formula_type == AND_F) {
         divideCNFFormula(fml->subformula_l, division);
         divideCNFFormula(fml->subformula_r, division);
     }
@@ -962,43 +990,43 @@ void Init::divideCNFFormula(_formula* fml, vector<_formula*>& division) {
 
 
 _formula* Init::convertToConjuntiveNormalForm(_formula*& fml) {
-    if(fml->formula_type == DISJ_F) {
+    if(fml->formula_type == OR_F) {
         convertToConjuntiveNormalForm(fml->subformula_l);
         convertToConjuntiveNormalForm(fml->subformula_r);
         
         _formula* subfor_l = fml->subformula_l;
         _formula* subfor_r = fml->subformula_r;
         
-        if(subfor_l->formula_type == CONJ_F || subfor_r->formula_type == CONJ_F) {
-            if(subfor_l->formula_type == CONJ_F && subfor_r->formula_type == CONJ_F)
+        if(subfor_l->formula_type == AND_F || subfor_r->formula_type == AND_F) {
+            if(subfor_l->formula_type == AND_F && subfor_r->formula_type == AND_F)
             {
-                _formula* f1 = compositeByConnective(DISJ_F, subfor_l->subformula_l, subfor_r->subformula_l);
-                _formula* f2 = compositeByConnective(DISJ_F, subfor_l->subformula_r, copyFormula(subfor_r->subformula_l));
-                _formula* f3 = compositeByConnective(DISJ_F, copyFormula(subfor_l->subformula_l), subfor_r->subformula_r);
-                _formula* f4 = compositeByConnective(DISJ_F, copyFormula(subfor_l->subformula_r), copyFormula(subfor_r->subformula_r));
+                _formula* f1 = compositeByConnective(OR_F, subfor_l->subformula_l, subfor_r->subformula_l);
+                _formula* f2 = compositeByConnective(OR_F, subfor_l->subformula_r, copyFormula(subfor_r->subformula_l));
+                _formula* f3 = compositeByConnective(OR_F, copyFormula(subfor_l->subformula_l), subfor_r->subformula_r);
+                _formula* f4 = compositeByConnective(OR_F, copyFormula(subfor_l->subformula_r), copyFormula(subfor_r->subformula_r));
                 
-                _formula* f12 = compositeByConnective(CONJ_F, f1, f2);
-                _formula* f34 = compositeByConnective(CONJ_F, f3, f4);
+                _formula* f12 = compositeByConnective(AND_F, f1, f2);
+                _formula* f34 = compositeByConnective(AND_F, f3, f4);
                 
-                fml = compositeByConnective(CONJ_F, f12, f34);
+                fml = compositeByConnective(AND_F, f12, f34);
             }
             else {
-                if(subfor_r->formula_type == CONJ_F) {
+                if(subfor_r->formula_type == AND_F) {
                     fml->subformula_l = subfor_r;
                     fml->subformula_r = subfor_l;
                     subfor_l = fml->subformula_l;
                     subfor_r = fml->subformula_r;
                 }
-                _formula* f1 = compositeByConnective(DISJ_F, subfor_l->subformula_l, subfor_r);
-                _formula* f2 = compositeByConnective(DISJ_F, subfor_l->subformula_r, copyFormula(subfor_r));
+                _formula* f1 = compositeByConnective(OR_F, subfor_l->subformula_l, subfor_r);
+                _formula* f2 = compositeByConnective(OR_F, subfor_l->subformula_r, copyFormula(subfor_r));
                 
-                fml = compositeByConnective(CONJ_F, f1, f2);
+                fml = compositeByConnective(AND_F, f1, f2);
             }
             convertToConjuntiveNormalForm(fml->subformula_l);
             convertToConjuntiveNormalForm(fml->subformula_r);
         }
     }
-    else if(fml->formula_type == CONJ_F ) {
+    else if(fml->formula_type == AND_F ) {
         convertToConjuntiveNormalForm(fml->subformula_l);
         convertToConjuntiveNormalForm(fml->subformula_r);
     }
@@ -1008,7 +1036,7 @@ _formula* Init::convertToConjuntiveNormalForm(_formula*& fml) {
 
 _formula* Init::compositeByConnective(FORMULA_TYPE _formulaType, _formula* _subformulaL, _formula* _subformulaR) {
     
-    assert( _formulaType == DISJ_F || _formulaType == CONJ_F);
+    //assert( _formulaType == OR_F || _formulaType == _F);
     
     _formula* fml = (_formula*)malloc(sizeof(_formula));
     assert(fml);
@@ -1036,8 +1064,8 @@ _formula* Init::copyFormula(const _formula* _fml) {
         newFormula->subformula_l = _fml->subformula_l;
         break;
         
-    case CONJ_F:
-    case DISJ_F:
+    case AND_F:
+    case OR_F:
         assert(_fml->subformula_r);
         newFormula->subformula_l = copyFormula( _fml->subformula_l);
         newFormula->subformula_r = copyFormula( _fml->subformula_r);
@@ -1195,20 +1223,7 @@ void Init::print_f(_formula* f){
         case EMPTY_F:
             cout<<" EMPTY "<<endl;
             break;
-        case DISJ_F:
-            cout<<" ( ";
-            print_f(f->subformula_l);
-            cout<<" dis ";
-            print_f(f->subformula_r);
-            cout<<" ) ";
-            break;   
-        case CONJ_F:
-            cout<<" ( ";
-            print_f(f->subformula_l);
-            cout<<" & ";
-            print_f(f->subformula_r);
-            cout<<" ) ";
-            break;   
+
             
     }
     
