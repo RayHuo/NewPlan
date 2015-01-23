@@ -32,6 +32,8 @@ Plan::Plan(char **argv){
     in.exec();
 //    in.showmaps();
     cout<<"plan argv end init exec"<<endl;
+    in.init.convert_IPIA();
+    in.goal.convert_IPIA();
     Node fnd;
     fnd.kb = in.init;
     all_nodes.push_back(fnd);

@@ -149,7 +149,7 @@ PropDNF PropDNF::compose(const PropDNF& propDNF)
 }
 
 
-void PropDNF::convect_IPIA() {
+void PropDNF::convert_IPIA() {
     assert(! prop_terms.empty());
     list<PropTerm>::const_iterator it = prop_terms.begin();
     list<PropTerm> pi;
