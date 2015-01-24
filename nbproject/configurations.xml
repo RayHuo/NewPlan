@@ -13,6 +13,7 @@
       <itemPath>headfile/init.h</itemPath>
       <itemPath>headfile/plan.h</itemPath>
       <itemPath>headfile/structs.h</itemPath>
+      <itemPath>headfile/util.h</itemPath>
     </logicalFolder>
     <logicalFolder name="parse" displayName="parse" projectFiles="true">
       <itemPath>parse/generate.sh</itemPath>
@@ -38,6 +39,7 @@
       <itemPath>sources/parse.cpp</itemPath>
       <itemPath>sources/parse.h</itemPath>
       <itemPath>sources/plan.cpp</itemPath>
+      <itemPath>sources/util.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="test" displayName="test" projectFiles="true">
       <logicalFolder name="blocks" displayName="blocks" projectFiles="true">
@@ -139,6 +141,8 @@
       </item>
       <item path="headfile/structs.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="headfile/util.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="parse/generate.sh" ex="false" tool="3" flavor2="0">
       </item>
       <item path="parse/lex.l" ex="false" tool="3" flavor2="0">
@@ -168,6 +172,8 @@
       <item path="sources/parse.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sources/plan.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/util.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="test/blocks/blocks_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
@@ -259,6 +265,8 @@
       </item>
       <item path="headfile/structs.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="headfile/util.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="parse/generate.sh" ex="false" tool="3" flavor2="0">
       </item>
       <item path="parse/lex.l" ex="false" tool="3" flavor2="0">
@@ -288,6 +296,8 @@
       <item path="sources/parse.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sources/plan.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="sources/util.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="test/blocks/blocks_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>

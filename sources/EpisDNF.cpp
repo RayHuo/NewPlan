@@ -159,16 +159,16 @@ void PropDNF::convert_IPIA() {
         PropTerm t = *it;
         list<PropTerm> segma;
         segma.push_back(t);
-        // delete operation
+        // 删除操作
         bool is_t_delete = delete_operation_in_IPIA(t, pi, segma);
         if (! is_t_delete) {
-            list<PropTerm> new_to_segma;
             for (size_t l = 0; l < t.literals.size(); ++ l) {
                 if (! t.literals.test(l)) {
                     continue;
                 }
                 // 存在 t'属于pi，t''属于segma，
                 // 且 (l属于t') && (~l属于t'') || (~l属于t') && (l属于t'')
+                list<PropTerm> new_to_segma;
                 size_t _l = (l % 2 == 0) ? l + 1 : l - 1;
                 for (list<PropTerm>::iterator it_pi = pi.begin();
                         it_pi != pi.end(); ++ it_pi) {
@@ -187,10 +187,11 @@ void PropDNF::convert_IPIA() {
                         }
                     }
                 }
+                // 更新segma
+                segma.insert(segma.end(), new_to_segma.begin(), new_to_segma.end());
+                // 删除操作
+                delete_operation_in_IPIA(t, pi, segma);
             }
-            segma.insert(segma.end(), new_to_segma.begin(), new_to_segma.end());
-            // delete operation，需要保证没有重复的元素
-            delete_operation_in_IPIA(t, pi, segma);
         }
         // pi = pi \cup segma, update it for the next iteration
         pi.insert(pi.end(), segma.begin(), segma.end());
@@ -200,24 +201,20 @@ void PropDNF::convert_IPIA() {
 // 
 bool PropDNF::delete_operation_in_IPIA(const PropTerm &t, list<PropTerm> &pi, 
         list<PropTerm> &segma) {
-    // 化简pi和segma，删除重复元素
-    PropDNF pi_helper;  pi_helper.prop_terms = pi;      
-    pi_helper.min();    pi = pi_helper.prop_terms;
-    PropDNF segma_helper;       segma_helper.prop_terms = segma;
-    segma_helper.min();         segma = segma_helper.prop_terms;
     // pi \cup segma
     list<PropTerm> both;
     both.insert(both.end(), pi.begin(), pi.end());
     both.insert(both.end(), segma.begin(), segma.end());
+    // it为算法中的t'，it_both为算法中的t''
     //处理pi
     for (list<PropTerm>::iterator it = pi.begin(); it != pi.end(); ) {
         int count = 0;
         for (list<PropTerm>::const_iterator it_both = both.begin();
                 it_both != both.end(); ++ it_both) {
-            if (it_both->entails(*it))
+            if (it->entails(*it_both))
                 ++ count;
         }
-        if (count > 1)
+        if (count > 1)//除了自己，还有其他
             it = pi.erase(it);
         else
             ++ it;
@@ -228,10 +225,10 @@ bool PropDNF::delete_operation_in_IPIA(const PropTerm &t, list<PropTerm> &pi,
         int count = 0;
         for (list<PropTerm>::const_iterator it_both = both.begin();
                 it_both != both.end(); ++ it_both) {
-            if (it_both->entails(*it))
+            if (it->entails(*it_both))
                 ++ count;
         }
-        if (count > 1) {
+        if (count > 1) {//除了自己，还有其他
             if (it->equals(t))
                 is_t_delete = true;
             it = segma.erase(it);
