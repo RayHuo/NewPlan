@@ -20,6 +20,7 @@
 #include "plan.h"
 #include "EpisDNF.h"
 #include "atoms.h"
+#include "util.h"
 
 
 using namespace std;
@@ -53,13 +54,13 @@ int main(int argc, char **argv){
     cout << "origin:" << endl;
     for (list<PropTerm>::const_iterator it = dnf.prop_terms.begin();
             it != dnf.prop_terms.end(); ++ it) {
-        cout << it->literals << endl;
+        print(stdout, *it);
     }
     dnf.convert_IPIA();
     cout << "ipia:" << endl;
     for (list<PropTerm>::const_iterator it = dnf.prop_terms.begin();
             it != dnf.prop_terms.end(); ++ it) {
-        cout << it->literals << endl;
+        print(stdout, *it);
     }
 #else
     Plan p(argv);

@@ -45,7 +45,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/sources/lex.o \
 	${OBJECTDIR}/sources/main.o \
 	${OBJECTDIR}/sources/parse.o \
-	${OBJECTDIR}/sources/plan.o
+	${OBJECTDIR}/sources/plan.o \
+	${OBJECTDIR}/sources/util.o
 
 
 # C Compiler Flags
@@ -126,6 +127,11 @@ ${OBJECTDIR}/sources/plan.o: sources/plan.cpp
 	${MKDIR} -p ${OBJECTDIR}/sources
 	${RM} $@.d
 	$(COMPILE.cc) -g -Iheadfile -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/plan.o sources/plan.cpp
+
+${OBJECTDIR}/sources/util.o: sources/util.cpp 
+	${MKDIR} -p ${OBJECTDIR}/sources
+	${RM} $@.d
+	$(COMPILE.cc) -g -Iheadfile -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/util.o sources/util.cpp
 
 # Subprojects
 .build-subprojects:
