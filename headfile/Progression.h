@@ -58,8 +58,8 @@ struct EpisAction
 	//vector<int> result; 
 
     // new added
-    vector<PropDNF> res1; //将所需要观察的“公式”化为DNF形式， 为了好做演进
-    vector<PropCNF> res2; //将所需要观察的“公式”化为CNF形式， 为了好做推理
+    PropDNF res1; //将所需要观察的“公式”化为DNF形式， 为了好做演进
+    PropCNF res2; //将所需要观察的“公式”化为CNF形式， 为了好做推理
 };
 
 

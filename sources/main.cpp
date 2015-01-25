@@ -21,9 +21,10 @@
 #include "EpisDNF.h"
 #include "atoms.h"
 #include "util.h"
-
+#include "boost/dynamic_bitset.hpp"
 
 using namespace std;
+using namespace boost;
 _formula* init_f;
 _formula* goal_f;
 
@@ -32,9 +33,10 @@ map< string,vector<int> > grounding_map;
 vector<OnticAction> ontic_actions;
 vector<EpisAction> epis_acitons;
 
-#define TEST
+#define TEST 
 
-int main(int argc, char **argv){
+int main(int argc, char **argv) 
+{
 #ifdef TEST
     Atoms::instance().add_atoms(string("a"));
     Atoms::instance().add_atoms(string("b"));
@@ -54,20 +56,20 @@ int main(int argc, char **argv){
     dnf.prop_terms.push_back(ab);
     dnf.prop_terms.push_back(_bcd);
     dnf.prop_terms.push_back(_a_c);
-    EpisTerm et;
-    et.pos_propDNF = dnf;
     cout << "origin:" << endl;
     print(stdout, dnf, true);
     dnf.convert_IPIA();
     cout << "ipia:" << endl;
     print(stdout, dnf, true);
-    et.neg_propDNFs.push_back(dnf);
 #else
     Plan p(argv);
 //    p.exec_plan();
 //    p.BuildPlan();
+   
 #endif
-    
+    dynamic_bitset<> db(6);
+    db.flip();
+    cout << db << endl;
     return 0;
 } 
 

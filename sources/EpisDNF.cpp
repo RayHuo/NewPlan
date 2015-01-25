@@ -14,7 +14,7 @@
 bool PropTerm::consistent() const
 {
     for(int i = 0; i < Atoms::instance().atoms_length(); i++){
-        if(literals[i*2] && literals[i*2+1] )
+        if(literals[i * 2] && literals[i * 2 + 1] )
             return false;
     }
     return true;
@@ -22,25 +22,55 @@ bool PropTerm::consistent() const
 
 bool PropTerm::entails(const PropTerm& prop_term) const
 {
+    if (!literals.any()) //first PropTerm is false
+        return true;
     return prop_term.literals.is_subset_of(literals);
 }
 
-bool PropTerm::equals(const PropTerm& prop_term) const
+bool PropTerm::equals(const PropTerm& prop_term)
 {
     if (prop_term.literals == literals)
-		return true;
-	return false;
+	return true;
+    return false;
 }
 
-PropTerm& PropTerm::min()
+//This reasoning rule is Proposition 3.4 PropTerm |= PropClause
+bool PropTerm::entails(const PropClause& prop_clause) const
+{
+    //I understood Proposition 3.4 means if the PropTerm and PropClause has only one same literal, 
+    //then return true, otherwise return false
+    for (int i = 0; i < Atoms::instance().atoms_length(); i++) {
+        if (literals[2 * i] && prop_clause.literals[2 * i] || literals[2 * i + 1] && prop_clause.literals[2 * i + 1])
+            return true;
+    }
+    return false;
+}
+
+PropTerm PropTerm::group(const PropTerm& prop_term) const
+{
+    PropTerm result(Atoms::instance().atoms_length() * 2);
+    for (int i = 0; i < Atoms::instance().atoms_length() * 2; i += 2) {
+        if (literals[i] && prop_term.literals[i + 1] || literals[i + 1] && prop_term.literals[i]) {
+            result.literals.set();
+            return result;
+        }
+        if (literals[i] || prop_term.literals[i])
+            result.literals[i] = 1;
+        if (literals[i + 1] || prop_term.literals[i + 1])
+            result.literals[i + 1] = 1;
+    }
+    return result;
+}
+
+PropTerm& PropTerm::minimal()
 {
     if (consistent())
         return *this;
-    literals.reset();
-    return (*this);
+    literals.set(); //inconsistent means this PropTerm is false, we can use a dynamic_bitset whose bits are 1.
+    return *this;
 }
 
-PropTerm PropTerm::compose(const PropTerm& prop_term)
+/*PropTerm PropTerm::compose(const PropTerm& prop_term)
 {
     //cout<<"propterm compose"<<endl;
     //cout<<literals<<endl;
@@ -52,7 +82,7 @@ PropTerm PropTerm::compose(const PropTerm& prop_term)
     //cout<<"min answer"<<endl;
     //cout<<literals<<endl;
     return (*this);
-}
+}*/
 
 bool PropDNF::consistent() const
 {
@@ -65,7 +95,7 @@ bool PropDNF::consistent() const
 
 bool PropDNF::entails(const PropDNF& propDNF) const
 {
-    for (list<PropTerm>::const_iterator pre_it = prop_terms.begin(); pre_it != prop_terms.end(); pre_it++) {
+    /*for (list<PropTerm>::const_iterator pre_it = prop_terms.begin(); pre_it != prop_terms.end(); pre_it++) {
         bool flag = true;
         for (list<PropTerm>::const_iterator post_it = propDNF.prop_terms.begin(); post_it != propDNF.prop_terms.end(); post_it++) 
             if (pre_it->entails(*post_it)){
@@ -75,12 +105,23 @@ bool PropDNF::entails(const PropDNF& propDNF) const
         if (flag)
             return false;      
     }
-	return true;
+	return true;*/
+    
+    //This reasoning rule is Proposition 3.6 DNF |= DNF
+    for (list<PropTerm>::const_iterator pre_it = prop_terms.begin(); pre_it != prop_terms.end(); pre_it++) {
+        for (list<PropTerm>::const_iterator post_it = propDNF.prop_terms.begin(); post_it != propDNF.prop_terms.end(); post_it++) {
+            if (!pre_it->entails(*post_it))
+                return false; 
+            else //if only one pre term can entail post term, we need to jump the inside loop and see next pre term 
+                break;
+        }
+    }
+    return true;
 }
 
-bool PropDNF::equals(const PropDNF& propDNF) const
+bool PropDNF::equals(const PropDNF& propDNF)
 {
-    if (prop_terms.size() != propDNF.prop_terms.size())
+    /*if (prop_terms.size() != propDNF.prop_terms.size())
         return false;
     else {
         for (list<PropTerm>::const_iterator pre_it = prop_terms.begin(); pre_it != prop_terms.end(); pre_it++) {
@@ -95,13 +136,37 @@ bool PropDNF::equals(const PropDNF& propDNF) const
                 return false;
         }
         return true;
-    }
+    }*/
+    return this->entails(propDNF) && propDNF.entails(*this);
 }
 
-PropDNF& PropDNF::min()
+//This reasoning rule is Proposition 3.3 DNF |= CNF
+bool PropDNF::entails(const PropCNF& propCNF) const
+{
+    for (list<PropTerm>::const_iterator pre_it = prop_terms.begin(); pre_it != prop_terms.end(); pre_it++) {
+        for (list<PropClause>::const_iterator post_it = propCNF.prop_clauses.begin(); post_it != propCNF.prop_clauses.end(); post_it++) {
+            if (!pre_it->entails(*post_it))
+                return false;
+        }
+    }
+    return true;
+}
+
+PropDNF PropDNF::group(const PropDNF& propDNF) const
+{
+    PropDNF result;
+    for (list<PropTerm>::const_iterator it_i = prop_terms.begin(); it_i != prop_terms.end(); it_i++) {
+        for (list<PropTerm>::const_iterator it_j = propDNF.prop_terms.begin(); it_j != propDNF.prop_terms.end(); it_j++) 
+            result.prop_terms.push_back(it_i->group(*it_j));
+    }
+    //need to add min and PI method
+    return result;
+}
+
+PropDNF& PropDNF::minimal()
 {
     //show();
-    for(list<PropTerm>::iterator pre_it = prop_terms.begin(); pre_it != prop_terms.end(); ){
+    /*for(list<PropTerm>::iterator pre_it = prop_terms.begin(); pre_it != prop_terms.end(); ){
         //pre_it->min();
         if(!pre_it->literals.any()){
             list<PropTerm>::iterator post_it = pre_it;
@@ -122,10 +187,27 @@ PropDNF& PropDNF::min()
         }
     }
     //show();
-    return (*this);
+    return (*this);*/
+    PropDNF result;
+    for (list<PropTerm>::iterator pre_it = prop_terms.begin(); pre_it != prop_terms.end(); pre_it++) {
+        bool can_entail = false;
+        for (list<PropTerm>::iterator post_it = prop_terms.begin(); post_it != prop_terms.end(); post_it++) {
+            if (post_it != pre_it && pre_it->entails(*post_it)) {
+                can_entail = true;
+                break;
+            }       
+        }
+       
+        if(!can_entail)
+            result.prop_terms.push_back(*pre_it);
+    }
+    
+    this->prop_terms = result.prop_terms;
+    
+    return *this;
 }
 
-PropDNF PropDNF::compose(const PropDNF& propDNF)
+/*PropDNF PropDNF::compose(const PropDNF& propDNF)
 {
     //cout<<"compose"<<endl;
     //cout<<"self"<<endl;
@@ -146,7 +228,7 @@ PropDNF PropDNF::compose(const PropDNF& propDNF)
     //cout<<"min answer"<<endl;
     //result.show();
     return result;
-}
+}*/
 
 
 void PropDNF::convert_IPIA() {
@@ -159,16 +241,16 @@ void PropDNF::convert_IPIA() {
         PropTerm t = *it;
         list<PropTerm> segma;
         segma.push_back(t);
-        // 删除操作
+        // delete operation
         bool is_t_delete = delete_operation_in_IPIA(t, pi, segma);
         if (! is_t_delete) {
+            list<PropTerm> new_to_segma;
             for (size_t l = 0; l < t.literals.size(); ++ l) {
                 if (! t.literals.test(l)) {
                     continue;
                 }
                 // 存在 t'属于pi，t''属于segma，
                 // 且 (l属于t') && (~l属于t'') || (~l属于t') && (l属于t'')
-                list<PropTerm> new_to_segma;
                 size_t _l = (l % 2 == 0) ? l + 1 : l - 1;
                 for (list<PropTerm>::iterator it_pi = pi.begin();
                         it_pi != pi.end(); ++ it_pi) {
@@ -187,11 +269,10 @@ void PropDNF::convert_IPIA() {
                         }
                     }
                 }
-                // 更新segma
-                segma.insert(segma.end(), new_to_segma.begin(), new_to_segma.end());
-                // 删除操作
-                delete_operation_in_IPIA(t, pi, segma);
             }
+            segma.insert(segma.end(), new_to_segma.begin(), new_to_segma.end());
+            // delete operation，需要保证没有重复的元素
+            delete_operation_in_IPIA(t, pi, segma);
         }
         // pi = pi \cup segma, update it for the next iteration
         pi.insert(pi.end(), segma.begin(), segma.end());
@@ -201,20 +282,24 @@ void PropDNF::convert_IPIA() {
 // 
 bool PropDNF::delete_operation_in_IPIA(const PropTerm &t, list<PropTerm> &pi, 
         list<PropTerm> &segma) {
+    // 化简pi和segma，删除重复元素
+    PropDNF pi_helper;  pi_helper.prop_terms = pi;      
+    pi_helper.minimal();    pi = pi_helper.prop_terms;
+    PropDNF segma_helper;       segma_helper.prop_terms = segma;
+    segma_helper.minimal();         segma = segma_helper.prop_terms;
     // pi \cup segma
     list<PropTerm> both;
     both.insert(both.end(), pi.begin(), pi.end());
     both.insert(both.end(), segma.begin(), segma.end());
-    // it为算法中的t'，it_both为算法中的t''
     //处理pi
     for (list<PropTerm>::iterator it = pi.begin(); it != pi.end(); ) {
         int count = 0;
         for (list<PropTerm>::const_iterator it_both = both.begin();
                 it_both != both.end(); ++ it_both) {
-            if (it->entails(*it_both))
+            if (it_both->entails(*it))
                 ++ count;
         }
-        if (count > 1)//除了自己，还有其他
+        if (count > 1)
             it = pi.erase(it);
         else
             ++ it;
@@ -225,10 +310,10 @@ bool PropDNF::delete_operation_in_IPIA(const PropTerm &t, list<PropTerm> &pi,
         int count = 0;
         for (list<PropTerm>::const_iterator it_both = both.begin();
                 it_both != both.end(); ++ it_both) {
-            if (it->entails(*it_both))
+            if (it_both->entails(*it))
                 ++ count;
         }
-        if (count > 1) {//除了自己，还有其他
+        if (count > 1) {
             if (it->equals(t))
                 is_t_delete = true;
             it = segma.erase(it);
@@ -252,29 +337,42 @@ bool EpisTerm::consistent() const
     }
 }
 
+//This reasoning rule is Proposition 3.5
 bool EpisTerm::entails(const EpisTerm& epis_term) const
 {
     if (!pos_propDNF.entails(epis_term.pos_propDNF))
         return false;
     else {
+        //The following is the first case of rule 2 in Proposition 3.5
+        int count = 0; //The pos_propDNF of first EpisTerm can entail how many DNF in neg_propDNFs of second EpisTerm
+        for (list<PropDNF>::const_iterator post_it = epis_term.neg_propDNFs.begin(); post_it != epis_term.neg_propDNFs.end(); post_it++) {
+            if (pos_propDNF.entails(*post_it))
+                count++;
+            else 
+                break;
+        }
+        if (count == epis_term.neg_propDNFs.size())
+            return true;
+        
+        //The following is the second case of rule 2 in Proposition 3.5
 	for (list<PropDNF>::const_iterator post_it = epis_term.neg_propDNFs.begin(); post_it != epis_term.neg_propDNFs.end(); post_it++) {
-            bool flag = true;
-            for (list<PropDNF>::const_iterator pre_it = neg_propDNFs.begin(); pre_it != neg_propDNFs.end(); pre_it++) 
-                if (pre_it->entails(*post_it)){
-                    flag = false;
+            bool can_entail = false;
+            for (list<PropDNF>::const_iterator pre_it = neg_propDNFs.begin(); pre_it != neg_propDNFs.end(); pre_it++) {
+                if (pre_it->entails(*post_it)) {
+                    can_entail = true;
                     break;
                 }
-			
-            if (flag)
+	    }		
+            if (!can_entail)
                 return false;           
         }		
         return true;
     }
 }
 
-bool EpisTerm::equals(const EpisTerm& epis_term) const
+bool EpisTerm::equals(const EpisTerm& epis_term)
 {
-    if (neg_propDNFs.size() != epis_term.neg_propDNFs.size())
+    /*if (neg_propDNFs.size() != epis_term.neg_propDNFs.size())
 		return false;
     else {
         if (!pos_propDNF.equals(epis_term.pos_propDNF))
@@ -292,15 +390,39 @@ bool EpisTerm::equals(const EpisTerm& epis_term) const
             }		
             return true;
         }
-    }
+    }*/
+    return this->entails(epis_term) && epis_term.entails(*this);
 }
 
-EpisTerm& EpisTerm::min()
+//This reasoning is Proposition 3.2 EpisTerm |= EpisClause
+bool EpisTerm::entails(const EpisClause& epis_clause) const
 {
-    //show();
-    pos_propDNF.min();
+    //case 1 of Proposition 3.2
+    PropDNF ec_neg_tmp = epis_clause.neg_propCNF.negation();
+    if (!pos_propDNF.group(ec_neg_tmp).consistent())
+        return true;
+    
+    //case 2 of Proposition 3.2
+    for (list<PropDNF>::const_iterator it = neg_propDNFs.begin(); it != neg_propDNFs.end(); it++) {
+        if (!it->group(ec_neg_tmp).consistent())
+            return true;
+    }
+    
+    //case 3 of Proposition 3.2
+    for (list<PropCNF>::const_iterator it = epis_clause.pos_propCNFs.begin(); it != epis_clause.pos_propCNFs.end(); it++) {
+        if (!pos_propDNF.group(it->negation()).consistent())
+            return true;
+    }
+    
+    return false;
+}
+
+EpisTerm& EpisTerm::minimal()
+{
+    /*//show();
+    pos_propDNF.minimal();
     for (list<PropDNF>::iterator it = neg_propDNFs.begin(); it != neg_propDNFs.end(); it++){
-        it->min();
+        it->minimal();
         if(it->prop_terms.size() == 0){
             list<PropDNF>::iterator it1 = it;
             it++;
@@ -321,10 +443,42 @@ EpisTerm& EpisTerm::min()
         }
     }
     
-    return (*this);
+    return (*this);*/
+    
+    //For an EpisTerm, we need each \eta_i can entail \psi;
+    separable();
+    
+    //For an EpisTerm, possible parts can't entail each other
+    for (list<PropDNF>::iterator pre_it = neg_propDNFs.begin(); pre_it != neg_propDNFs.end(); pre_it++) {
+        for (list<PropDNF>::iterator post_it = neg_propDNFs.begin(); post_it != neg_propDNFs.end(); ) {
+            if (pre_it != post_it && pre_it->entails(*post_it)) {
+                list<PropDNF>::iterator delete_it = post_it;
+                post_it++;
+                neg_propDNFs.erase(delete_it);
+            }
+            else
+                post_it++;
+        }
+    }  
+    
+    //For an EpisTerm, we need that \psi and each \eta_i are minimal 
+    pos_propDNF.minimal();
+    for (list<PropDNF>::iterator it = neg_propDNFs.begin(); it != neg_propDNFs.end(); it++)
+        it->minimal();
+          
+    return *this;
 }
 
-PropDNF EpisTerm::group_pel(const list<PropDNF>& propDNFs)
+EpisTerm& EpisTerm::separable()
+{
+    for (list<PropDNF>::iterator it = neg_propDNFs.begin(); it != neg_propDNFs.end(); it++) {
+        if (!it->entails(pos_propDNF)) 
+            *it = it->group(pos_propDNF);
+    }
+    return *this;
+}
+
+/*PropDNF EpisTerm::group_pel(const list<PropDNF>& propDNFs)
 {
     list<PropDNF>::const_iterator it = propDNFs.begin();
     PropDNF tmp = *it;
@@ -333,21 +487,22 @@ PropDNF EpisTerm::group_pel(const list<PropDNF>& propDNFs)
         tmp = tmp.compose(*it);
     tmp.min();
     return tmp;    
-}
+}*/
 
-EpisTerm EpisTerm::group_pel(const EpisTerm & epis_term)
+/*EpisTerm EpisTerm::group_pel(const EpisTerm & epis_term)
 {
-    EpisTerm ep;
-    ep.pos_propDNF = pos_propDNF.compose(epis_term.pos_propDNF);
+    EpisTerm result = *this; //need copy constructor, = operator, destructor are written explicitly???
+    result.pos_propDNF = result.pos_propDNF.group(epis_term.pos_propDNF);
+    
     for (list<PropDNF>::const_iterator it = epis_term.neg_propDNFs.begin(); it != epis_term.neg_propDNFs.end(); it++) 
-        ep.neg_propDNFs.push_back(*it);
+        result.neg_propDNFs.push_back(*it);
     //cout<<"\n\n\n\nshow before min"<<endl;
     //show();
-    ep.min();
-    return ep;
-}
+    result.minimal();
+    return result;
+}*/
 
-void EpisTerm::show(){
+/*void EpisTerm::show(){
     cout<<"  show_EpisTerm"<<endl;
     cout<<"   pos_part"<<endl;
     pos_propDNF.show();
@@ -357,13 +512,13 @@ void EpisTerm::show(){
         it->show();
     cout<<"  end_show_EpisTerm"<<endl;
     
-}
+}*/
 
-bool EpisTerm::isempty(){
+/*bool EpisTerm::is_empty(){
     if(pos_propDNF.prop_terms.size() == 0 && neg_propDNFs.size() == 0)
         return true;
     return false;
-}
+}*/
 
 void EpisTerm::convert_IPIA() {
     pos_propDNF.convert_IPIA();
@@ -373,11 +528,22 @@ void EpisTerm::convert_IPIA() {
     }
 }
 
-//??EpisDNF |= EpisDNF ==> EpisDNF | !EpisDNF sat??
+//This method is based on Proposition 3.7, and it is a basis of method equals
 bool EpisDNF::entails(const EpisDNF& episDNF) const
 {	
-    
-    for (list<EpisTerm>::const_iterator post_it = episDNF.epis_terms.begin(); post_it != episDNF.epis_terms.end(); post_it++) {
+    for (list<EpisTerm>::const_iterator pre_it  = epis_terms.begin(); pre_it != epis_terms.end(); pre_it++) {
+        bool can_entail = false;
+        for (list<EpisTerm>::const_iterator post_it = episDNF.epis_terms.begin(); post_it != episDNF.epis_terms.end(); post_it++) {
+            if (pre_it->entails(*post_it)) {
+                can_entail = true;
+                break;
+            }
+        }
+        if (!can_entail)
+            return false;
+    }
+    return true;
+    /*for (list<EpisTerm>::const_iterator post_it = episDNF.epis_terms.begin(); post_it != episDNF.epis_terms.end(); post_it++) {
         bool flag = true;
         for (list<EpisTerm>::const_iterator pre_it = epis_terms.begin(); pre_it != epis_terms.end(); pre_it++) 
             if (pre_it->entails(*post_it)){
@@ -387,37 +553,17 @@ bool EpisDNF::entails(const EpisDNF& episDNF) const
         if(flag)
              return false;
     }
-    return true;
+    return true;*/
 }
 
 
-
-
-bool EpisDNF::equals(const EpisDNF& episDNF) const
+//This reasoning rule is Proposition 3.7 EDNF |= ENDF
+bool EpisDNF::equals(const EpisDNF& episDNF)
 {
-    if (epis_terms.size() != episDNF.epis_terms.size())
-        return false;
-    else {
-	for (list<EpisTerm>::const_iterator pre_it = epis_terms.begin(); pre_it != epis_terms.end(); pre_it++) {
-            bool flag = true;
-            for (list<EpisTerm>::const_iterator post_it = episDNF.epis_terms.begin(); post_it != episDNF.epis_terms.end(); post_it++) 
-                if (pre_it->equals(*post_it)){
-                    flag = false;
-                    break;
-                }
-            
-            if (flag)
-		return false;           
-        }		
-        return true;	
-    }
+    return this->entails(episDNF) && episDNF.entails(*this);
 }
 
-
-
-
-
-bool EpisDNF::entails(EpisClause epis_clause)
+/*bool EpisDNF::entails(EpisClause epis_clause)
 {
     //epis_clause.show();
     EpisTerm epis_term = negation_Clause(epis_clause);
@@ -434,11 +580,11 @@ bool EpisDNF::entails(EpisClause epis_clause)
             return false;
     }
     return true;
-}
+}*/
 
-//?? EpisDNF |= EpisCNF => EpisDNF | !EpisCNF?? 
-bool EpisDNF::entails(EpisCNF episCNF){
-    //cout<<"cnf size: "<<episCNF.epis_clauses.size()<<endl;
+//This method is Propposition 3.1 EpisDNF |= EpisCNF
+bool EpisDNF::entails(const EpisCNF& episCNF) const {
+    /*//cout<<"cnf size: "<<episCNF.epis_clauses.size()<<endl;
     if(episCNF.epis_clauses.size() != 0)
         for(list<EpisClause>::iterator it = episCNF.epis_clauses.begin(); it != episCNF.epis_clauses.end(); it++){
             //show();
@@ -448,14 +594,21 @@ bool EpisDNF::entails(EpisCNF episCNF){
             if(!this->entails(*it))
                 return false;
         }
+    return true;*/
+    for (list<EpisTerm>::const_iterator pre_it = epis_terms.begin(); pre_it != epis_terms.end(); pre_it++) {
+        for (list<EpisClause>::const_iterator post_it = episCNF.epis_clauses.begin(); post_it != episCNF.epis_clauses.end(); post_it++) {
+            if (!pre_it->entails(*post_it))
+                return false;
+        }
+    }
     return true;
 }
 
-EpisDNF& EpisDNF::min()
+EpisDNF& EpisDNF::minimal()
 {
     //show();
-    for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++){
-        it->min();
+    /*for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++){
+        it->minimal();
         if(it->isempty()){
             list<EpisTerm>::iterator it1 = it;
             it++;
@@ -474,18 +627,19 @@ EpisDNF& EpisDNF::min()
         }
     }
     
-    return (*this);
+    return (*this);*/
+    for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++)
+        it-> minimal();
 }
 
-void EpisDNF::show(){
+/*void EpisDNF::show(){
     cout<<"show-EpisDNF"<<endl;
     for(list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++)
         it->show();
     
     cout<<"end_show-EpisDNF"<<endl;
-        
-    
-}
+            
+}*/
 
 void EpisDNF::convert_IPIA() {
     for (list<EpisTerm>::iterator it = epis_terms.begin();
@@ -514,7 +668,7 @@ void EpisDNF::convert_IPIA() {
     return result;
 }
 */
-EpisTerm negation_Clause(EpisClause episclause){
+/*EpisTerm negation_Clause(EpisClause episclause){
     EpisTerm result;
     
     //for positive knowledge
@@ -532,5 +686,5 @@ EpisTerm negation_Clause(EpisClause episclause){
         result.neg_propDNFs.push_back(it->negation());
     
     return result; 
-}
+}*/
 //#endif

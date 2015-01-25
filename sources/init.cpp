@@ -511,7 +511,7 @@ void Init::showmaps(){
             cout<<ontic_actions[i].pre_f.dk[k][j]<<" ";
         cout<<endl;    
         cout<<"act cnf: "<<endl;
-        ontic_actions[i].pre_con.show();
+        //ontic_actions[i].pre_con.show();
     }
     for(int i = 0; i < epis_acitons.size(); i++){
         cout<<"act_num: "<<epis_acitons[i].act_num<<"act_name: "<<epis_acitons[i].name<<endl; 
@@ -524,16 +524,16 @@ void Init::showmaps(){
             cout<<epis_acitons[i].pre_f.dk[k][j]<<" ";
         cout<<endl;
         cout<<"act cnf: "<<endl;
-        epis_acitons[i].pre_con.show();
+        //epis_acitons[i].pre_con.show();
         cout<<"oba:"<<endl;
         for(int j = 0; j < epis_acitons[i].observe.size(); j++)
             cout<<epis_acitons[i].observe[j]<<" ";
         cout<<endl;
     }
     cout<<"init episdnf:"<<endl;
-    init.show();
+    //init.show();
     cout<<"goal episdnf:"<<endl;
-    goal.show();
+    //goal.show();
     
     
 
@@ -567,7 +567,8 @@ void Init::checkInit(){
         if(it->pos_propDNF.prop_terms.size() != 0){
             list<PropDNF> pd;
             for(list<PropDNF>::iterator it1 = it->neg_propDNFs.begin(); it1 != it->neg_propDNFs.end(); it1++){
-                pd.push_back(it1->compose(it->pos_propDNF));
+                //pd.push_back(it1->compose(it->pos_propDNF));
+                pd.push_back(it1->group(it->pos_propDNF));
             }
             it->neg_propDNFs.clear();
             for(list<PropDNF>::iterator it1 = pd.begin(); it1 != pd.end(); it1++){
@@ -575,7 +576,8 @@ void Init::checkInit(){
             }
         }
     }
-    init.min();
+    init.minimal();
+    //init.min();
 }
 
 
@@ -761,7 +763,8 @@ EpisClause Init::getEpisClausePre(vector<int> s, bool isK){
                 pcl.literals[(s[i]*(-1)-1)*2+1] = 1; 
             pc.prop_clauses.push_back(pcl);
         }      
-        ec.neg_propCNFs.push_back(pc);
+        //ec.neg_propCNF.push_back(pc);
+        ec.neg_propCNF = pc;
     }
 
     //ec.show();
