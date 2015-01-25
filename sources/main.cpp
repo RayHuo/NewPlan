@@ -20,9 +20,10 @@
 #include "plan.h"
 #include "EpisDNF.h"
 #include "atoms.h"
-
+#include "boost/dynamic_bitset.hpp"
 
 using namespace std;
+using namespace boost;
 _formula* init_f;
 _formula* goal_f;
 
@@ -31,9 +32,10 @@ map< string,vector<int> > grounding_map;
 vector<OnticAction> ontic_actions;
 vector<EpisAction> epis_acitons;
 
-#define TEST
+#define TEST 
 
-int main(int argc, char **argv){
+int main(int argc, char **argv) 
+{
 #ifdef TEST
     Atoms::instance().length = 4;
     PropTerm ab(8);
@@ -65,8 +67,10 @@ int main(int argc, char **argv){
     Plan p(argv);
 //    p.exec_plan();
 //    p.BuildPlan();
+   
 #endif
-    
+    dynamic_bitset db("111111");
+    cout << db << endl;
     return 0;
 } 
 

@@ -74,58 +74,58 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/newplan: ${OBJECTFILES}
 
 ${OBJECTDIR}/sources/EpisCNF.o: sources/EpisCNF.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/EpisCNF.o sources/EpisCNF.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/EpisCNF.o sources/EpisCNF.cpp
 
 ${OBJECTDIR}/sources/EpisDNF.o: sources/EpisDNF.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/EpisDNF.o sources/EpisDNF.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/EpisDNF.o sources/EpisDNF.cpp
 
 ${OBJECTDIR}/sources/Progression.o: sources/Progression.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/Progression.o sources/Progression.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Progression.o sources/Progression.cpp
 
 ${OBJECTDIR}/sources/Vocabulary.o: sources/Vocabulary.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/Vocabulary.o sources/Vocabulary.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/Vocabulary.o sources/Vocabulary.cpp
 
 ${OBJECTDIR}/sources/atoms.o: sources/atoms.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/atoms.o sources/atoms.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/atoms.o sources/atoms.cpp
 
 ${OBJECTDIR}/sources/formulatab.o: sources/formulatab.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/formulatab.o sources/formulatab.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/formulatab.o sources/formulatab.cpp
 
 ${OBJECTDIR}/sources/init.o: sources/init.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/init.o sources/init.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/init.o sources/init.cpp
 
 ${OBJECTDIR}/sources/lex.o: sources/lex.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/lex.o sources/lex.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/lex.o sources/lex.cpp
 
 ${OBJECTDIR}/sources/main.o: sources/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/main.o sources/main.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/main.o sources/main.cpp
 
 ${OBJECTDIR}/sources/parse.o: sources/parse.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/parse.o sources/parse.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/parse.o sources/parse.cpp
 
 ${OBJECTDIR}/sources/plan.o: sources/plan.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
-	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/plan.o sources/plan.cpp
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/sources/plan.o sources/plan.cpp
 
 # Subprojects
 .build-subprojects:

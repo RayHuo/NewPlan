@@ -9,6 +9,20 @@
 
 #include "Progression.h"
 
+//incomplete!!!
+list<PropTerm> term_prog(PropTerm prop_term, const OnticAction &ontic_act) 
+{
+    list<PropTerm> progression;
+    for (int eff_i = 0; eff_i < ontic_act.con_eff.size(); eff_i++) {
+        ConEffect cur_con_eff = ontic_act.con_eff[eff_i];
+        for (int con_i = 0; con_i < cur_con_eff.condition.size(); con_i++) {
+            if (!(prop_term.literals[cur_con_eff.condition[con_i] * 2] || prop_term.literals[cur_con_eff.condition[con_i] * 2 + 1]))
+                progression
+        
+        }
+    }
+}
+
 PropDNF DNF_prog(PropDNF propDNF, const OnticAction & ontic_act) 
 {
     PropDNF result;
@@ -43,7 +57,7 @@ PropDNF DNF_prog(PropDNF propDNF, const OnticAction & ontic_act)
         }
 	result.prop_terms.push_back(cur_prop_term);
     }
-    result.min();
+    result.minimal();
 
     return result;
 }
@@ -59,8 +73,8 @@ EpisDNF ontic_prog(EpisDNF episDNF, const OnticAction &ontic_action)
 	for (list<PropDNF>::iterator propDNF_it = it->neg_propDNFs.begin(); propDNF_it != it->neg_propDNFs.end(); propDNF_it++) 
             res_epis_term.neg_propDNFs.push_back(DNF_prog(*propDNF_it, ontic_action));
     }
-    result.min();
-    result.show();
+    result.minimal();
+    //result.show();
     return result;
 }
 
@@ -69,51 +83,35 @@ vector<EpisDNF> epistemic_prog(EpisDNF episDNF, const EpisAction &epis_action)
 {	
     EpisDNF p_episDNF;
     EpisDNF n_episDNF;
-    //for each S5-TE, do epsitemic progression
+    //for each S5-TE, do epistemic progression
     for (list<EpisTerm>::iterator epis_term_it = episDNF.epis_terms.begin(); epis_term_it != episDNF.epis_terms.end(); epis_term_it++) {
 	EpisTerm p_epis_term;
 	EpisTerm n_epis_term;
 	EpisTerm cur_epis_term = *epis_term_it;
-	for (int i = 0; i < epis_action.observe.size(); i++) {
-            //int p_literal_num = epis_action.observe[i];
-            //int n_literal_num = p_literal_num + 1;
-  
-            for (list<PropTerm>::iterator prop_term_it = epis_term_it->pos_propDNF.prop_terms.begin(); prop_term_it != epis_term_it->pos_propDNF.prop_terms.end(); prop_term_it++) {
-                PropTerm cur_prop_term = *prop_term_it;
-                PropTerm cur_prop_term_copy = cur_prop_term;
-                cur_prop_term.literals[epis_action.observe[i]*2-2] = true;
-                p_epis_term.pos_propDNF.prop_terms.push_back(cur_prop_term);
-                cur_prop_term_copy.literals[epis_action.observe[i]*2 - 1] = false;
-                n_epis_term.pos_propDNF.prop_terms.push_back(cur_prop_term);
-            }
-            
-            for (list<PropDNF>::iterator propDNF_it = epis_term_it->neg_propDNFs.begin(); propDNF_it != epis_term_it->neg_propDNFs.end(); propDNF_it++) {
-		PropDNF p_propDNF;
-		PropDNF n_propDNF;
-		//PropDNF cur_propDNF = cur_epis_term.propDNFs[propDNF_i];
-		for (list<PropTerm>::iterator prop_term_it = propDNF_it->prop_terms.begin(); prop_term_it != propDNF_it->prop_terms.end(); prop_term_it++) {
-                    PropTerm cur_prop_term = *prop_term_it;
-                    PropTerm cur_prop_term_copy = cur_prop_term;
-                    cur_prop_term.literals[epis_action.observe[i]*2-2] = true;
-                    p_propDNF.prop_terms.push_back(cur_prop_term);
-                    cur_prop_term_copy.literals[epis_action.observe[i]*2 - 1] = false;
-                    n_propDNF.prop_terms.push_back(cur_prop_term_copy);
-		}
-		p_epis_term.neg_propDNFs.push_back(p_propDNF);
-		n_epis_term.neg_propDNFs.push_back(n_propDNF);
-            }
-	}
+	
+        //For the K part of an EpisTerm
+        p_epis_term.pos_propDNF = p_epis_term.pos_propDNF.group(epis_action.res1);
+        n_epis_term.pos_propDNF = n_epis_term.pos_propDNF.group(epis_action.res2.negation());
+        
+        //For the K^ part of an EpisTerm
+        for (list<PropDNF>::iterator propDNF_it = epis_term_it->neg_propDNFs.begin(); propDNF_it != epis_term_it->neg_propDNFs.end(); propDNF_it++) {
+            if (propDNF_it->entails(epis_action.res2))
+                p_epis_term.neg_propDNFs.push_back(*propDNF_it);
+            if (propDNF_it->entails(epis_action.res2.negation()))
+                n_epis_term.neg_propDNFs.push_back(*propDNF_it);
+        }
 	p_episDNF.epis_terms.push_back(p_epis_term);
 	n_episDNF.epis_terms.push_back(n_epis_term);
     }
+    
     vector<EpisDNF> result;
     result.push_back(p_episDNF);
     result.push_back(n_episDNF);
     //result[0].show();
-    result[0].min();
+    result[0].minimal();
     //result[0].show();
     //result[1].show();
-    result[1].min();
+    result[1].minimal();
     //result[1].show();
     return result;
 }
