@@ -32,7 +32,9 @@ int Atoms::add_atoms(string s){
 }
 
 string Atoms::get_atom_string(int i){
-    return atoms_str[i-1];
+    if(i>0)
+        return atoms_str[i-1];
+    return '~'+atoms_str[i*(-1)-1];
 }
 
 int Atoms::atoms_length(){
