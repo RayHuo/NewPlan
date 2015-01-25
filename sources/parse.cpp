@@ -93,7 +93,7 @@ void yyerror(const char* s)
 
 
 
-#line 97 "../parse.cpp" /* yacc.c:339  */
+#line 97 "../sources/parse.cpp" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -113,8 +113,8 @@ void yyerror(const char* s)
 
 /* In a future release of Bison, this section will be replaced
    by #include "parse.h".  */
-#ifndef YY_YY_PARSE_H_INCLUDED
-# define YY_YY_PARSE_H_INCLUDED
+#ifndef YY_YY_HEADFILE_PARSE_H_INCLUDED
+# define YY_YY_HEADFILE_PARSE_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -202,7 +202,7 @@ union YYSTYPE
     char* s;
     struct __formula* f;
 
-#line 206 "../parse.cpp" /* yacc.c:355  */
+#line 206 "../sources/parse.cpp" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -213,11 +213,11 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_PARSE_H_INCLUDED  */
+#endif /* !YY_YY_HEADFILE_PARSE_H_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
-#line 221 "../parse.cpp" /* yacc.c:358  */
+#line 221 "../sources/parse.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -525,9 +525,9 @@ static const yytype_uint16 yyrline[] =
      418,   436,   457,   464,   477,   489,   501,   504,   507,   510,
      513,   518,   524,   527,   533,   541,   547,   550,   556,   566,
      571,   575,   585,   592,   596,   606,   609,   614,   620,   630,
-     643,   648,   652,   664,   670,   680,   694,   708,   713,   723,
-     742,   753,   758,   761,   767,   772,   775,   781,   796,   811,
-     818
+     643,   648,   652,   664,   670,   680,   694,   710,   715,   725,
+     744,   755,   760,   763,   769,   774,   777,   783,   798,   813,
+     820
 };
 #endif
 
@@ -1461,7 +1461,7 @@ yyreduce:
     {
        cout<<"result1"<<endl;
     }
-#line 1465 "../parse.cpp" /* yacc.c:1646  */
+#line 1465 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 3:
@@ -1469,7 +1469,7 @@ yyreduce:
     {
        cout<<"result2"<<endl;
     }
-#line 1473 "../parse.cpp" /* yacc.c:1646  */
+#line 1473 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 4:
@@ -1477,7 +1477,7 @@ yyreduce:
     {
        cout<<"result3"<<endl;
     }
-#line 1481 "../parse.cpp" /* yacc.c:1646  */
+#line 1481 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 5:
@@ -1485,7 +1485,7 @@ yyreduce:
     {
        cout<<"pro"<<endl;
     }
-#line 1489 "../parse.cpp" /* yacc.c:1646  */
+#line 1489 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 6:
@@ -1494,7 +1494,7 @@ yyreduce:
        init_f = (yyvsp[-1].f);
        cout<<"newinput"<<endl;
     }
-#line 1498 "../parse.cpp" /* yacc.c:1646  */
+#line 1498 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 7:
@@ -1502,7 +1502,7 @@ yyreduce:
     {
 
     }
-#line 1506 "../parse.cpp" /* yacc.c:1646  */
+#line 1506 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 8:
@@ -1510,7 +1510,7 @@ yyreduce:
     {
 
     }
-#line 1514 "../parse.cpp" /* yacc.c:1646  */
+#line 1514 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 9:
@@ -1518,7 +1518,7 @@ yyreduce:
     {
 
     }
-#line 1522 "../parse.cpp" /* yacc.c:1646  */
+#line 1522 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 10:
@@ -1526,7 +1526,7 @@ yyreduce:
     {
 
     }
-#line 1530 "../parse.cpp" /* yacc.c:1646  */
+#line 1530 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 11:
@@ -1535,7 +1535,7 @@ yyreduce:
       actions_f.push_back((yyvsp[0].f));
 
     }
-#line 1539 "../parse.cpp" /* yacc.c:1646  */
+#line 1539 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 12:
@@ -1544,7 +1544,7 @@ yyreduce:
       actions_f.push_back((yyvsp[0].f));
 
     }
-#line 1548 "../parse.cpp" /* yacc.c:1646  */
+#line 1548 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 13:
@@ -1563,7 +1563,7 @@ yyreduce:
       f -> subformula_r = (yyvsp[-1].f);
       (yyval.f) -> subformula_r = f;
     }
-#line 1567 "../parse.cpp" /* yacc.c:1646  */
+#line 1567 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 14:
@@ -1583,7 +1583,7 @@ yyreduce:
       (yyval.f) -> subformula_r = f;
 
     }
-#line 1587 "../parse.cpp" /* yacc.c:1646  */
+#line 1587 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 15:
@@ -1594,7 +1594,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-1].f);
       (yyval.f) -> subformula_r = (yyvsp[0].f); 
     }
-#line 1598 "../parse.cpp" /* yacc.c:1646  */
+#line 1598 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 16:
@@ -1602,7 +1602,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 1606 "../parse.cpp" /* yacc.c:1646  */
+#line 1606 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 17:
@@ -1613,7 +1613,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[0].f);
       //cout<<"observe"<<endl;
     }
-#line 1617 "../parse.cpp" /* yacc.c:1646  */
+#line 1617 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 18:
@@ -1625,7 +1625,7 @@ yyreduce:
       //cout<<"para"<<endl;
 
     }
-#line 1629 "../parse.cpp" /* yacc.c:1646  */
+#line 1629 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 19:
@@ -1638,14 +1638,14 @@ yyreduce:
       (yyval.f) -> subformula_l = f;
 
     }
-#line 1642 "../parse.cpp" /* yacc.c:1646  */
+#line 1642 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 20:
 #line 244 "parse.y" /* yacc.c:1646  */
     {
     }
-#line 1649 "../parse.cpp" /* yacc.c:1646  */
+#line 1649 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 21:
@@ -1653,7 +1653,7 @@ yyreduce:
     {
 
     }
-#line 1657 "../parse.cpp" /* yacc.c:1646  */
+#line 1657 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 22:
@@ -1661,7 +1661,7 @@ yyreduce:
     {
 
     }
-#line 1665 "../parse.cpp" /* yacc.c:1646  */
+#line 1665 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 23:
@@ -1672,7 +1672,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-1].f);
       (yyval.f) -> subformula_r = (yyvsp[0].f);      
     }
-#line 1676 "../parse.cpp" /* yacc.c:1646  */
+#line 1676 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 24:
@@ -1680,7 +1680,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 1684 "../parse.cpp" /* yacc.c:1646  */
+#line 1684 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 25:
@@ -1692,7 +1692,7 @@ yyreduce:
       //cout<<"precon"<<endl;
 
     }
-#line 1696 "../parse.cpp" /* yacc.c:1646  */
+#line 1696 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 26:
@@ -1703,7 +1703,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[0].f);
 
     }
-#line 1707 "../parse.cpp" /* yacc.c:1646  */
+#line 1707 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 27:
@@ -1716,7 +1716,7 @@ yyreduce:
       (yyval.f) -> subformula_l = f;
       //cout<<"true"<<endl;
     }
-#line 1720 "../parse.cpp" /* yacc.c:1646  */
+#line 1720 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 28:
@@ -1728,7 +1728,7 @@ yyreduce:
       //cout<<"effect"<<endl;
 
     }
-#line 1732 "../parse.cpp" /* yacc.c:1646  */
+#line 1732 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 29:
@@ -1740,7 +1740,7 @@ yyreduce:
       (yyval.f) -> subformula_r = (yyvsp[0].f);
 
     }
-#line 1744 "../parse.cpp" /* yacc.c:1646  */
+#line 1744 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 30:
@@ -1749,7 +1749,7 @@ yyreduce:
       (yyval.f) == (yyvsp[0].f);
 
     }
-#line 1753 "../parse.cpp" /* yacc.c:1646  */
+#line 1753 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 31:
@@ -1765,7 +1765,7 @@ yyreduce:
       (yyval.f) -> subformula_r = f;
 
     }
-#line 1769 "../parse.cpp" /* yacc.c:1646  */
+#line 1769 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 32:
@@ -1774,7 +1774,7 @@ yyreduce:
       (yyval.f) = (yyvsp[0].f);
 
     }
-#line 1778 "../parse.cpp" /* yacc.c:1646  */
+#line 1778 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 33:
@@ -1784,7 +1784,7 @@ yyreduce:
       (yyval.f) -> formula_type = EMPTY_F;
 
       }
-#line 1788 "../parse.cpp" /* yacc.c:1646  */
+#line 1788 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 34:
@@ -1793,7 +1793,7 @@ yyreduce:
       (yyval.f) = (yyvsp[-1].f);
 
     }
-#line 1797 "../parse.cpp" /* yacc.c:1646  */
+#line 1797 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 35:
@@ -1803,7 +1803,7 @@ yyreduce:
       (yyval.f) -> formula_type = EMPTY_F;
 
       }
-#line 1807 "../parse.cpp" /* yacc.c:1646  */
+#line 1807 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 36:
@@ -1811,7 +1811,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 1815 "../parse.cpp" /* yacc.c:1646  */
+#line 1815 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 37:
@@ -1823,7 +1823,7 @@ yyreduce:
       (yyval.f) -> subformula_r = (yyvsp[0].f);
 
     }
-#line 1827 "../parse.cpp" /* yacc.c:1646  */
+#line 1827 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 38:
@@ -1831,7 +1831,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
      }
-#line 1835 "../parse.cpp" /* yacc.c:1646  */
+#line 1835 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 39:
@@ -1839,7 +1839,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 1843 "../parse.cpp" /* yacc.c:1646  */
+#line 1843 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 40:
@@ -1847,7 +1847,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 1851 "../parse.cpp" /* yacc.c:1646  */
+#line 1851 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 41:
@@ -1855,7 +1855,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 1859 "../parse.cpp" /* yacc.c:1646  */
+#line 1859 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 42:
@@ -1866,7 +1866,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-4].f);
       (yyval.f) -> subformula_r = (yyvsp[-1].f);
     }
-#line 1870 "../parse.cpp" /* yacc.c:1646  */
+#line 1870 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 43:
@@ -1877,7 +1877,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-3].f);
       (yyval.f) -> subformula_r = (yyvsp[-1].f);
     }
-#line 1881 "../parse.cpp" /* yacc.c:1646  */
+#line 1881 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 44:
@@ -1888,7 +1888,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-4].f);
       (yyval.f) -> subformula_r = (yyvsp[-1].f);
     }
-#line 1892 "../parse.cpp" /* yacc.c:1646  */
+#line 1892 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 45:
@@ -1899,7 +1899,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-4].f);
       (yyval.f) -> subformula_r = (yyvsp[-1].f);
     }
-#line 1903 "../parse.cpp" /* yacc.c:1646  */
+#line 1903 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 46:
@@ -1910,7 +1910,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-3].f);
       (yyval.f) -> subformula_r = (yyvsp[-1].f);
     }
-#line 1914 "../parse.cpp" /* yacc.c:1646  */
+#line 1914 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 47:
@@ -1918,7 +1918,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 1922 "../parse.cpp" /* yacc.c:1646  */
+#line 1922 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 48:
@@ -1926,7 +1926,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 1930 "../parse.cpp" /* yacc.c:1646  */
+#line 1930 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 49:
@@ -1934,7 +1934,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[-1].f);
     }
-#line 1938 "../parse.cpp" /* yacc.c:1646  */
+#line 1938 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 50:
@@ -1957,7 +1957,7 @@ yyreduce:
       (yyval.f) -> pid = id;
       (yyval.f) -> formula_type = K_atom;
     }
-#line 1961 "../parse.cpp" /* yacc.c:1646  */
+#line 1961 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 51:
@@ -1983,7 +1983,7 @@ yyreduce:
       f2 -> subformula_r = (yyvsp[0].f);
       (yyval.f) = f2;
     }
-#line 1987 "../parse.cpp" /* yacc.c:1646  */
+#line 1987 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 52:
@@ -1995,7 +1995,7 @@ yyreduce:
       f -> subformula_r = (yyvsp[0].f); 
       (yyval.f) = f;
     }
-#line 1999 "../parse.cpp" /* yacc.c:1646  */
+#line 1999 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 53:
@@ -2007,7 +2007,7 @@ yyreduce:
       f -> subformula_r = (yyvsp[0].f);     
       (yyval.f) = f;
     }
-#line 2011 "../parse.cpp" /* yacc.c:1646  */
+#line 2011 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 54:
@@ -2022,7 +2022,7 @@ yyreduce:
       (yyval.f) -> pid = id;
        
     }
-#line 2026 "../parse.cpp" /* yacc.c:1646  */
+#line 2026 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 55:
@@ -2036,7 +2036,7 @@ yyreduce:
       (yyval.f) -> formula_type = K_atom;
       (yyval.f) -> pid = id;
     }
-#line 2040 "../parse.cpp" /* yacc.c:1646  */
+#line 2040 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 56:
@@ -2044,7 +2044,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[-1].f);
     }
-#line 2048 "../parse.cpp" /* yacc.c:1646  */
+#line 2048 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 57:
@@ -2052,7 +2052,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[-1].f);
     }
-#line 2056 "../parse.cpp" /* yacc.c:1646  */
+#line 2056 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 58:
@@ -2060,7 +2060,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 2064 "../parse.cpp" /* yacc.c:1646  */
+#line 2064 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 59:
@@ -2068,7 +2068,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 2072 "../parse.cpp" /* yacc.c:1646  */
+#line 2072 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 60:
@@ -2076,7 +2076,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 2080 "../parse.cpp" /* yacc.c:1646  */
+#line 2080 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 61:
@@ -2087,7 +2087,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-1].f);
       (yyval.f) -> subformula_r = (yyvsp[0].f);     
     }
-#line 2091 "../parse.cpp" /* yacc.c:1646  */
+#line 2091 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 62:
@@ -2095,7 +2095,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 2099 "../parse.cpp" /* yacc.c:1646  */
+#line 2099 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 63:
@@ -2106,7 +2106,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-1].f);
       (yyval.f) -> subformula_r = (yyvsp[0].f);
     }
-#line 2110 "../parse.cpp" /* yacc.c:1646  */
+#line 2110 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 64:
@@ -2117,7 +2117,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-1].f);
       (yyval.f) -> subformula_r = (yyvsp[0].f);
     }
-#line 2121 "../parse.cpp" /* yacc.c:1646  */
+#line 2121 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 65:
@@ -2128,7 +2128,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-1].f);
       (yyval.f) -> subformula_r = (yyvsp[0].f);  
     }
-#line 2132 "../parse.cpp" /* yacc.c:1646  */
+#line 2132 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 66:
@@ -2136,7 +2136,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 2140 "../parse.cpp" /* yacc.c:1646  */
+#line 2140 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 67:
@@ -2147,7 +2147,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-1].f);
       (yyval.f) -> subformula_r = (yyvsp[0].f);
     }
-#line 2151 "../parse.cpp" /* yacc.c:1646  */
+#line 2151 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 68:
@@ -2158,7 +2158,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-1].f);
       (yyval.f) -> subformula_r = (yyvsp[0].f);
     }
-#line 2162 "../parse.cpp" /* yacc.c:1646  */
+#line 2162 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 69:
@@ -2166,7 +2166,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[-1].f);
     }
-#line 2170 "../parse.cpp" /* yacc.c:1646  */
+#line 2170 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 70:
@@ -2175,7 +2175,7 @@ yyreduce:
       (yyval.f) = (yyvsp[0].f);
 
     }
-#line 2179 "../parse.cpp" /* yacc.c:1646  */
+#line 2179 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 71:
@@ -2186,7 +2186,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-1].f);
       (yyval.f) -> subformula_r = (yyvsp[0].f);
     }
-#line 2190 "../parse.cpp" /* yacc.c:1646  */
+#line 2190 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 72:
@@ -2194,7 +2194,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[-1].f);
     }
-#line 2198 "../parse.cpp" /* yacc.c:1646  */
+#line 2198 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 73:
@@ -2203,7 +2203,7 @@ yyreduce:
       (yyval.f) = (yyvsp[0].f);
 
     }
-#line 2207 "../parse.cpp" /* yacc.c:1646  */
+#line 2207 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 74:
@@ -2215,7 +2215,7 @@ yyreduce:
       (yyval.f) -> subformula_r = (yyvsp[0].f);
 
     }
-#line 2219 "../parse.cpp" /* yacc.c:1646  */
+#line 2219 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 75:
@@ -2223,7 +2223,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[-1].f);
     }
-#line 2227 "../parse.cpp" /* yacc.c:1646  */
+#line 2227 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 76:
@@ -2231,7 +2231,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 2235 "../parse.cpp" /* yacc.c:1646  */
+#line 2235 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 77:
@@ -2242,7 +2242,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-1].f);
       (yyval.f) -> subformula_r = (yyvsp[0].f);
     }
-#line 2246 "../parse.cpp" /* yacc.c:1646  */
+#line 2246 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 78:
@@ -2253,7 +2253,7 @@ yyreduce:
       (yyval.f) -> subformula_l = (yyvsp[-1].f);
       (yyval.f) -> subformula_r = (yyvsp[0].f);
     }
-#line 2257 "../parse.cpp" /* yacc.c:1646  */
+#line 2257 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 79:
@@ -2271,7 +2271,7 @@ yyreduce:
       (yyval.f) -> subformula_l = f;
       (yyval.f) -> subformula_r = (yyvsp[-1].f);
     }
-#line 2275 "../parse.cpp" /* yacc.c:1646  */
+#line 2275 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 80:
@@ -2279,7 +2279,7 @@ yyreduce:
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 2283 "../parse.cpp" /* yacc.c:1646  */
+#line 2283 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 81:
@@ -2288,7 +2288,7 @@ yyreduce:
       (yyval.f) = (yyvsp[0].f);
 
     }
-#line 2292 "../parse.cpp" /* yacc.c:1646  */
+#line 2292 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 82:
@@ -2303,7 +2303,7 @@ yyreduce:
           (yyval.f) = (yyvsp[-1].f) -> subformula_l;
 
     }
-#line 2307 "../parse.cpp" /* yacc.c:1646  */
+#line 2307 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 83:
@@ -2312,7 +2312,7 @@ yyreduce:
       (yyval.f) = (yyvsp[-1].f);
 
     }
-#line 2316 "../parse.cpp" /* yacc.c:1646  */
+#line 2316 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 84:
@@ -2327,7 +2327,7 @@ yyreduce:
       (yyval.f) -> subformula_r = (yyvsp[0].f);
 
     }
-#line 2331 "../parse.cpp" /* yacc.c:1646  */
+#line 2331 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 85:
@@ -2344,7 +2344,7 @@ yyreduce:
       string s1((yyvsp[0].s));     
       grounding_map[s1] = v;
     }
-#line 2348 "../parse.cpp" /* yacc.c:1646  */
+#line 2348 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 86:
@@ -2358,24 +2358,26 @@ yyreduce:
       (yyval.f) -> pidlist[1] = (yyvsp[0].f) -> pid;
       }
       else{
+cout << (&(yyval.f)) << endl;
+cout << (&(yyvsp[-1].f)) << endl;
       (yyval.f) -> count = (yyval.f) -> count + 1;
       (yyval.f) -> pidlist[(yyval.f) -> count-1] = (yyvsp[0].f) -> pid;
       }
 
     }
-#line 2367 "../parse.cpp" /* yacc.c:1646  */
+#line 2369 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 708 "parse.y" /* yacc.c:1646  */
+#line 710 "parse.y" /* yacc.c:1646  */
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 2375 "../parse.cpp" /* yacc.c:1646  */
+#line 2377 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 713 "parse.y" /* yacc.c:1646  */
+#line 715 "parse.y" /* yacc.c:1646  */
     {
       int id = Vocabulary::instance().queryAtom((yyvsp[0].s));
       if(id < 0)
@@ -2386,11 +2388,11 @@ yyreduce:
 
 
     }
-#line 2390 "../parse.cpp" /* yacc.c:1646  */
+#line 2392 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 723 "parse.y" /* yacc.c:1646  */
+#line 725 "parse.y" /* yacc.c:1646  */
     {
       string s0((yyvsp[-2].s));
 
@@ -2410,11 +2412,11 @@ yyreduce:
 
 
     }
-#line 2414 "../parse.cpp" /* yacc.c:1646  */
+#line 2416 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 742 "parse.y" /* yacc.c:1646  */
+#line 744 "parse.y" /* yacc.c:1646  */
     {
       int id = Vocabulary::instance().queryAtom((yyvsp[0].s));
       if(id < 0)
@@ -2424,60 +2426,60 @@ yyreduce:
       (yyval.f) -> formula_type=VAR_F;
 
      }
-#line 2428 "../parse.cpp" /* yacc.c:1646  */
+#line 2430 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 753 "parse.y" /* yacc.c:1646  */
+#line 755 "parse.y" /* yacc.c:1646  */
     {
       (yyval.s) = strdup((yyvsp[0].s));
     }
-#line 2436 "../parse.cpp" /* yacc.c:1646  */
+#line 2438 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 758 "parse.y" /* yacc.c:1646  */
+#line 760 "parse.y" /* yacc.c:1646  */
     {
 
     }
-#line 2444 "../parse.cpp" /* yacc.c:1646  */
+#line 2446 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 761 "parse.y" /* yacc.c:1646  */
+#line 763 "parse.y" /* yacc.c:1646  */
     {
 
     }
-#line 2452 "../parse.cpp" /* yacc.c:1646  */
+#line 2454 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 767 "parse.y" /* yacc.c:1646  */
+#line 769 "parse.y" /* yacc.c:1646  */
     {
       //cout<<"object"<<endl;
     }
-#line 2460 "../parse.cpp" /* yacc.c:1646  */
+#line 2462 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 772 "parse.y" /* yacc.c:1646  */
+#line 774 "parse.y" /* yacc.c:1646  */
     {
       //cout<<"words1"<<endl;
     }
-#line 2468 "../parse.cpp" /* yacc.c:1646  */
+#line 2470 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 775 "parse.y" /* yacc.c:1646  */
+#line 777 "parse.y" /* yacc.c:1646  */
     {
       //cout<<"word2"<<endl;
 
     }
-#line 2477 "../parse.cpp" /* yacc.c:1646  */
+#line 2479 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 781 "parse.y" /* yacc.c:1646  */
+#line 783 "parse.y" /* yacc.c:1646  */
     {
 
       
@@ -2493,11 +2495,11 @@ yyreduce:
 
       
     }
-#line 2497 "../parse.cpp" /* yacc.c:1646  */
+#line 2499 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 796 "parse.y" /* yacc.c:1646  */
+#line 798 "parse.y" /* yacc.c:1646  */
     {
 
       string s2((yyvsp[0].s));
@@ -2509,30 +2511,30 @@ yyreduce:
 
       //cout<<"word2: "<<s2<<endl;
     }
-#line 2513 "../parse.cpp" /* yacc.c:1646  */
+#line 2515 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 811 "parse.y" /* yacc.c:1646  */
+#line 813 "parse.y" /* yacc.c:1646  */
     {
       init_f = (yyvsp[-2].f);
 
       //cout<<"init"<<endl;
     }
-#line 2523 "../parse.cpp" /* yacc.c:1646  */
+#line 2525 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 818 "parse.y" /* yacc.c:1646  */
+#line 820 "parse.y" /* yacc.c:1646  */
     {
       goal_f = (yyvsp[-2].f);
       //cout<<"goal"<<endl;
     }
-#line 2532 "../parse.cpp" /* yacc.c:1646  */
+#line 2534 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 2536 "../parse.cpp" /* yacc.c:1646  */
+#line 2538 "../sources/parse.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2760,5 +2762,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 829 "parse.y" /* yacc.c:1906  */
+#line 831 "parse.y" /* yacc.c:1906  */
 

@@ -11,7 +11,10 @@
 #include <cstdio>
 #include "EpisDNF.h"
 
-void print(FILE *out, const PropTerm &prop_term);
+void print(FILE *out, const PropTerm &prop_term, bool print_new_line = false);
+void print(FILE *out, const PropDNF &prop_dnf, bool print_new_line = false);
+void print(FILE *out, const EpisTerm &epis_term, bool print_new_line = false);
+void print(FILE *out, const EpisDNF &epis_dnf);
 
 #endif	/* UTIL_H */
 

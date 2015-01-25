@@ -26,66 +26,44 @@ void Init::exec(){
     yyin = fopen("test/unix/unix_p1.pddl", "r");
     yyparse();
     fclose(yyin);
-    //cout<<"\n\n\nprint actions\n";
-    //for(int i = 0 ; i < actions_f.size(); i++)
-        //print_f(actions_f[i]);
-    //cout<<"\n\n\nprint init\n";
-    //print_f(init_f);
-    //cout<<"\n\n\nprint goal\n";
-    //print_f(goal_f);
-    //cout<<"---\n\n\n\n"<<endl;
-    
-    //print_f(init_f);
+    // 使用parse时存放动作的actions_f结构里面的数据生成物理动作和感知动作
+    // 并分别存放到属性ontic_actions和epis_actions中
     make_actions();
-    
-    //Atoms::instance().gen_vac_to_atom();
-    //showmaps();
-    /*bitset<5> bt;
-    cout<<bt<<endl;
-    boost::dynamic_bitset<> literals;
-    literals.resize(10);
-    literals[7]=1;
-    cout<<literals<<endl;
-    boost::dynamic_bitset<> literal;
-    literals.resize(10);
-    //literals => 1
-    literal = (literals >> 1);
-    //literal1 = literals&literal;
-    //literal[7]=1;
-    
-    cout<<literal<<"\n"<<literals<<endl;
-    literal.operator |=(literals);
-    cout<<literal<<endl;
-    */
-    //showground();
     getEpisiDNFInitAndGoal();
     genActionPreCnd();
-    //if(literals.is_subset_of(literal))cout<<"x"<<endl;
-    //init.kb.epis_terms.push_back(getEpisTerm(init_f));
-
-    //EpisTerm ep = *(init.kb.epis_terms.begin());
-    //PropDNF pd = ep.pos_propDNF;
-    //PropTerm pt = *(pd.prop_terms.begin());
 }
 
 
-
+/*                       top
+ *                         \
+ *                      action
+ *                      /    \
+ *             parameters    precondiction和(effect或observe)
+ *                  /         /             \
+ *            具体参数    precondiction    effect(感知动作)或observe(物理动作)
+ *                      /               / 
+ *                     K公式           三元组
+ *                                    /    \
+ *                            剩下的三元组    当前三元组
+ */
 void Init::make_actions(){
     for(int i = 0; i < actions_f.size(); i++){
-        if(actions_f[i]->subformula_r->subformula_r->formula_type == CONOBSERVE_F)      
+        if(actions_f[i]->subformula_r->subformula_r->formula_type == CONOBSERVE_F)
+            // 生成物理动作
             gen_observe_actions(actions_f[i]);
         else
+            // 生成感知动作
             gen_ontic_actions(actions_f[i]);
     }        
 }
     
-
 
 void Init::gen_ontic_actions(_formula* f){
     //cout<<"one ontic"<<endl;
     OnticAction eba;
     string eff_name = Vocabulary::instance().getAtom(f->pid);
     if(f->subformula_r->subformula_l->subformula_l->formula_type == EMPTY_F){
+        // parameters为空
         eba.pre_f = gen_pre(f->subformula_r->subformula_r->subformula_l->subformula_l);
         eba.con_eff = gen_con_eff(f->subformula_r->subformula_r->subformula_r->subformula_l);
         eba.name = eff_name;
@@ -93,6 +71,8 @@ void Init::gen_ontic_actions(_formula* f){
         ontic_actions.push_back(eba);
     }
     else{
+        // parameters不为空
+        // 处理参数
         vector<string> para_str;
         _formula* f_para = f->subformula_r->subformula_l->subformula_l;
         switch(f_para->formula_type){
@@ -113,21 +93,7 @@ void Init::gen_ontic_actions(_formula* f){
         }
         vector<string> match_str;
         match_data.clear();
-        get_str(0, match_str, para_str);
-        //cout<<"\n\nshow para"<<endl;
-        //for(int i = 0; i < para_str.size(); i++){
-        //    cout<<i<<" : "<<para_str[i]<<" ";
-        //}
-        //cout<<endl;
-        //for(int i = 0; i < match_data.size(); i++){
-        //    for(int j = 0; j < match_data[i].size(); j++)
-        //       cout<<j<<" : "<<match_data[i][j]<<" ";
-        //    cout<<endl;
-        //}
-        
-        //cout<<endl;   
-        
-        
+        get_str(0, match_str, para_str);        
         for(int i = 0; i < match_data.size(); i++){
             eba.pre_f = gen_pre_by_match(f->subformula_r->subformula_r->subformula_l->subformula_l, para_str,match_data[i]);
             eba.con_eff = gen_con_eff_by_match(f->subformula_r->subformula_r->subformula_r->subformula_l, para_str,match_data[i]);

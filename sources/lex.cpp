@@ -1,6 +1,6 @@
-#line 2 "../lex.cpp"
+#line 2 "../sources/lex.cpp"
 
-#line 4 "../lex.cpp"
+#line 4 "../sources/lex.cpp"
 
 #define  YY_INT_ALIGNED short int
 
@@ -558,9 +558,9 @@ extern "C" {
 	int yywrap(void);
 	int yylex(void);
 }
-extern int context_flag;/* 0 - not in any atom, 1 - in an atom*/
+extern int context_flag;/* 0 - not in any atom, 1  - in an atom*/
 
-#line 564 "../lex.cpp"
+#line 564 "../sources/lex.cpp"
 
 #define INITIAL 0
 
@@ -749,7 +749,7 @@ YY_DECL
     
 #line 43 "lex.l"
 
-#line 753 "../lex.cpp"
+#line 753 "../sources/lex.cpp"
 
 	if ( !(yy_init) )
 		{
@@ -1016,7 +1016,7 @@ YY_RULE_SETUP
 #line 111 "lex.l"
 ECHO;
 	YY_BREAK
-#line 1020 "../lex.cpp"
+#line 1020 "../sources/lex.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 

@@ -36,7 +36,10 @@ vector<EpisAction> epis_acitons;
 
 int main(int argc, char **argv){
 #ifdef TEST
-    Atoms::instance().length = 4;
+    Atoms::instance().add_atoms(string("a"));
+    Atoms::instance().add_atoms(string("b"));
+    Atoms::instance().add_atoms(string("c"));
+    Atoms::instance().add_atoms(string("d"));
     PropTerm ab(8);
     ab.literals.set(0, true);
     ab.literals.set(2, true);
@@ -51,17 +54,14 @@ int main(int argc, char **argv){
     dnf.prop_terms.push_back(ab);
     dnf.prop_terms.push_back(_bcd);
     dnf.prop_terms.push_back(_a_c);
+    EpisTerm et;
+    et.pos_propDNF = dnf;
     cout << "origin:" << endl;
-    for (list<PropTerm>::const_iterator it = dnf.prop_terms.begin();
-            it != dnf.prop_terms.end(); ++ it) {
-        print(stdout, *it);
-    }
+    print(stdout, dnf, true);
     dnf.convert_IPIA();
     cout << "ipia:" << endl;
-    for (list<PropTerm>::const_iterator it = dnf.prop_terms.begin();
-            it != dnf.prop_terms.end(); ++ it) {
-        print(stdout, *it);
-    }
+    print(stdout, dnf, true);
+    et.neg_propDNFs.push_back(dnf);
 #else
     Plan p(argv);
 //    p.exec_plan();

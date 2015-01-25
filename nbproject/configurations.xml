@@ -11,6 +11,7 @@
       <itemPath>headfile/atoms.h</itemPath>
       <itemPath>headfile/formulatab.h</itemPath>
       <itemPath>headfile/init.h</itemPath>
+      <itemPath>headfile/parse.h</itemPath>
       <itemPath>headfile/plan.h</itemPath>
       <itemPath>headfile/structs.h</itemPath>
       <itemPath>headfile/util.h</itemPath>
@@ -37,7 +38,6 @@
       <itemPath>sources/lex.cpp</itemPath>
       <itemPath>sources/main.cpp</itemPath>
       <itemPath>sources/parse.cpp</itemPath>
-      <itemPath>sources/parse.h</itemPath>
       <itemPath>sources/plan.cpp</itemPath>
       <itemPath>sources/util.cpp</itemPath>
     </logicalFolder>
@@ -137,6 +137,8 @@
       </item>
       <item path="headfile/init.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="headfile/parse.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="headfile/plan.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="headfile/structs.h" ex="false" tool="3" flavor2="0">
@@ -168,8 +170,6 @@
       <item path="sources/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/parse.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="sources/parse.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sources/plan.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -261,6 +261,8 @@
       </item>
       <item path="headfile/init.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="headfile/parse.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="headfile/plan.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="headfile/structs.h" ex="false" tool="3" flavor2="0">
@@ -292,8 +294,6 @@
       <item path="sources/main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/parse.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="sources/parse.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="sources/plan.cpp" ex="false" tool="1" flavor2="0">
       </item>
