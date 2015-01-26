@@ -8,6 +8,7 @@
 //#if xx
 #include "EpisDNF.h"
 #include "atoms.h"
+#include "Progression.h"
 #include <boost/dynamic_bitset.hpp>
 #include <vector>
 
@@ -68,6 +69,24 @@ PropTerm& PropTerm::minimal()
         return *this;
     literals.set(); //inconsistent means this PropTerm is false, we can use a dynamic_bitset whose bits are 1.
     return *this;
+}
+
+list<PropTerm> PropTerm::ontic_prog(const OnticAction& ontic_action)
+{
+    list<PropTerm> progression; //Maybe need to make current PropTerm split into some PropTerms
+    boost::dynamic_bitset<> cur_prop_term = literals; //Do not change the PropTerm itself, so need a copy
+    
+    for (int eff_i = 0; eff_i < ontic_action.con_eff.size(); eff_i++) {
+        ConEffect cur_con_eff = ontic_action.con_eff[eff_i];
+        for (int i = 0; i < cur_con_eff.condition.size(); i++) {
+            if (cur_con_eff.condition[i] > 0) {
+                if (!(cur_prop_term[cur_con_eff.condition[i] * 2 - 1] || cur_prop_term[cur_con_eff.condition[i] * 2]))
+                    i++;
+            }
+        
+        }
+    
+    }
 }
 
 /*PropTerm PropTerm::compose(const PropTerm& prop_term)
@@ -205,6 +224,18 @@ PropDNF& PropDNF::minimal()
     this->prop_terms = result.prop_terms;
     
     return *this;
+}
+
+PropDNF PropDNF::ontic_prog(const OnticAction& ontic_action)
+{
+    PropDNF result;
+    for (list<PropTerm>::iterator it = prop_terms.begin(); it != prop_terms.end(); it++) {
+        list<PropTerm> res = it->ontic_prog(ontic_action);
+        for (list<PropTerm>::iterator prog_res_it = res.begin(); prog_res_it != res.end(); prog_res_it++)
+            result.prop_terms.push_back(*prog_res_it);
+        //result.prop_terms.push_back((*it).ontic_prog(ontic_action));
+    }
+    return result;
 }
 
 /*PropDNF PropDNF::compose(const PropDNF& propDNF)
@@ -528,6 +559,15 @@ void EpisTerm::convert_IPIA() {
     }
 }
 
+EpisTerm EpisTerm::ontic_prog(const OnticAction& ontic_action)
+{
+    EpisTerm result;
+    result.pos_propDNF = pos_propDNF.ontic_prog(ontic_action);
+    for (list<PropDNF>::iterator it = neg_propDNFs.begin(); it != neg_propDNFs.end(); it++)
+        result.neg_propDNFs.push_back(it->ontic_prog(ontic_action));
+    return result;
+}
+
 //This method is based on Proposition 3.7, and it is a basis of method equals
 bool EpisDNF::entails(const EpisDNF& episDNF) const
 {	
@@ -630,6 +670,16 @@ EpisDNF& EpisDNF::minimal()
     return (*this);*/
     for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++)
         it-> minimal();
+}
+
+EpisDNF EpisDNF::ontic_prog(const OnticAction& ontic_action)
+{
+    EpisDNF result;
+    for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++) {
+        result.epis_terms.push_back(it->ontic_prog(ontic_action));
+    }
+    result.minimal();
+    return result;
 }
 
 /*void EpisDNF::show(){

@@ -38,7 +38,7 @@ public:
     boost::dynamic_bitset<> literals;  //一个原子对应两位，那两位分别表示该原子构成的正文字和负文字
 
     // new added
-    //PropTerm ontic_prog(const OnticAction &ontic_action); //在当前PropTerm上做物理动作的演进，并且返回演进结果
+    list<PropTerm> ontic_prog(const OnticAction &ontic_action); //在当前PropTerm上做物理动作的演进，并且返回演进结果
     //vector<PropTerm> epistemic_prog(const EpisAction &epis_action); //在当前PropTerm上做观察动作的演进，并且返回结果
     
     //PropTerm compose(const PropTerm &);  // new version delete this
@@ -58,7 +58,7 @@ public:
     list<PropTerm> prop_terms; //存储了多个命题项，这就构成了命题层面的DNF
 
     // new added
-    //PropDNF ontic_prog(const OnticAction &ontic_action); //在当前PropDNF上做物理动作的演进，并且返回演进结果
+    PropDNF ontic_prog(const OnticAction &ontic_action); //在当前PropDNF上做物理动作的演进，并且返回演进结果
     //vector<PropDNF> epistemic_prog(const EpisAction &epis_action); //在当前PropDNF上做观察动作的演进，并且返回结果
     // add by yzf
     void convert_IPIA(); //将DNF转为质蕴含形式
@@ -84,7 +84,7 @@ public:
     //bool is_empty();
 
     // new added
-    //EpisTerm ontic_prog(const OnticAction &ontic_action); //在当前EpisTerm上做物理动作的演进，并且返回演进结果
+    EpisTerm ontic_prog(const OnticAction &ontic_action); //在当前EpisTerm上做物理动作的演进，并且返回演进结果
     //vector<EpisTerm> epistemic_prog(const EpisAction &epis_action); //在当前EpisTerm上做观察动作的演进，并且返回结果
 
     //PropDNF group_pel(const list<PropDNF> &);    // new version delete this
@@ -106,7 +106,7 @@ public:
     //void show();
 
     // new added
-    //EpisDNF ontic_prog(const OnticAction &ontic_action); //在当前知识库上做物理动作的演进，并且返回演进结果
+    EpisDNF ontic_prog(const OnticAction &ontic_action); //在当前知识库上做物理动作的演进，并且返回演进结果
     //vector<EpisDNF> epistemic_prog(const EpisAction &epis_action); //在当前知识库上做观察动作的演进，并且返回结果
     // add by yzf
     void convert_IPIA();
