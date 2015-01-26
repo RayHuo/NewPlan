@@ -32,6 +32,7 @@ struct ConEffect
     vector<int> condition; //效果中的条件
     vector<int> add; //add集合存储的变量代表做完该动作之后，这些变量需要变为True
     vector<int> del; //del集合存储的变量代表做完该动作之后，这些变量需要变为False
+    PropTerm con; //use it to replace vector<int> condition
 };
 
 //物理动作的描述
@@ -55,12 +56,13 @@ struct EpisAction
     pre pre_f; //将前置条件转换为EpisCNF的承接存储
     vector<int> observe; //需要观察的“公式”
     vector<string> para_match;
-	//vector<int> result; 
+    //vector<int> result; 
 
     // new added
-    PropDNF res1; //将所需要观察的“公式”化为DNF形式， 为了好做演进
-    PropCNF res2; //将所需要观察的“公式”化为CNF形式， 为了好做推理
+    PropDNF pos_res; //将所需要观察的“公式”化为DNF形式， 为了好做演进 positive result
+    PropDNF neg_res; //将所需要观察的“公式”化为DNF形式， 为了好做演进 negative result  
 };
+
 
 
 //搜索算法中的结点

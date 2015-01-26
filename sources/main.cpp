@@ -32,6 +32,7 @@ vector<_formula*> actions_f;
 map< string,vector<int> > grounding_map;
 vector<OnticAction> ontic_actions;
 vector<EpisAction> epis_acitons;
+ofstream fout("out.out");
 
 #define TEST 
 

@@ -1,5 +1,7 @@
 #include "atoms.h"
 #include <stdlib.h>
+#include<fstream>
+extern ofstream fout;
 Atoms::Atoms(){
     atoms_str.clear();
     length = 0;
@@ -43,13 +45,13 @@ int Atoms::atoms_length(){
 
 void Atoms::show(){
     for(int i = 0; i < length; i++)
-        cout<<"i: "<<i+1<<" str: "<<atoms_str[i]<<endl;
-    cout<<"str end"<<endl;
+        fout<<"i: "<<i+1<<" str: "<<atoms_str[i]<<endl;
+    fout<<"str end"<<endl;
     //cout<<vac_to_atom.size()<<endl;
     //for(map<int,int>::iterator it = vac_to_atom.begin(); it != vac_to_atom.end(); it++){
     //    cout<<it->first<<" "<<it->second<<endl;
     //}
-    cout<<"end atom show"<<endl;
+    fout<<"end atom show"<<endl;
 }
 
 void Atoms::gen_vac_to_atom(){

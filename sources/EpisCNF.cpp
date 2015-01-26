@@ -11,9 +11,10 @@
 #include <boost/dynamic_bitset.hpp>
 #include <list>
 #include <iostream>
+#include<fstream>
 #include "atoms.h"
 #include "EpisCNF.h"
-
+extern ofstream fout;
 bool PropClause::entails(const PropClause& prop_clause) const {
     return true;
 }
@@ -32,7 +33,7 @@ PropTerm PropClause::negation() const
                 result.literals[i - 1] = 1;
         }
     }
-    //cout<<result.literals<<endl;
+    //fout<<result.literals<<endl;
     return result;
 }
 
@@ -58,20 +59,20 @@ PropClause& PropClause::minimal()
 {
     cout<<"    PropCNF begin"<<endl;
     for(list<PropClause>::iterator it = prop_clauses.begin(); it != prop_clauses.end(); it++)
-        cout<<it->literals<<endl;
-    cout<<"    PropCNF end"<<endl;
+        fout<<it->literals<<endl;
+    fout<<"    PropCNF end"<<endl;
 }
 
 void EpisClause::show()
 {
-    cout<<"  EpisClause pos begin"<<endl;
+    fout<<"  EpisClause pos begin"<<endl;
     for(list<PropCNF>::iterator it = pos_propCNFs.begin(); it != pos_propCNFs.end(); it++)
         it->show();
-    cout<<"  EpisClause pos end"<<endl;
-    cout<<"  EpisClause neg begin"<<endl;
+    fout<<"  EpisClause pos end"<<endl;
+    fout<<"  EpisClause neg begin"<<endl;
     for(list<PropClause>::iterator it = neg_propCNFs.prop_clauses.begin(); it != neg_propCNFs.prop_clauses.end(); it++)
         it->show();
-    cout<<"  EpisClause neg end"<<endl;
+    fout<<"  EpisClause neg end"<<endl;
 
 }*/
 
@@ -146,18 +147,12 @@ EpisCNF:: EpisCNF()
 }
 
 /*void EpisCNF::show(){
-    cout<<"EpisCNF begin"<<endl;
+    fout<<"EpisCNF begin"<<endl;
     for(list<EpisClause>::iterator it = epis_clauses.begin(); it != epis_clauses.end(); it++)
         it->show();
-    cout<<"EpisCNF end"<<endl;
-}
-
-void PropDNF::show() const{
-    cout<<"    show_PropDNF:"<<endl;
-    for(list<PropTerm>::const_iterator it = prop_terms.begin(); it != prop_terms.end(); it++){
-        cout<<"      "<<it->literals<<endl;
-    }
-    cout<<"    end_show_PropDNF:"<<endl;
+    fout<<"EpisCNF end"<<endl;
 }*/
+
+
 
 //#endif

@@ -27,7 +27,6 @@ public:
     PropClause() { }
     ~PropClause() { }
     PropTerm negation() const; //求出该命题子句的否定，结果就变成了一个命题项
-    //bool consistent() const;
     bool entails(const PropClause &) const;
     bool is_true() const;
     PropClause& minimal(); //对于PropClause的化简，就是如果出现一个原子的正负文字，则为True
@@ -49,17 +48,12 @@ public:
 class EpisClause
 {
 public:
-    //EpisTerm negation();
-    //EpisClause group_nel(const EpisClause&); //将两个认知子句合并成一个认知子句，即只用将两个认知项的K^部分析取起来
     EpisClause& minimal();
     EpisClause& separable();
     bool entails(const EpisClause&); //Doctor Fang has not given this reasoning rule
     list<PropCNF> pos_propCNFs; //认知子句的K部分，有若干个，当然可以一个都没有
     PropCNF neg_propCNF; //认知子句的K^部分，注意只有一个
     //void show();
-    
-    // new added
-//    EpisTerm negation(); //将该认知子句取反得到EpisTerm
 };
 
 //认知子句的合取，其实就是所有动作(包括物理动作和观察动作)的前置条件
