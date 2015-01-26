@@ -47,6 +47,20 @@ bool PropTerm::entails(const PropClause& prop_clause) const
     return false;
 }
 
+PropClause PropTerm::negation()
+{
+    PropClause result(Atoms::instance().atoms_length() * 2);
+    for (int i = 0; i < literals.size(); i++) {
+        if (literals[i]) {
+            if (i % 2 == 0)
+                result.literals[i + 1] = 1;
+            else
+                result.literals[i - 1] = 1;
+        }
+    }
+    return result;
+}   
+
 PropTerm PropTerm::group(const PropTerm& prop_term) const
 {
     PropTerm result(Atoms::instance().atoms_length() * 2);
@@ -74,19 +88,72 @@ PropTerm& PropTerm::minimal()
 list<PropTerm> PropTerm::ontic_prog(const OnticAction& ontic_action)
 {
     list<PropTerm> progression; //Maybe need to make current PropTerm split into some PropTerms
-    boost::dynamic_bitset<> cur_prop_term = literals; //Do not change the PropTerm itself, so need a copy
+    //boost::dynamic_bitset<> cur_prop_term = literals; //Do not change the PropTerm itself, so need a copy
     
+    vector<PropTerm> conditions; //convert each con in effect triple to PropTerm 
     for (int eff_i = 0; eff_i < ontic_action.con_eff.size(); eff_i++) {
-        ConEffect cur_con_eff = ontic_action.con_eff[eff_i];
-        for (int i = 0; i < cur_con_eff.condition.size(); i++) {
-            if (cur_con_eff.condition[i] > 0) {
-                if (!(cur_prop_term[cur_con_eff.condition[i] * 2 - 1] || cur_prop_term[cur_con_eff.condition[i] * 2]))
-                    i++;
-            }
+        ConEffect cur_con_eff = ontic_action.con_eff[eff_i];  //current effect triple 
         
+        //convert vector<int> to PropTerm
+        PropTerm condition(Atoms::instance().atoms_length() * 2);
+        for (int i = 0; i < cur_con_eff.condition.size(); i++) { //current size of condition is 1
+            if (cur_con_eff.condition[i] > 0) 
+                condition.literals[(cur_con_eff.condition[i] - 1) * 2];
+            else
+                condition.literals[(0 - cur_con_eff.condition[i] - 1) * 2 + 1];
         }
-    
+        conditions.push_back(condition);
+        
+        //check current PropTerm. Mostly, splitting is necessary 
+        if (!(this->entails(condition) || this->entails(condition.negation()))) {
+            int pos = condition.literals.find_first(); //now we has one literal, so can implement like this
+            if (pos % 2 == 0) {
+                PropTerm tmp = *this;
+                tmp.literals[pos] = 1;
+                progression.push_back(tmp);
+                tmp = *this;
+                tmp.literals[pos + 1] = 1;
+                progression.push_back(tmp);
+            }
+            else {
+                PropTerm tmp = *this;
+                tmp.literals[pos] = 1;
+                progression.push_back(tmp);
+                tmp = *this;
+                tmp.literals[pos - 1] = 1;
+                progression.push_back(tmp);
+            }              
+        }       
     }
+    
+    //begin ontic progression for each PropTerm (many PropTerms are split by current PropTerm)
+    for (list<PropTerm>::iterator it = progression.begin(); it != progression.end(); it++) {
+        for (int eff_i = 0; eff_i < ontic_action.con_eff.size(); eff_i++) {
+            if (it->entails(conditions[eff_i])) {
+                // deal with the elements in the add set
+                for (int add_i = 0; add_i < ontic_action.con_eff[eff_i].add.size(); add_i++) {
+                    if (it->literals[ontic_action.con_eff[eff_i].add[add_i] * 2 + 1]) {
+                        it->literals[ontic_action.con_eff[eff_i].add[add_i] * 2 + 1] = 0;
+                        it->literals[ontic_action.con_eff[eff_i].add[add_i] * 2] = 1;
+                    }
+                    else
+                        it->literals[ontic_action.con_eff[eff_i].add[add_i] * 2] = 1;
+                }
+                
+                // deal with the elements in the del set
+                for (int del_i = 0; del_i < ontic_action.con_eff[eff_i].add.size(); del_i++) {
+                    if (it->literals[ontic_action.con_eff[eff_i].add[del_i] * 2]) {
+                        it->literals[ontic_action.con_eff[eff_i].add[del_i] * 2] = 0;
+                        it->literals[ontic_action.con_eff[eff_i].add[del_i] * 2 + 1] = 1;
+                    }
+                    else
+                        it->literals[ontic_action.con_eff[eff_i].add[del_i] * 2 + 1] = 1;
+                }
+            }
+        }
+    }
+    
+    return progression;
 }
 
 /*PropTerm PropTerm::compose(const PropTerm& prop_term)
@@ -670,6 +737,8 @@ EpisDNF& EpisDNF::minimal()
     return (*this);*/
     for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++)
         it-> minimal();
+    
+    convert_IPIA();
 }
 
 EpisDNF EpisDNF::ontic_prog(const OnticAction& ontic_action)
@@ -679,6 +748,37 @@ EpisDNF EpisDNF::ontic_prog(const OnticAction& ontic_action)
         result.epis_terms.push_back(it->ontic_prog(ontic_action));
     }
     result.minimal();
+    return result;
+}
+
+vector<EpisDNF> EpisDNF::epistemic_prog(const EpisAction& epis_action)
+{
+    EpisDNF p_episDNF;
+    EpisDNF n_episDNF;
+    for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++) {
+        EpisTerm p_epis_term;
+        EpisTerm n_epis_term;
+        
+        //For the K part of an EpisTerm
+        p_epis_term.pos_propDNF = p_epis_term.pos_propDNF.group(epis_action.pos_res);
+        n_epis_term.pos_propDNF = n_epis_term.pos_propDNF.group(epis_action.neg_res);
+        
+        //For the K^ part of an EpisTerm
+        for (list<PropDNF>::iterator propDNF_it = it->neg_propDNFs.begin(); propDNF_it != it->neg_propDNFs.end(); propDNF_it++) {
+            if (propDNF_it->entails(epis_action.pos_res))
+                p_epis_term.neg_propDNFs.push_back(*propDNF_it);
+            if (propDNF_it->entails(epis_action.neg_res))
+                n_epis_term.neg_propDNFs.push_back(*propDNF_it);
+        }
+	p_episDNF.epis_terms.push_back(p_epis_term);
+	n_episDNF.epis_terms.push_back(n_epis_term);  
+    }
+    
+    vector<EpisDNF> result;
+    p_episDNF = p_episDNF.minimal();
+    result.push_back(p_episDNF);
+    n_episDNF = n_episDNF.minimal();
+    result.push_back(n_episDNF);
     return result;
 }
 

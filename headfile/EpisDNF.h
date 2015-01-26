@@ -34,6 +34,7 @@ public:
     bool entails(const PropClause &) const; //judge whether a PropTerm entails a PropClause or not
     bool equals(const PropTerm &);  //判断两个命题项是否等价
     PropTerm group(const PropTerm &) const; //merge two PropTerms
+    PropClause negation(); //this function is used to judge ontic progression
     PropTerm& minimal(); //化简命题项，在这里其实就是若该命题项中同时出现一个原子的正负文字两个方面，那么该命题项就是False
     boost::dynamic_bitset<> literals;  //一个原子对应两位，那两位分别表示该原子构成的正文字和负文字
 
@@ -107,7 +108,7 @@ public:
 
     // new added
     EpisDNF ontic_prog(const OnticAction &ontic_action); //在当前知识库上做物理动作的演进，并且返回演进结果
-    //vector<EpisDNF> epistemic_prog(const EpisAction &epis_action); //在当前知识库上做观察动作的演进，并且返回结果
+    vector<EpisDNF> epistemic_prog(const EpisAction &epis_action); //在当前知识库上做观察动作的演进，并且返回结果
     // add by yzf
     void convert_IPIA();
 };

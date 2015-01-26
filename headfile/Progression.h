@@ -55,12 +55,14 @@ struct EpisAction
     pre pre_f; //将前置条件转换为EpisCNF的承接存储
     vector<int> observe; //需要观察的“公式”
     vector<string> para_match;
-	//vector<int> result; 
+    //vector<int> result; 
 
     // new added
-    PropDNF res1; //将所需要观察的“公式”化为DNF形式， 为了好做演进
-    PropCNF res2; //将所需要观察的“公式”化为CNF形式， 为了好做推理
+    PropDNF pos_res; //将所需要观察的“公式”化为DNF形式， 为了好做演进
+    PropDNF neg_res; //将所需要观察的“公式”化为DNF形式， 为了好做演进
+   // PropCNF res2; //将所需要观察的“公式”化为CNF形式， 为了好做推理
 };
+
 
 
 //搜索算法中的结点

@@ -81,7 +81,7 @@ EpisDNF ontic_prog(EpisDNF episDNF, const OnticAction &ontic_action)
 
 vector<EpisDNF> epistemic_prog(EpisDNF episDNF, const EpisAction &epis_action)
 {	
-    EpisDNF p_episDNF;
+    /*EpisDNF p_episDNF;
     EpisDNF n_episDNF;
     //for each S5-TE, do epistemic progression
     for (list<EpisTerm>::iterator epis_term_it = episDNF.epis_terms.begin(); epis_term_it != episDNF.epis_terms.end(); epis_term_it++) {
@@ -113,7 +113,7 @@ vector<EpisDNF> epistemic_prog(EpisDNF episDNF, const EpisAction &epis_action)
     //result[1].show();
     result[1].minimal();
     //result[1].show();
-    return result;
+    return result;*/
 }
 
 //#endif
