@@ -23,7 +23,7 @@ bool PropTerm::consistent() const
 
 bool PropTerm::entails(const PropTerm& prop_term) const
 {
-    if (!literals.any()) //first PropTerm is false
+    if (!this->consistent()) //first PropTerm is false
         return true;
     return prop_term.literals.is_subset_of(literals);
 }
@@ -151,8 +151,7 @@ list<PropTerm> PropTerm::ontic_prog(const OnticAction& ontic_action)
                 }
             }
         }
-    }
-    
+    }   
     return progression;
 }
 
