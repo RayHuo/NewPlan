@@ -151,14 +151,8 @@ EpisCNF:: EpisCNF()
     for(list<EpisClause>::iterator it = epis_clauses.begin(); it != epis_clauses.end(); it++)
         it->show();
     fout<<"EpisCNF end"<<endl;
-}
-
-void PropDNF::show() const{
-    fout<<"    show_PropDNF:"<<endl;
-    for(list<PropTerm>::const_iterator it = prop_terms.begin(); it != prop_terms.end(); it++){
-        fout<<"      "<<it->literals<<endl;
-    }
-    fout<<"    end_show_PropDNF:"<<endl;
 }*/
+
+
 
 //#endif
