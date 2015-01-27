@@ -22,15 +22,17 @@ Init::~Init(){
 
 void Init::exec(){
     //cout<<"init exec"<<endl;
-    yyin = fopen("test/unix/unix_domain.pddl", "r");
+    yyin = fopen("test/demo/demo_domain.pddl", "r");
     yyparse();
     fclose(yyin);
-    yyin = fopen("test/unix/unix_p1.pddl", "r");
+    yyin = fopen("test/demo/demo_p.pddl", "r");
     yyparse();
     fclose(yyin);
     // 使用parse时存放动作的actions_f结构里面的数据生成物理动作和感知动作
     // 并分别存放到属性ontic_actions和epis_actions中
     make_actions();
+    // 使用parse时存放数据的init_f和goal_f，生成初始状态和目标状态
+    // 并分别存放到属性init和goal里面
     getEpisiDNFInitAndGoal();
     genActionPreCnd();
 }
@@ -95,7 +97,9 @@ void Init::gen_ontic_actions(_formula* f){
         }
         vector<string> match_str;
         match_data.clear();
-        get_str(0, match_str, para_str);        
+        // 生成例化所用的参数，存放到match_data里面
+        get_str(0, match_str, para_str); 
+        // 进行例化
         for(int i = 0; i < match_data.size(); i++){
             eba.pre_f = gen_pre_by_match(f->subformula_r->subformula_r->subformula_l->subformula_l, para_str,match_data[i]);
             eba.con_eff = gen_con_eff_by_match(f->subformula_r->subformula_r->subformula_r->subformula_l, para_str,match_data[i]);
@@ -115,6 +119,7 @@ void Init::gen_observe_actions(_formula* f){
     //cout<<"one oba"<<endl;
     EpisAction oba;
     if(f->subformula_r->subformula_l->subformula_l->formula_type == EMPTY_F){
+        // 参数为空
         oba.pre_f = gen_pre(f->subformula_r->subformula_r->subformula_l->subformula_l);
         oba.name = Vocabulary::instance().getAtom(f->pid);
         oba.observe = gen_oba_eff(f->subformula_r->subformula_r->subformula_r->subformula_l);
@@ -122,6 +127,7 @@ void Init::gen_observe_actions(_formula* f){
         epis_acitons.push_back(oba);
     }
     else{
+        // 参数不为空
         vector<string> para_str;
         _formula* f_para = f->subformula_r->subformula_l->subformula_l;
         switch(f_para->formula_type){
@@ -142,7 +148,9 @@ void Init::gen_observe_actions(_formula* f){
         }
         vector<string> match_str;
         match_data.clear();
+        // 生成例化所用的参数，存放到match_data里面
         get_str(0, match_str, para_str);
+        // 进行例化
         for(int i = 0; i < match_data.size(); i++){
             oba.pre_f = gen_pre_by_match(f->subformula_r->subformula_r->subformula_l->subformula_l, para_str,match_data[i]);
             oba.observe = gen_bdd_var_nums_by_state(f->subformula_r->subformula_r->subformula_r->subformula_l, para_str,match_data[i]);
