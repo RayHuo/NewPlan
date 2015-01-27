@@ -37,7 +37,6 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 OBJECTFILES= \
 	${OBJECTDIR}/sources/EpisCNF.o \
 	${OBJECTDIR}/sources/EpisDNF.o \
-	${OBJECTDIR}/sources/Progression.o \
 	${OBJECTDIR}/sources/Vocabulary.o \
 	${OBJECTDIR}/sources/atoms.o \
 	${OBJECTDIR}/sources/formulatab.o \
@@ -82,11 +81,6 @@ ${OBJECTDIR}/sources/EpisDNF.o: sources/EpisDNF.cpp
 	${MKDIR} -p ${OBJECTDIR}/sources
 	${RM} $@.d
 	$(COMPILE.cc) -g -Iheadfile -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/EpisDNF.o sources/EpisDNF.cpp
-
-${OBJECTDIR}/sources/Progression.o: sources/Progression.cpp 
-	${MKDIR} -p ${OBJECTDIR}/sources
-	${RM} $@.d
-	$(COMPILE.cc) -g -Iheadfile -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/Progression.o sources/Progression.cpp
 
 ${OBJECTDIR}/sources/Vocabulary.o: sources/Vocabulary.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources

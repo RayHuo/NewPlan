@@ -829,27 +829,14 @@ PropTerm Init::getPropTermFromV(vector<int> s) {
 PropTerm Init::getPropTerm(set<int> s) {
     //grounding_map;id_to_vac
     PropTerm p(Atoms::instance().atoms_length()*2);
-    //for(int i = 0; i < literalsLegnth; i++)
-    //p.literals.push_back(false);
-    //cout<<"lit length : "<<Atoms::instance().atoms_length()<<endl;
-    //cout<<s.size()<<endl;
-    int temp = 0;
     for (set<int>::iterator it = s.begin(); it != s.end(); it++) {
-        //cout<<"*it: "<<*it<<endl;
-        //cout<<Atoms::instance().get_true_num(*it)<<" ";
-        //cout<<Atoms::instance().get_true_num(*it*(-1))<<" ";
         if (*it > 0)
             p.literals[(*it - 1)*2] = 1;
         else
             p.literals[(*it * (-1) - 1)*2 + 1] = 1;
     }
-    //cout<<endl;
-    //cout<<p.literals<<endl;
     return p;
 }
-
-/*extern vector<OnticAction> ontic_actions;
-extern vector<EpisAction> epis_acitons;*/
 
 void Init::genActionPreCnd() {
     for (int i = 0; i < ontic_actions.size(); i++) {
@@ -857,8 +844,6 @@ void Init::genActionPreCnd() {
     }
     for (int i = 0; i < epis_acitons.size(); i++) {
         epis_acitons[i].pre_con = getEpisCNF(epis_acitons[i].pre_f);
-        //cout<<"show::"<<endl;
-        //epis_acitons[i].pre_con .show();
     }
 }
 
@@ -887,14 +872,6 @@ EpisClause Init::getEpisClausePre(vector<int> s, bool isK) {
     //grounding_map;id_to_vac
     EpisClause ec;
     PropCNF pc;
-    //cout<<"showclause"<<endl;
-    //for(int i = 0; i < s.size(); i++)
-    //    cout<<s[i]<<" ";
-    //cout<<endl;
-    //PropTerm p(Atoms::instance().atoms_length()*2);
-    //for(int i = 0; i < literalsLegnth; i++)
-    //p.literals.push_back(false);
-    //cout<<s.size()<<endl;
     if (isK) {
         for (int i = 0; i < s.size(); i++) {
             PropClause pcl(Atoms::instance().atoms_length()*2);
@@ -916,10 +893,6 @@ EpisClause Init::getEpisClausePre(vector<int> s, bool isK) {
         }
         ec.neg_propCNFs.push_back(pc);
     }
-
-    //ec.show();
-
-
     return ec;
 }
 

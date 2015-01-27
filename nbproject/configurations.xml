@@ -30,7 +30,6 @@
                    projectFiles="true">
       <itemPath>sources/EpisCNF.cpp</itemPath>
       <itemPath>sources/EpisDNF.cpp</itemPath>
-      <itemPath>sources/Progression.cpp</itemPath>
       <itemPath>sources/Vocabulary.cpp</itemPath>
       <itemPath>sources/atoms.cpp</itemPath>
       <itemPath>sources/formulatab.cpp</itemPath>
@@ -155,8 +154,6 @@
       </item>
       <item path="sources/EpisDNF.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="sources/Progression.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="sources/Vocabulary.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/atoms.cpp" ex="false" tool="1" flavor2="0">
@@ -278,8 +275,6 @@
       <item path="sources/EpisCNF.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/EpisDNF.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="sources/Progression.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="sources/Vocabulary.cpp" ex="false" tool="1" flavor2="0">
       </item>

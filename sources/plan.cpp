@@ -26,7 +26,7 @@ Plan::Plan(char **argv){
     explored_num = -1;
     searchtype = 0;
     in.exec();
-    in.showmaps(stdout);
+//    in.showmaps(stdout);
     Node fnd;
     fnd.kb = in.init;
     all_nodes.push_back(fnd);
@@ -64,17 +64,13 @@ void Plan::exec_plan(){
 void Plan::explore(int node_pos){
     cout<<"in explore"<<endl;
     bool execed = false;//deep search find new node
-    //vector<OnticAction> ontic_actions;
-//vector<EpisAction> epis_acitons;
     for(int i = 0; i < epis_acitons.size(); i++){
         cout<<"in oba"<<endl;
         if(all_nodes[node_pos].kb.entails(epis_acitons[i].pre_con)){
             cout<<"go in oba"<<endl;
-            //vector<EpisDNF> epistemic_prog(EpisDNF episDNF, const EpisAction &epis_action)
-            vector<EpisDNF> res = epistemic_prog(all_nodes[node_pos].kb, epis_acitons[i]);  
-
-            if(check_zero_dead(res[0]) || check_zero_dead(res[1]))continue;
-            
+            vector<EpisDNF> res = all_nodes[node_pos].kb.epistemic_prog(epis_acitons[i]);
+            if(check_zero_dead(res[0]) || check_zero_dead(res[1]))
+                continue;
             int res_pos = checknode(res[0]);// find if old node; if it is old node, then return node number            
             if(res_pos == node_pos) continue;
             if(res_pos == -1){
@@ -134,14 +130,10 @@ void Plan::explore(int node_pos){
             cout<<"not sat"<<endl;
     }
     
-    
-    
-
     for(int i = 0; i < ontic_actions.size(); i++){
         cout<<"in effect"<<endl;
         if(all_nodes[node_pos].kb.entails(ontic_actions[i].pre_con)){
-            
-            EpisDNF res = ontic_prog(all_nodes[node_pos].kb,ontic_actions[i]);
+            EpisDNF res = all_nodes[node_pos].kb.ontic_prog(ontic_actions[i]);
             if(check_zero_dead(res)) continue;
             int res_pos = checknode(res);
             if(res_pos == node_pos) continue;

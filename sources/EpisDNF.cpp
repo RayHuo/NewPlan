@@ -11,8 +11,8 @@
 #include "Progression.h"
 #include <boost/dynamic_bitset.hpp>
 #include <vector>
-#include<fstream>
-extern ofstream fout;
+#include <fstream>
+
 bool PropTerm::consistent() const
 {
     for(int i = 0; i < Atoms::instance().atoms_length(); i++){
@@ -223,13 +223,20 @@ bool PropDNF::entails(const PropCNF& propCNF) const
 
 PropDNF PropDNF::group(const PropDNF& propDNF) const
 {
-    PropDNF result;
-    for (list<PropTerm>::const_iterator it_i = prop_terms.begin(); it_i != prop_terms.end(); it_i++) {
-        for (list<PropTerm>::const_iterator it_j = propDNF.prop_terms.begin(); it_j != propDNF.prop_terms.end(); it_j++) 
-            result.prop_terms.push_back(it_i->group(*it_j));
+    // 处理任意一边为空的情况
+    if (! prop_terms.empty() && ! propDNF.prop_terms.empty()) {
+        PropDNF result;
+        for (list<PropTerm>::const_iterator it_i = prop_terms.begin(); it_i != prop_terms.end(); it_i++) {
+            for (list<PropTerm>::const_iterator it_j = propDNF.prop_terms.begin(); it_j != propDNF.prop_terms.end(); it_j++) 
+                result.prop_terms.push_back(it_i->group(*it_j));
+        }
+        //need to add min and PI method
+        return result;
     }
-    //need to add min and PI method
-    return result;
+    else if (prop_terms.empty())
+        return propDNF;
+    else
+        return *this;
 }
 
 PropDNF& PropDNF::minimal()

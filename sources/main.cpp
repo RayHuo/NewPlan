@@ -63,7 +63,7 @@ int main(int argc, char **argv)
     print(stdout, dnf, true);
 #endif
     Plan p(argv);
-//    p.exec_plan();
+    p.exec_plan();
 //    p.BuildPlan();
     return 0;
 } 
