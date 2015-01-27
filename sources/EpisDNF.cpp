@@ -65,7 +65,7 @@ PropClause PropTerm::negation()
 PropTerm PropTerm::group(const PropTerm& prop_term) const
 {
     PropTerm result(Atoms::instance().atoms_length() * 2);
-    for (int i = 0; i < Atoms::instance().atoms_length() * 2; i += 2) {
+    for (int i = 0; i < Atoms::instance().atoms_length() * 2; i++) {
         /*if (literals[i] && prop_term.literals[i + 1] || literals[i + 1] && prop_term.literals[i]) { //generate contradiction
             result.literals.set();
             return result;
