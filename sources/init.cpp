@@ -19,7 +19,6 @@ Init::~Init() {
 }
 
 void Init::exec() {
-    //cout<<"init exec"<<endl;
     yyin = fopen("test/demo/demo_domain.pddl", "r");
     yyparse();
     fclose(yyin);

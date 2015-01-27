@@ -68,13 +68,13 @@ struct EpisAction
 //搜索算法中的结点
 struct Node
 {
-    int num; //搜索图中的结点编号
+//    int num; //搜索图中的结点编号
     EpisDNF kb; //结点的知识库
     //下面两个变量分别是在搜索过程中所需要的两中标记
     STATE_TYPE flag;
     bool isolated;
     Node(){};
-    Node(STATE_TYPE s, bool b, EpisDNF ed, int n){flag = s; isolated = b; kb = ed; num = n;};
+    Node(STATE_TYPE s, bool b, EpisDNF ed, int n){flag = s; isolated = b; kb = ed; /*num = n;*/};
     ~Node(){};
 };
 

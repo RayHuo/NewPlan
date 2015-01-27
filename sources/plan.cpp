@@ -19,7 +19,6 @@ Plan::Plan(){
 }
 
 Plan::Plan(char **argv){
-    cout<<"plan argv"<<endl;
     all_nodes.clear();
     all_edges.clear();
     
@@ -27,47 +26,43 @@ Plan::Plan(char **argv){
     searchtype = 0;
     in.exec();
 //    in.showmaps(stdout);
-    Node fnd;
-    fnd.kb = in.init;
-    all_nodes.push_back(fnd);
 }
 
 void Plan::exec_plan(){
     cout<<"\nexec plan"<<endl;
-    if(in.init.entails(in.goal)){ 
-        all_nodes[0].flag = GOAL;
+    if(in.init.entails(in.goal)) {
         return;
     }
-    cout<<"init!=end"<<endl;
-    all_nodes[0].isolated = false;
-    all_nodes[0].flag = TOBEEXPLORED;
+    Node init_node;
+    init_node.flag = TOBEEXPLORED;
+    init_node.isolated = false;
+    init_node.kb = in.init;
+    all_nodes.push_back(init_node);
     hert_nodes = 0; //for deep search
-    while(true){
-        cout<<"in rcy"<<endl;
-
+    while(true) {
         int node_pos = get_tobeexplored_node();//heuristic
-        //hert_nodes.clear();
-        //cout<<"1"<<endl;
-
-        if(node_pos == -1)break;
-        cout<<"node_pos: "<<node_pos<<endl;
-        cout<<"num: "<<all_nodes[node_pos].num<<endl;
+        if(node_pos == -1)
+            return ;
+        cout << "all_nodes size: " << all_nodes.size() << endl;
+        cout << "deal node: " << node_pos <<endl;
+        cout << "kb:" << endl;
+        all_nodes[node_pos].kb.show(stdout);
         explore(node_pos); 
 
-        if(all_nodes[0].flag == DEAD)
-            return;
         if(all_nodes[0].flag == GOAL)
-            return;
+            return ;//之后再调用BuildPlan，原算法中的Tree
+        if(all_nodes[0].flag == DEAD)
+            return ;
     }  
 }
 
 void Plan::explore(int node_pos){
     cout<<"in explore"<<endl;
     bool execed = false;//deep search find new node
+    // 进行感知演进
     for(int i = 0; i < epis_acitons.size(); i++){
-        cout<<"in oba"<<endl;
         if(all_nodes[node_pos].kb.entails(epis_acitons[i].pre_con)){
-            cout<<"go in oba"<<endl;
+            cout << epis_acitons[i].name << endl;
             vector<EpisDNF> res = all_nodes[node_pos].kb.epistemic_prog(epis_acitons[i]);
             if(check_zero_dead(res[0]) || check_zero_dead(res[1]))
                 continue;
@@ -129,7 +124,7 @@ void Plan::explore(int node_pos){
         else
             cout<<"not sat"<<endl;
     }
-    
+    // 进行物理演进
     for(int i = 0; i < ontic_actions.size(); i++){
         cout<<"in effect"<<endl;
         if(all_nodes[node_pos].kb.entails(ontic_actions[i].pre_con)){

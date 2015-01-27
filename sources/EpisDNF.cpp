@@ -555,6 +555,7 @@ EpisDNF& EpisDNF::minimal()
 
 EpisDNF EpisDNF::ontic_prog(const OnticAction& ontic_action)
 {
+    cout << "物理演进\n" << endl;
     EpisDNF result;
     for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++) {
         result.epis_terms.push_back(it->ontic_prog(ontic_action));
@@ -567,13 +568,14 @@ vector<EpisDNF> EpisDNF::epistemic_prog(const EpisAction& epis_action)
 {
     EpisDNF p_episDNF;
     EpisDNF n_episDNF;
+
     for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++) {
         EpisTerm p_epis_term;
         EpisTerm n_epis_term;
         
         //For the K part of an EpisTerm
-        p_epis_term.pos_propDNF = p_epis_term.pos_propDNF.group(epis_action.pos_res);
-        n_epis_term.pos_propDNF = n_epis_term.pos_propDNF.group(epis_action.neg_res);
+        p_epis_term.pos_propDNF = it->pos_propDNF.group(epis_action.pos_res);
+        n_epis_term.pos_propDNF = it->pos_propDNF.group(epis_action.neg_res);
         
         //For the K^ part of an EpisTerm
         for (list<PropDNF>::iterator propDNF_it = it->neg_propDNFs.begin(); propDNF_it != it->neg_propDNFs.end(); propDNF_it++) {
@@ -587,9 +589,9 @@ vector<EpisDNF> EpisDNF::epistemic_prog(const EpisAction& epis_action)
     }
     
     vector<EpisDNF> result;
-    p_episDNF = p_episDNF.minimal();
+    p_episDNF.minimal();
     result.push_back(p_episDNF);
-    n_episDNF = n_episDNF.minimal();
+    n_episDNF.minimal();
     result.push_back(n_episDNF);
     return result;
 }
