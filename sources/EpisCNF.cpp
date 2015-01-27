@@ -148,12 +148,6 @@ bool PropCNF::entails(PropCNF& propCNF)
     return propCNF.negation().entails(this->negation());
 }
 
-PropCNF PropCNF::group(const PropCNF &propCNF)
-{
-    PropCNF result;
-    return result;
-}
-
 PropCNF& PropCNF::minimal()
 {
     for (list<PropClause>::iterator pre_it = prop_clauses.begin(); pre_it != prop_clauses.end(); pre_it++) {
