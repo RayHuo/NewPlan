@@ -30,6 +30,7 @@ public:
     ~PropClause() { }
     PropTerm negation() const; //求出该命题子句的否定，结果就变成了一个命题项
     bool entails(const PropClause &) const;
+    PropClause group(const PropClause &) const;
     bool is_true() const;
     PropClause& minimal(); //对于PropClause的化简，就是如果出现一个原子的正负文字，则为True
     boost::dynamic_bitset<> literals;
@@ -40,7 +41,7 @@ public:
 class PropCNF
 {
 public:
-    PropCNF group(PropCNF);
+    PropCNF group(const PropCNF &) const;
     PropDNF negation() const;
     PropCNF& minimal();
     bool entails(PropCNF& propCNF);
