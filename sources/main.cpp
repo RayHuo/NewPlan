@@ -64,11 +64,12 @@ int main(int argc, char **argv)
     print(stdout, dnf, true);
 #endif
     dynamic_bitset<> db(6);
-    db.flip();
+    //db.flip();
     cout << db << endl;
+    cout << db.set() << endl;
     
-    Plan p(argv);
-    p.exec_plan();
+   // Plan p(argv);
+    //p.exec_plan();
 //    p.BuildPlan();
     return 0;
 } 
