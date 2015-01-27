@@ -155,6 +155,13 @@ list<PropTerm> PropTerm::ontic_prog(const OnticAction& ontic_action)
     return progression;
 }
 
+void PropTerm::show()
+{
+    cout << "Show PropTerm" << endl;
+    cout << literals << endl;
+    cout << "End PropTerm" << endl;
+}
+
 bool PropDNF::consistent() const
 {
     for (list<PropTerm>::const_iterator it = prop_terms.begin(); it != prop_terms.end(); it++) {
@@ -331,13 +338,13 @@ bool PropDNF::delete_operation_in_IPIA(const PropTerm &t, list<PropTerm> &pi,
     return is_t_delete;
 }
 
-/*void PropDNF::show() {
-    fout<<"    show_PropDNF:"<<endl;
-    for(list<PropTerm>::const_iterator it = prop_terms.begin(); it != prop_terms.end(); it++){
-        fout<<"      "<<it->literals<<endl;
-    }
-    fout<<"    end_show_PropDNF:"<<endl;
-}*/
+void PropDNF::show() 
+{
+    cout << "Show PropDNF" << endl;
+    for(list<PropTerm>::iterator it = prop_terms.begin(); it != prop_terms.end(); it++)
+        it->show();   
+    cout << "End PropDNF"  << endl;
+}
 
 bool EpisTerm::consistent() const
 {
@@ -448,17 +455,16 @@ EpisTerm& EpisTerm::separable()
     return *this;
 }
 
-/*void EpisTerm::show(){
-    cout<<"  show_EpisTerm"<<endl;
-    cout<<"   pos_part"<<endl;
+void EpisTerm::show()
+{
+    cout << "Show EpisTerm" << endl;
+    cout << "K part" << endl;
     pos_propDNF.show();
-    cout<<"   neg_part"<<endl;
-    //cout<<neg_propDNFs.size()<<endl;
+    cout << "K^ parts" << endl;
     for(list<PropDNF>::iterator it = neg_propDNFs.begin(); it != neg_propDNFs.end(); it++)
         it->show();
-    cout<<"  end_show_EpisTerm"<<endl;
-    
-}*/
+    cout << "End EpisTerm" << endl;   
+}
 
 
 void EpisTerm::convert_IPIA() {
@@ -562,14 +568,13 @@ vector<EpisDNF> EpisDNF::epistemic_prog(const EpisAction& epis_action)
     return result;
 }
 
-/*void EpisDNF::show(){
-    cout<<"show-EpisDNF"<<endl;
+void EpisDNF::show()
+{
+    cout << "Show EpisDNF" << endl;
     for(list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++)
-        it->show();
-    
-    cout<<"end_show-EpisDNF"<<endl;
-            
-}*/
+        it->show();  
+    cout << "End EpisDNF" << endl;          
+}
 
 void EpisDNF::convert_IPIA() {
     for (list<EpisTerm>::iterator it = epis_terms.begin();

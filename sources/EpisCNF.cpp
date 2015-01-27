@@ -55,26 +55,31 @@ PropClause& PropClause::minimal()
     return *this;
 }
 
-/*void PropCNF::show()
+void PropClause::show()
 {
-    cout<<"    PropCNF begin"<<endl;
+    cout << "Show PropClause" << endl;
+    cout << literals << endl;
+    cout << "End PropClause" << endl;
+}
+
+void PropCNF::show()
+{
+    cout << "Show PropCNF" << endl;
     for(list<PropClause>::iterator it = prop_clauses.begin(); it != prop_clauses.end(); it++)
-        fout<<it->literals<<endl;
-    fout<<"    PropCNF end"<<endl;
+        it->show();
+    cout << "End PropCNF" << endl;
 }
 
 void EpisClause::show()
 {
-    fout<<"  EpisClause pos begin"<<endl;
+    cout << "Show EpisClause" << endl;
+    cout << "K^ part" << endl;
+    neg_propCNF.show();
+    cout << "K parts" << endl;
     for(list<PropCNF>::iterator it = pos_propCNFs.begin(); it != pos_propCNFs.end(); it++)
         it->show();
-    fout<<"  EpisClause pos end"<<endl;
-    fout<<"  EpisClause neg begin"<<endl;
-    for(list<PropClause>::iterator it = neg_propCNFs.prop_clauses.begin(); it != neg_propCNFs.prop_clauses.end(); it++)
-        it->show();
-    fout<<"  EpisClause neg end"<<endl;
-
-}*/
+    cout << "End EpisClause" << endl;
+}
 
 PropDNF PropCNF::negation() const
 {
@@ -146,12 +151,14 @@ EpisCNF:: EpisCNF()
         it->minimal();
 }
 
-/*void EpisCNF::show(){
-    fout<<"EpisCNF begin"<<endl;
+void EpisCNF::show()
+{
+    cout << "Show EpisCNF" << endl;
     for(list<EpisClause>::iterator it = epis_clauses.begin(); it != epis_clauses.end(); it++)
         it->show();
-    fout<<"EpisCNF end"<<endl;
-}*/
+    cout << "End EpisCNF" << endl;
+}
+
 
 
 
