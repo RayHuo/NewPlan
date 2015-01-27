@@ -55,6 +55,27 @@ PropClause& PropClause::minimal()
     return *this;
 }
 
+PropClause PropClause::group(const PropClause& prop_clause) const
+{
+    PropClause result(Atoms::instance().atoms_length() * 2);
+    for (int i = 0; i < Atoms::instance().atoms_length() * 2; i++) {
+        if (literals[i] || prop_clause.literals[i])
+            result.literals[i] = 1;
+    }
+    return result;
+}
+
+PropCNF PropCNF::group(const PropCNF& propCNF) const
+{
+    PropCNF result;
+    for (list<PropClause>::const_iterator it_i = prop_clauses.begin(); it_i != prop_clauses.end(); it_i++) {
+        for (list<PropClause>::const_iterator it_j = propCNF.prop_clauses.begin(); it_j != propCNF.prop_clauses.end(); it_j++) {
+            result.prop_clauses.push_back(it_i->group(*it_j));
+        }
+    }
+    return result;
+}
+
 void PropClause::show(FILE *out, bool print_new_line) const
 {
     vector<int> id_atoms;
@@ -125,8 +146,10 @@ bool PropCNF::entails(PropCNF& propCNF)
     return propCNF.negation().entails(this->negation());
 }
 
-PropCNF PropCNF::group(PropCNF p){
-    return p;
+PropCNF PropCNF::group(const PropCNF &propCNF)
+{
+    PropCNF result;
+    return result;
 }
 
 PropCNF& PropCNF::minimal()
@@ -161,6 +184,17 @@ void EpisClause::min(){
 
 EpisClause& EpisClause::separable()
 {
+    for (list<PropCNF>::iterator it = pos_propCNFs.begin(); it != pos_propCNFs.end(); it++) {
+        if (!neg_propCNF.entails(*it))
+            *it = it->group(neg_propCNF);
+    }
+    return *this;
+}
+
+EpisClause& EpisClause::minimal()
+{
+    separable();
+    
     for (list<PropCNF>::iterator pre_it = pos_propCNFs.begin(); pre_it != pos_propCNFs.end(); ) {
         bool can_entail = false;
         PropCNF tmp = *pre_it;
@@ -176,16 +210,11 @@ EpisClause& EpisClause::separable()
             pre_it++;
     }
     
-    return *this;
-}
-
-EpisClause& EpisClause::minimal()
-{
-    separable();
-    
     neg_propCNF.minimal();
     for (list<PropCNF>::iterator it = pos_propCNFs.begin(); it != pos_propCNFs.end(); it++) 
         it->minimal();
+    
+    return *this;
 }
 
 EpisCNF:: EpisCNF()
