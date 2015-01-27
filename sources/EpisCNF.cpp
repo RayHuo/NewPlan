@@ -57,28 +57,37 @@ PropClause& PropClause::minimal()
 
 void PropClause::show()
 {
-    cout << "Show PropClause" << endl;
-    cout << literals << endl;
-    cout << "End PropClause" << endl;
+    fout << "Show PropClause" << endl;
+    fout << literals << endl;
+    fout << "End PropClause" << endl;
 }
 
 void PropCNF::show()
 {
-    cout << "Show PropCNF" << endl;
-    for(list<PropClause>::iterator it = prop_clauses.begin(); it != prop_clauses.end(); it++)
-        it->show();
-    cout << "End PropCNF" << endl;
+    fout<<"    PropCNF begin"<<endl;
+    for(list<PropClause>::iterator it = prop_clauses.begin(); it != prop_clauses.end(); it++){
+        //cout<<it->literals<<endl<<
+        fout<<"(";
+        for(int i = 0; i < Atoms::instance().atoms_length(); i++){
+            if(it->literals[i*2])
+                fout<<Atoms::instance().get_atom_string(i+1)<<" , ";
+            if(it->literals[i*2+1])
+                fout<<"~"<<Atoms::instance().get_atom_string(i+1)<<" , ";
+        }
+        fout<<")"<<endl;
+    }
+    fout<<"    PropCNF end"<<endl;
 }
 
 void EpisClause::show()
 {
-    cout << "Show EpisClause" << endl;
-    cout << "K^ part" << endl;
+    fout << "Show EpisClause" << endl;
+    fout << "K^ part" << endl;
     neg_propCNF.show();
-    cout << "K parts" << endl;
+    fout << "K parts" << endl;
     for(list<PropCNF>::iterator it = pos_propCNFs.begin(); it != pos_propCNFs.end(); it++)
         it->show();
-    cout << "End EpisClause" << endl;
+    fout << "End EpisClause" << endl;
 }
 
 PropDNF PropCNF::negation() const
@@ -99,6 +108,10 @@ bool PropCNF::entails(PropCNF& propCNF)
     return propCNF.negation().entails(this->negation());
 }
 
+PropCNF PropCNF::group(PropCNF p){
+    return p;
+}
+
 PropCNF& PropCNF::minimal()
 {
     for (list<PropClause>::iterator pre_it = prop_clauses.begin(); pre_it != prop_clauses.end(); pre_it++) {
@@ -114,6 +127,19 @@ PropCNF& PropCNF::minimal()
     }
     
     return *this;
+}
+
+void EpisClause::min(){
+    if(neg_propCNFs.size()>1){
+        PropCNF p = *neg_propCNFs.begin();
+        list<PropCNF>::iterator it = neg_propCNFs.begin();
+        it++;
+        while(it!=neg_propCNFs.end()){
+            p = p.group(*it);
+        }
+        neg_propCNFs.clear();
+        neg_propCNFs.push_back(p);
+    }
 }
 
 EpisClause& EpisClause::separable()
@@ -153,10 +179,10 @@ EpisCNF:: EpisCNF()
 
 void EpisCNF::show()
 {
-    cout << "Show EpisCNF" << endl;
+    fout << "Show EpisCNF" << endl;
     for(list<EpisClause>::iterator it = epis_clauses.begin(); it != epis_clauses.end(); it++)
         it->show();
-    cout << "End EpisCNF" << endl;
+    fout << "End EpisCNF" << endl;
 }
 
 

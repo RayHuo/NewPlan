@@ -39,6 +39,7 @@ public:
 class PropCNF
 {
 public:
+    PropCNF group(PropCNF);
     PropDNF negation() const;
     PropCNF& minimal();
     bool entails(PropCNF& propCNF);
@@ -50,10 +51,12 @@ public:
 class EpisClause
 {
 public:
+    void min();//把neg后面合成一个
     EpisClause& minimal();
     EpisClause& separable();
     bool entails(const EpisClause&); //Doctor Fang has not given this reasoning rule
     list<PropCNF> pos_propCNFs; //认知子句的K部分，有若干个，当然可以一个都没有
+    list<PropCNF> neg_propCNFs; //认知子句的K^部分，注意只有一个
     PropCNF neg_propCNF; //认知子句的K^部分，注意只有一个
     void show();
 };

@@ -63,6 +63,8 @@ public:
     int gen_bddnum_by_state(_formula*);
     //此处命名延用上一用bdd的版本，功能是将一个CNF公式转成
     //用atoms中原子序号表示的vector<int>
+    int gen_var_num_by_state(_formula* f, vector<string> para_str, vector<string> match_str);
+    _formula* getMatchFormula(_formula* f, vector<string> para_str, vector<string> match_str);
     vector<int> gen_bdd_nums_by_state(_formula* f);
     vector<int> gen_bdd_var_nums_by_state(_formula* f, vector<string> para_str, vector<string> match_str);
     void get_str(int pos, vector<string> match_str, vector<string> para_str);
@@ -119,22 +121,35 @@ public:
     //这里将cnf转成propterm，bitset中存储每个原子两个位置，
     //前一个表示正，后一个表示负，同1矛盾消去，同0表示此处该原子未被用
     PropTerm getPropTerm(set<int>);
-    
+    PropTerm getPropTermFromV(vector<int>);
     //把中间类型pre生成episcnf的类型的前提
+    EpisCNF getEpisCNFByFormula(_formula*);
+    EpisClause getEpisClausebyFormula(_formula*);
+    PropCNF getPropCNFFromFormula(_formula* f);
+    
     EpisCNF getEpisCNF(pre);
+    EpisCNF disDKCon(EpisCNF);
+
+    
     EpisClause getEpisClausePre(vector<int>, bool);
     void getEpisiDNFInitAndGoal();
     void genActionPreCnd();
     //此处进行k后部分合取到dk后的操作，逻辑上的问题杨睿让这么写的
     void checkInit();
-
+    
+    vector<set<int> > getDnfFromFormula(_formula*);
+    vector<set<int> > getDnfFromFormulaByVar(_formula* f, vector<string> para_str, vector<string> match_str);
+    vector<set<int> > getNegDnf(vector<set<int> >);
+    PropDNF getPropDNFFromVS(vector<set<int> >);
+    void convertConToPropTerm();
+    void genObaDnfAndNeg();
     void showground();
     void showmaps();
     void show(pre p);
     void print_f(_formula* f);
     
     EpisDNF init;
-    EpisDNF goal;
+    EpisCNF goal;
     vector<vector<string> > match_data;
     
     

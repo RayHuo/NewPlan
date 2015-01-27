@@ -1,0 +1,180 @@
+xxx
+Show EpisDNF
+Show EpisTerm
+K part
+    show_PropDNF:
+(~doorOpen , ~inRoom , )
+(lightOn , ~doorOpen , )
+(lightOn , inRoom , )
+    end_show_PropDNF:
+K^ parts
+    show_PropDNF:
+(~lightOn , )
+    end_show_PropDNF:
+    show_PropDNF:
+(lightOn , )
+    end_show_PropDNF:
+    show_PropDNF:
+(~inRoom , )
+    end_show_PropDNF:
+    show_PropDNF:
+(inRoom , )
+    end_show_PropDNF:
+End EpisTerm
+End EpisDNF
+xxx1
+Show EpisDNF
+Show EpisTerm
+K part
+    show_PropDNF:
+(~doorOpen , ~inRoom , )
+(lightOn , inRoom , )
+    end_show_PropDNF:
+K^ parts
+    show_PropDNF:
+(~lightOn , ~doorOpen , ~inRoom , )
+    end_show_PropDNF:
+    show_PropDNF:
+(lightOn , ~doorOpen , )
+(lightOn , inRoom , )
+    end_show_PropDNF:
+    show_PropDNF:
+(lightOn , inRoom , )
+    end_show_PropDNF:
+End EpisTerm
+End EpisDNF
+xxx2
+grounding_map
+doorOpen:doorOpen 
+hasKnocked:hasKnocked 
+inRoom:inRoom 
+lightOn:lightOn 
+i: 1 str: a
+i: 2 str: b
+i: 3 str: c
+i: 4 str: d
+i: 5 str: lightOn
+i: 6 str: hasKnocked
+i: 7 str: doorOpen
+i: 8 str: inRoom
+str end
+end atom show
+
+show act
+act_num: 0 act_name: knock
+show match: 
+
+act_con: 
+con:  -8:~inRoom 
+con: propterm
+1000000000000000
+add:  6:hasKnocked 
+del:  7:doorOpen 
+con:  8:inRoom 
+con: propterm
+0100000000000000
+add:  7:doorOpen 6:hasKnocked 
+del:  
+act pre cnf: 
+Show EpisCNF
+Show EpisClause
+K^ part
+    PropCNF begin
+    PropCNF end
+K parts
+    PropCNF begin
+(lightOn , )
+    PropCNF end
+End EpisClause
+End EpisCNF
+act_num: 0act_name: senseL
+show match: 
+
+act pre cnf: 
+Show EpisCNF
+Show EpisClause
+K^ part
+    PropCNF begin
+(~lightOn , )
+    PropCNF end
+K parts
+End EpisClause
+Show EpisClause
+K^ part
+    PropCNF begin
+(lightOn , )
+    PropCNF end
+K parts
+End EpisClause
+End EpisCNF
+oba:
+pos: 
+    show_PropDNF:
+(lightOn , )
+    end_show_PropDNF:
+neg: 
+    show_PropDNF:
+(~lightOn , )
+    end_show_PropDNF:
+
+act_num: 1act_name: senseD
+show match: 
+
+act pre cnf: 
+Show EpisCNF
+Show EpisClause
+K^ part
+    PropCNF begin
+    PropCNF end
+K parts
+    PropCNF begin
+(hasKnocked , )
+    PropCNF end
+End EpisClause
+End EpisCNF
+oba:
+pos: 
+    show_PropDNF:
+(doorOpen , )
+    end_show_PropDNF:
+neg: 
+    show_PropDNF:
+(~doorOpen , )
+    end_show_PropDNF:
+
+init episdnf:
+Show EpisDNF
+Show EpisTerm
+K part
+    show_PropDNF:
+(~doorOpen , ~inRoom , )
+(lightOn , inRoom , )
+    end_show_PropDNF:
+K^ parts
+    show_PropDNF:
+(~lightOn , ~doorOpen , ~inRoom , )
+    end_show_PropDNF:
+    show_PropDNF:
+(lightOn , ~doorOpen , )
+(lightOn , inRoom , )
+    end_show_PropDNF:
+    show_PropDNF:
+(lightOn , inRoom , )
+    end_show_PropDNF:
+End EpisTerm
+End EpisDNF
+goal episdnf:
+Show EpisCNF
+Show EpisClause
+K^ part
+    PropCNF begin
+    PropCNF end
+K parts
+    PropCNF begin
+(~inRoom , )
+    PropCNF end
+    PropCNF begin
+(inRoom , )
+    PropCNF end
+End EpisClause
+End EpisCNF

@@ -34,11 +34,11 @@ vector<OnticAction> ontic_actions;
 vector<EpisAction> epis_acitons;
 ofstream fout("out.out");
 
-#define TEST 
+#define TEST_IPIA
 
 int main(int argc, char **argv) 
 {
-#ifdef TEST
+#ifdef TEST_IPIA
     Atoms::instance().add_atoms(string("a"));
     Atoms::instance().add_atoms(string("b"));
     Atoms::instance().add_atoms(string("c"));
@@ -62,15 +62,14 @@ int main(int argc, char **argv)
     dnf.convert_IPIA();
     cout << "ipia:" << endl;
     print(stdout, dnf, true);
-#else
-    Plan p(argv);
-//    p.exec_plan();
-//    p.BuildPlan();
-   
 #endif
     dynamic_bitset<> db(6);
     db.flip();
     cout << db << endl;
+    
+    Plan p(argv);
+    p.exec_plan();
+//    p.BuildPlan();
     return 0;
 } 
 

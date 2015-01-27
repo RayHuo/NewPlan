@@ -11,7 +11,8 @@
 #include "Progression.h"
 #include <boost/dynamic_bitset.hpp>
 #include <vector>
-
+#include<fstream>
+extern ofstream fout;
 bool PropTerm::consistent() const
 {
     for(int i = 0; i < Atoms::instance().atoms_length(); i++){
@@ -157,9 +158,9 @@ list<PropTerm> PropTerm::ontic_prog(const OnticAction& ontic_action)
 
 void PropTerm::show()
 {
-    cout << "Show PropTerm" << endl;
-    cout << literals << endl;
-    cout << "End PropTerm" << endl;
+    fout << "Show PropTerm" << endl;
+    fout << literals << endl;
+    fout << "End PropTerm" << endl;
 }
 
 bool PropDNF::consistent() const
@@ -340,10 +341,19 @@ bool PropDNF::delete_operation_in_IPIA(const PropTerm &t, list<PropTerm> &pi,
 
 void PropDNF::show() 
 {
-    cout << "Show PropDNF" << endl;
-    for(list<PropTerm>::iterator it = prop_terms.begin(); it != prop_terms.end(); it++)
-        it->show();   
-    cout << "End PropDNF"  << endl;
+    fout<<"    show_PropDNF:"<<endl;
+    for(list<PropTerm>::const_iterator it = prop_terms.begin(); it != prop_terms.end(); it++){
+        //cout<<"      "<<it->literals<<endl<<
+        fout<<"(";
+        for(int i = 0; i < Atoms::instance().atoms_length(); i++){
+            if(it->literals[i*2])
+                fout<<Atoms::instance().get_atom_string(i+1)<<" , ";
+            if(it->literals[i*2+1])
+                fout<<"~"<<Atoms::instance().get_atom_string(i+1)<<" , ";
+        }
+        fout<<")"<<endl;
+    }
+    fout<<"    end_show_PropDNF:"<<endl;
 }
 
 bool EpisTerm::consistent() const
@@ -457,13 +467,13 @@ EpisTerm& EpisTerm::separable()
 
 void EpisTerm::show()
 {
-    cout << "Show EpisTerm" << endl;
-    cout << "K part" << endl;
+    fout << "Show EpisTerm" << endl;
+    fout << "K part" << endl;
     pos_propDNF.show();
-    cout << "K^ parts" << endl;
+    fout << "K^ parts" << endl;
     for(list<PropDNF>::iterator it = neg_propDNFs.begin(); it != neg_propDNFs.end(); it++)
         it->show();
-    cout << "End EpisTerm" << endl;   
+    fout << "End EpisTerm" << endl;   
 }
 
 
@@ -570,10 +580,10 @@ vector<EpisDNF> EpisDNF::epistemic_prog(const EpisAction& epis_action)
 
 void EpisDNF::show()
 {
-    cout << "Show EpisDNF" << endl;
+    fout << "Show EpisDNF" << endl;
     for(list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++)
         it->show();  
-    cout << "End EpisDNF" << endl;          
+    fout << "End EpisDNF" << endl;          
 }
 
 void EpisDNF::convert_IPIA() {

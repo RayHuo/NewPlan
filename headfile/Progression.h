@@ -32,7 +32,7 @@ struct ConEffect
     vector<int> condition; //效果中的条件
     vector<int> add; //add集合存储的变量代表做完该动作之后，这些变量需要变为True
     vector<int> del; //del集合存储的变量代表做完该动作之后，这些变量需要变为False
-    PropTerm con; //use it to replace vector<int> condition
+    
 };
 
 //物理动作的描述
@@ -43,7 +43,7 @@ struct OnticAction
     EpisCNF pre_con; //动作执行的前置条件
     pre pre_f; //将前置条件转换为EpisCNF的承接存储
     vector<ConEffect> con_eff; //效果三元组
-
+    vector<PropTerm> con; //use it to replace vector<int> condition
     vector<string> para_match;
 };
 
@@ -54,7 +54,7 @@ struct EpisAction
     int act_num; //动作的编号
     EpisCNF pre_con; //动作执行的前置条件
     pre pre_f; //将前置条件转换为EpisCNF的承接存储
-    vector<int> observe; //需要观察的“公式”
+    vector<set<int> > observe; //需要观察的“公式”
     vector<string> para_match;
     //vector<int> result; 
 
