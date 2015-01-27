@@ -12,6 +12,7 @@
 #include "Vocabulary.h"
 #include "Progression.h"
 #include <string.h>
+#include <cstdio>
 //#include "DataStructure.h"
 
 
@@ -143,10 +144,10 @@ public:
     PropDNF getPropDNFFromVS(vector<set<int> >);
     void convertConToPropTerm();
     void genObaDnfAndNeg();
-    void showground();
-    void showmaps();
-    void show(pre p);
-    void print_f(_formula* f);
+    void showground(FILE *out) const;
+    void showmaps(FILE *out) const;
+    void show(FILE *out, pre p) const;
+    void print_f(FILE *out, _formula* f) const;
     
     EpisDNF init;
     EpisCNF goal;

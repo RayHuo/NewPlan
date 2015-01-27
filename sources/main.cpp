@@ -32,7 +32,6 @@ vector<_formula*> actions_f;
 map< string,vector<int> > grounding_map;
 vector<OnticAction> ontic_actions;
 vector<EpisAction> epis_acitons;
-ofstream fout("out.out");
 
 #define TEST_IPIA
 
@@ -68,8 +67,8 @@ int main(int argc, char **argv)
     cout << db << endl;
     cout << db.set() << endl;
     
-   // Plan p(argv);
-    //p.exec_plan();
+    Plan p(argv);
+//    p.exec_plan();
 //    p.BuildPlan();
     return 0;
 } 

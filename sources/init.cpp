@@ -5,7 +5,6 @@
 #include "atoms.h"
 #include<bitset>
 #include<fstream>
-extern ofstream fout;
 
 Init::Init(){
     ontic_actions.clear();
@@ -19,8 +18,6 @@ Init::~Init(){
     match_data.clear();
 }
 
-
-
 void Init::exec(){
     //cout<<"init exec"<<endl;
     yyin = fopen("test/demo/demo_domain.pddl", "r");
@@ -29,51 +26,14 @@ void Init::exec(){
     yyin = fopen("test/demo/demo_p.pddl", "r");
     yyparse();
     fclose(yyin);
-    //cout<<"\n\n\nprint actions\n";
-    //for(int i = 0 ; i < actions_f.size(); i++)
-        //print_f(actions_f[i]);
-    //cout<<"\n\n\nprint init\n";
-    //print_f(init_f);
-    //cout<<"\n\n\nprint goal\n";
-    //print_f(goal_f);
-    //cout<<"---\n\n\n\n"<<endl;
-    
-    //print_f(init_f);
+    // 根据parse时的数据结构生成物理动作和感知动作
     make_actions();
-    
-    //Atoms::instance().gen_vac_to_atom();
-    //showmaps();
-    /*bitset<5> bt;
-    cout<<bt<<endl;
-    boost::dynamic_bitset<> literals;
-    literals.resize(10);
-    literals[7]=1;
-    cout<<literals<<endl;
-    boost::dynamic_bitset<> literal;
-    literals.resize(10);
-    //literals => 1
-    literal = (literals >> 1);
-    //literal1 = literals&literal;
-    //literal[7]=1;
-    
-    cout<<literal<<"\n"<<literals<<endl;
-    literal.operator |=(literals);
-    cout<<literal<<endl;
-    */
-    //showground();
+    // 生成初始状态和目标状态
     getEpisiDNFInitAndGoal();
     genActionPreCnd();
     convertConToPropTerm();
     genObaDnfAndNeg();
-    //if(literals.is_subset_of(literal))cout<<"x"<<endl;
-    //init.kb.epis_terms.push_back(getEpisTerm(init_f));
-
-    //EpisTerm ep = *(init.kb.epis_terms.begin());
-    //PropDNF pd = ep.pos_propDNF;
-    //PropTerm pt = *(pd.prop_terms.begin());
 }
-
-
 
 void Init::make_actions(){
     for(int i = 0; i < actions_f.size(); i++){
@@ -83,8 +43,6 @@ void Init::make_actions(){
             gen_ontic_actions(actions_f[i]);
     }        
 }
-    
-
 
 void Init::gen_ontic_actions(_formula* f){
     //cout<<"one ontic"<<endl;
@@ -119,34 +77,16 @@ void Init::gen_ontic_actions(_formula* f){
         vector<string> match_str;
         match_data.clear();
         get_str(0, match_str, para_str);
-        //cout<<"\n\nshow para"<<endl;
-        //for(int i = 0; i < para_str.size(); i++){
-        //    cout<<i<<" : "<<para_str[i]<<" ";
-        //}
-        //cout<<endl;
-        //for(int i = 0; i < match_data.size(); i++){
-        //    for(int j = 0; j < match_data[i].size(); j++)
-        //       cout<<j<<" : "<<match_data[i][j]<<" ";
-        //    cout<<endl;
-        //}
-        
-        //cout<<endl;   
-
-        
         for(int i = 0; i < match_data.size(); i++){
             eba.pre_f = gen_pre_by_match(f->subformula_r->subformula_r->subformula_l->subformula_l, para_str,match_data[i]);
             eba.con_eff = gen_con_eff_by_match(f->subformula_r->subformula_r->subformula_r->subformula_l, para_str,match_data[i]);
             eba.name = eff_name;
             eba.act_num = ontic_actions.size();
             eba.para_match = match_data[i];
-            //show(eba.pre_f);
             ontic_actions.push_back(eba);
         } 
     }     
 }
-
-
-
     
 void Init::gen_observe_actions(_formula* f){
     //cout<<"one oba"<<endl;
@@ -202,7 +142,7 @@ void Init::gen_observe_actions(_formula* f){
 pre Init::gen_pre(_formula* f){
     pre p;
     while(f->formula_type == AND_F){
-        //print_f(f->subformula_r->subformula_l);
+        //print_f(out, f->subformula_r->subformula_l);
         //int k = f->subformula_r->pid;
         ///_formula* ff = Formulatab::instance().getAtom(k);
         vector<int> xx = gen_and_nums(Formulatab::instance().getAtom(f->subformula_r->pid)->subformula_l);
@@ -218,18 +158,20 @@ pre Init::gen_pre(_formula* f){
     //show(p);
     return p;
 }
-void Init::show(pre p){
-    fout<<"k"<<endl;
+
+void Init::show(FILE *out, pre p) const {
+    fprintf(out, "K\n");
     for(int i = 0; i < p.k.size(); i++)
-        fout<<p.k[i]<<" ";
-    fout<<endl;
-    fout<<"dk:"<<endl;
+        fprintf(out, "%d ", p.k[i]);
+    fprintf(out, "\n");
+    fprintf(out, "DK\n");
     for(int i = 0; i < p.dk.size(); i++){
         for(int j = 0; j < p.dk[i].size(); j++)
-            fout<<p.dk[i][j]<<" ";
-        fout<<endl;
+            fprintf(out, "%d ", p.dk[i][j]);
+        fprintf(out, "\n");
     }
 }
+
 pre Init::gen_pre_by_match(_formula* f, vector<string> para_str, vector<string> match_str){
     pre p;
     while(f->formula_type == AND_F){
@@ -584,15 +526,15 @@ bool Init::check_if_add_to_vector(int i, vector<int> v){
     return true;
 }
 
-void Init::showground(){
-    fout<<"grounding_map"<<endl;
-    for(map<string,vector<int> >::iterator it = grounding_map.begin(); it != grounding_map.end(); it++){
-        fout<<it->first<<":";
+void Init::showground(FILE *out) const {
+    fprintf(out, "grounding_map\n");
+    for(map<string,vector<int> >::const_iterator it = grounding_map.begin(); it != grounding_map.end(); it++){
+        fprintf(out, "%s:", it->first.c_str());
         for(int i = 0; i < it->second.size(); i++)
-            fout<<Vocabulary::instance().getAtom(it->second[i])<<" ";
-        fout<<endl;
+            fprintf(out, "%s ", Vocabulary::instance().getAtom(it->second[i]));
+        fprintf(out, "\n");
     }    
-    Atoms::instance().show();
+    Atoms::instance().show(out);
 }
 
 
@@ -604,80 +546,52 @@ void Init::genObaDnfAndNeg(){
 }
     
 
-void Init::showmaps(){
+void Init::showmaps(FILE *out) const {
     //Vocabulary::instance().showVocabulary();
-    showground();
-    
-    
-    fout<<"\nshow act"<<endl;
+    showground(out);
+    fprintf(out, "\nshow act\n");
     for(int i = 0; i < ontic_actions.size(); i++){
-        fout<<"act_num: "<<ontic_actions[i].act_num<<" act_name: "<<ontic_actions[i].name<<endl;
-        fout<<"show match: "<<endl;
+        fprintf(out, "act_num: %d act_name: %s\n", ontic_actions[i].act_num, ontic_actions[i].name.c_str());
+        fprintf(out, "show match:\n");
         for(int j = 0; j < ontic_actions[i].para_match.size(); j++)
-            fout<<ontic_actions[i].para_match[j]<<" ";
-        fout<<endl;
-        fout<<"act_con: "<<endl;
+            fprintf(out, "%s ", ontic_actions[i].para_match[i].c_str());
+        fprintf(out, "\nact_con:\n");
         for(int m = 0; m < ontic_actions[i].con_eff.size(); m++){
-            fout<<"con:  ";
+            fprintf(out, "con:  ");
             for(int j = 0; j < ontic_actions[i].con_eff[m].condition.size(); j++)
-                fout<<ontic_actions[i].con_eff[m].condition[j]<<":"<<Atoms::instance().get_atom_string(ontic_actions[i].con_eff[m].condition[j])<<" ";
-            fout<<endl;
-            fout<<"con: propterm"<<endl;
-            fout<<ontic_actions[i].con[m].literals<<endl;
-            fout<<"add:  ";
+                fprintf(out, "%d:%s ", ontic_actions[i].con_eff[m].condition[j], 
+                        Atoms::instance().get_atom_string(ontic_actions[i].con_eff[m].condition[j]).c_str());
+            fprintf(out, "\ncon: propterm\n");
+            ontic_actions[i].con[m].show(out);
+            fprintf(out, "add:  ");
             for(int j = 0; j < ontic_actions[i].con_eff[m].add.size(); j++)
-                fout<<ontic_actions[i].con_eff[m].add[j]<<":"<<Atoms::instance().get_atom_string(ontic_actions[i].con_eff[m].add[j])<<" ";
-            fout<<endl;
-            fout<<"del:  ";
+                fprintf(out, "%d:%s ", ontic_actions[i].con_eff[m].add[j], Atoms::instance().get_atom_string(ontic_actions[i].con_eff[m].add[j]).c_str());
+            fprintf(out, "\ndel:  ");
             for(int j = 0; j < ontic_actions[i].con_eff[m].del.size(); j++)
-                fout<<ontic_actions[i].con_eff[m].del[j]<<":"<<Atoms::instance().get_atom_string(ontic_actions[i].con_eff[m].del[j])<<" ";
-            fout<<endl;
-        }
-        //cout<<"act_pre: "<<endl;
-        //for(int j = 0; j < ontic_actions[i].pre_f.k.size(); j++)
-        //    cout<<ontic_actions[i].pre_f.k[j]<<" ";
-        //cout<<endl;   
-        //for(int k = 0; k < ontic_actions[i].pre_f.dk.size(); k++)
-        //for(int j = 0; j < ontic_actions[i].pre_f.dk[k].size(); j++)
-        //    cout<<ontic_actions[i].pre_f.dk[k][j]<<" ";
-        //cout<<endl;    
-        fout<<"act pre cnf: "<<endl;
-        ontic_actions[i].pre_con.show();
+                fprintf(out, "%d:%s ", ontic_actions[i].con_eff[m].del[j], Atoms::instance().get_atom_string(ontic_actions[i].con_eff[m].del[j]).c_str());
+            fprintf(out, "\n");
+        }   
+        fprintf(out, "act pre cnf: \n");
+        ontic_actions[i].pre_con.show(out);
     }
     for(int i = 0; i < epis_acitons.size(); i++){
-        fout<<"act_num: "<<epis_acitons[i].act_num<<"act_name: "<<epis_acitons[i].name<<endl; 
-        fout<<"show match: "<<endl;
+        fprintf(out, "act_num: %d act_name: %s\n", epis_acitons[i].act_num, epis_acitons[i].name.c_str());
+        fprintf(out, "show match: \n");
         for(int j = 0; j < epis_acitons[i].para_match.size(); j++)
-            fout<<epis_acitons[i].para_match[j]<<" ";
-        fout<<endl;
-        //cout<<"act_pre: "<<endl;
-        //for(int j = 0; j < epis_acitons[i].pre_f.k.size(); j++)
-        //    cout<<epis_acitons[i].pre_f.k[j]<<" ";
-        //cout<<endl;   
-        //for(int k = 0; k < epis_acitons[i].pre_f.dk.size(); k++)
-        //for(int j = 0; j < epis_acitons[i].pre_f.dk[k].size(); j++)
-        //    cout<<epis_acitons[i].pre_f.dk[k][j]<<" ";
-        //cout<<endl;
-        fout<<"act pre cnf: "<<endl;
-        epis_acitons[i].pre_con.show();
-        fout<<"oba:"<<endl;
-        fout<<"pos: "<<endl;
-        //for(int j = 0; j < epis_acitons[i].observe.size(); j++)
-        //    for(set<int>::iterator it = epis_acitons[i].observe[j].begin(); )
-        //    fout<<epis_acitons[i].observe[j]<<":"<<Atoms::instance().get_atom_string(epis_acitons[i].observe[j])<<" ";
-        epis_acitons[i].pos_res.show();
-        fout<<"neg: "<<endl;
-        epis_acitons[i].neg_res.show();
-        fout<<endl;
+            fprintf(out, "%s ", epis_acitons[i].para_match[j].c_str());
+        fprintf(out, "\nact pre cnf: \n");
+        epis_acitons[i].pre_con.show(out);
+        fprintf(out, "oba:\n");
+        fprintf(out, "pos:\n");
+        epis_acitons[i].pos_res.show(out);
+        fprintf(out, "neg:\n");
+        epis_acitons[i].neg_res.show(out);
+        fprintf(out, "\n");
     }
-    
-    fout<<"init episdnf:"<<endl;
-    init.show();
-    fout<<"goal episdnf:"<<endl;
-    goal.show();
-    
-    
-
+    fprintf(out, "init episdnf:");
+    init.show(out);
+    fprintf(out, "goal episdnf:");
+    goal.show(out);
 }
 
 
@@ -689,19 +603,7 @@ void Init::getEpisiDNFInitAndGoal(){
         init_f = init_f->subformula_l;
     }
     init.epis_terms.push_back(getEpisTerm(init_f));
-    fout<<"xxx"<<endl;
-    init.show();
     checkInit();
-    fout<<"xxx1"<<endl;
-    init.show();
-    fout<<"xxx2"<<endl;
-    //cout<<"after check"<<endl;
-    //init.show();
-    //while(goal_f->formula_type == OR_F){
-    //    goal.epis_terms.push_back(getEpisCNFByFormula(goal_f->subformula_r));
-    //    goal_f = goal_f->subformula_l;
-    //}
-    //goal.epis_terms.push_back(getEpisCNFByFormula(goal_f));
     goal = getEpisCNFByFormula(goal_f);
     goal = disDKCon(goal);
 }
@@ -806,20 +708,20 @@ EpisTerm Init::getEpisTerm(_formula* f){
     //}
     //if(f->formula_type == AND_F){
     while(f->formula_type == AND_F){
-        //print_f(f);
+        //print_f(out, f);
         ep.neg_propDNFs.push_back(getPropDNF(f->subformula_r));
         f= f->subformula_l;
     }  
     //}         
     //cout<<"~"<<endl;
-    //print_f(f);
+    //print_f(out, f);
     if(Formulatab::instance().getAtom(f->pid)->formula_type == K_F){
         //cout<<"~~"<<endl;
                 ep.pos_propDNF = getPropDNF(f);
     }
     else{
         //cout<<"~~~"<<endl;
-        //print_f(f);
+        //print_f(out, f);
         ep.neg_propDNFs.push_back(getPropDNF(f));      
     }
 
@@ -852,14 +754,14 @@ vector<set<int> > Init::getDnfFromFormula(_formula* f){
     if(f->formula_type == K_atom)
         f = Formulatab::instance().getAtom(f->pid)->subformula_l;
     //cout<<"process f : "<<endl;
-    //print_f(f);
+    //print_f(out, f);
     _formula* fm = convertToConjuntiveNormalForm(f);
     //cout<<"end cnf"<<endl;
-    //print_f(fm);
+    //print_f(out, fm);
     //cout<<"here"<<endl;
     //cout<<"process cnf f : "<<endl;
-    //print_f(fm);
-    //print_f(fm);
+    //print_f(out, fm);
+    //print_f(out, fm);
     //cout<<endl;
     vector<_formula*> result;
     divideCNFFormula(fm, result);
@@ -884,7 +786,7 @@ vector<set<int> > Init::getDnfFromFormula(_formula* f){
     vs = vcnf_to_vdnf(vs);
     absorb(vs);
     //cout<<"show this dnf"<<endl;
-    //print_f(f);
+    //print_f(out, f);
     //cout<<endl;
     
     
@@ -1324,153 +1226,152 @@ _formula* Init::copyFormula(const _formula* _fml) {
 
 
 
-void Init::print_f(_formula* f){
+void Init::print_f(FILE *out, _formula* f) const {
     switch(f->formula_type){
         case K_atom:
-            cout<<" K_atom ( ";
-            print_f(Formulatab::instance().getAtom(f->pid));
-            cout<<" ) ";
+            fprintf(out, " K_atom ( ");
+            print_f(out, Formulatab::instance().getAtom(f->pid));
+            fprintf(out, " ) ");
             break;
         case K_F:		//k_f
-            cout<<" K ( ";
-            print_f(f->subformula_l);
-            cout<<" ) ";
+            fprintf(out, " K ( ");
+            print_f(out, f->subformula_l);
+            fprintf(out, " ) ");
             break;
         case DK_F:		//dk_f
-            fout<<" DK ( ";
-            print_f(f->subformula_l);
-            cout<<" )";
+            fprintf(out, " DK ( ");
+            print_f(out, f->subformula_l);
+            fprintf(out, " ) ");
             break;  
         case TRUE_F:		//true_f
-            cout<<" TRUE_F "<<endl;
+            fprintf(out, " TRUE_F ");
             break;
         case ONE_ATOM_STATE_F:
-            cout<<" ( ONE_ATOM_STATE_F ";
-            cout<<Vocabulary::instance().getAtom(f->pid);
-            cout<<" )";
+            fprintf(out, " ONE_ATOM_STATE_F (");
+            fprintf(out, "%s", Vocabulary::instance().getAtom(f->pid));
+            fprintf(out, " ) ");
             break;
         case THREE_ATOM_BEHIND_F:
-            cout<<" THREE_ATOM_BEHIND_F ( "<<endl;
-            print_f(f->subformula_l);
-            print_f(f->subformula_r);
-            cout<<" )"<<endl;      
+            fprintf(out, " THREE_ATOM_BEHIND_F ( \n");
+            print_f(out, f->subformula_l);
+            print_f(out, f->subformula_r);
+            fprintf(out, " ) ");   
             break;
         case THREE_ATOMS_F:
-            cout<<" THREE_ATOMS_F ( "<<endl;
-            print_f(f->subformula_l);
-            print_f(f->subformula_r);
-            cout<<" )"<<endl;
+            fprintf(out, " THREE_ATOMS_F ( \n");
+            print_f(out, f->subformula_l);
+            print_f(out, f->subformula_r);
+            fprintf(out, " ) ");
             break;
         case THREE_ATOM_F:
             cout<<" THREE_ATOM_F ( "<<endl;
-            print_f(f->subformula_l);
-            print_f(f->subformula_r);
-            cout<<" )"<<endl;
+            fprintf(out, " THREE_ATOM_F ( \n");
+            print_f(out, f->subformula_l);
+            print_f(out, f->subformula_r);
+            fprintf(out, " ) ");
             break;
         case MULTI_THREE_ATOMS:
-            cout<<" MULTI_THREE_ATOMS ( "<<endl;
-            print_f(f->subformula_l);
-            print_f(f->subformula_r);
-            cout<<" )"<<endl;
+            fprintf(out, " MULTI_THREE_ATOMS ( \n");
+            print_f(out, f->subformula_l);
+            print_f(out, f->subformula_r);
+            fprintf(out, " ) ");
             break;
         case STATE_F: 
-            cout<<" STATE_F ( "<<endl;
-            cout<<Vocabulary::instance().getAtom(f->pid)<<" ";
-            print_f(f->subformula_r);
-            cout<<" )"<<endl;
+            fprintf(out, " STATE_F ( \n");
+            fprintf(out, "%s ", Vocabulary::instance().getAtom(f->pid));
+            print_f(out, f->subformula_r);
+            fprintf(out, " ) ");
             break;
         case VARS_F:
-            cout<<" VARS_F ( "<<endl;
+            fprintf(out, " VARS_F ( \n");
             for(int i = 0; i < f->count; i++)
-                cout<<Vocabulary::instance().getAtom(f->pidlist[i])<<" ";
-            cout<<" )"<<endl;
+                fprintf(out, "%s ", Vocabulary::instance().getAtom(f->pidlist[i]));
+            fprintf(out, " ) ");
             break;
         case VAR_F:
-            cout<<" VAR_F ( "<<endl;
-            cout<<Vocabulary::instance().getAtom(f->pid)<<" ";
-            cout<<" )"<<endl;
+            fprintf(out, " VAR_F ( \n");
+            fprintf(out, "%s ", Vocabulary::instance().getAtom(f->pid));
+            fprintf(out, " ) ");
             break;
-        case NEGA_F:		//negation
-            cout<<" ~";
-            print_f(f->subformula_l);
-            //cout<<" )";
+        case NEGA_F:
+            fprintf(out, " ~");
+            print_f(out, f->subformula_l);
             break;
         case IMPLY_F:
-            cout<<" IMPLY_F ( "<<endl;
-            print_f(f->subformula_l);
-            print_f(f->subformula_r);
-            cout<<" )"<<endl;
+            fprintf(out, " IMPLY_F ( \n");
+            print_f(out, f->subformula_l);
+            print_f(out, f->subformula_r);
+            fprintf(out, " ) ");
             break;
         case EFFECT_F:
-            cout<<" EFFECT_F ( "<<endl;
-            print_f(f->subformula_l);
-            cout<<" )"<<endl;
+            fprintf(out, " EFFECT_F ( \n");
+            print_f(out, f->subformula_l);
+            fprintf(out, " ) ");
             break;
-
         case CONEFFECT_F:
-            cout<<" CONEFFECT_F ( "<<endl;
-            print_f(f->subformula_l);
-            print_f(f->subformula_r);
-            cout<<" )"<<endl;
+            fprintf(out, " CONEFFECT_F ( \n");
+            print_f(out, f->subformula_l);
+            print_f(out, f->subformula_r);
+            fprintf(out, " ) ");
             break;
         case CONOBSERVE_F:
-            cout<<" CONOBSERVE_F ( "<<endl;
-            print_f(f->subformula_l);
-            print_f(f->subformula_r);
-            cout<<" )"<<endl;
+            fprintf(out, " CONOBSERVE_F ( \n");
+            print_f(out, f->subformula_l);
+            print_f(out, f->subformula_r);
+            fprintf(out, " ) ");
             break;
         case OBSERVE_F:
-            cout<<" OBSERVER ( "<<endl;
-            print_f(f->subformula_l);
-            cout<<" )"<<endl;
+            fprintf(out, " OBSERVER ( \n");
+            print_f(out, f->subformula_l);
+            fprintf(out, " ) ");
             break;
         case ACTION_F:
-            cout<<" ACTION ( "<<endl;
-            cout<<Vocabulary::instance().getAtom(f->pid)<<" ";
-            print_f(f->subformula_r);
-            cout<<" )"<<endl;
+            fprintf(out, " ACTION ( \n");
+            fprintf(out, "%s ", Vocabulary::instance().getAtom(f->pid));
+            print_f(out, f->subformula_r);
+            fprintf(out, " ) ");
             break;
         case ACTION_CONTEXT_F:
-            cout<<" ACTION_CONTEXT_F ( "<<endl;
-            print_f(f->subformula_l);
-            print_f(f->subformula_r);
-            cout<<" )"<<endl;
+            fprintf(out, " ACTION_CONTEXT_F ( \n");
+            print_f(out, f->subformula_l);
+            print_f(out, f->subformula_r);
+            fprintf(out, " ) ");
             break;
         case PARAMETERS_F:
-            cout<<" PARAMETERS ( "<<endl;
-            print_f(f->subformula_l); 
-            cout<<" )"<<endl;
+            fprintf(out, " PARAMETERS ( \n");
+            print_f(out, f->subformula_l); 
+            fprintf(out, " ) ");
             break;
         case PRECONDITION_F :
-            cout<<" PRECONDITION ( "<<endl;
-            print_f(f->subformula_l);
-            cout<<" )"<<endl;
+            fprintf(out, " PRECONDITION ( \n");
+            print_f(out, f->subformula_l);
+            fprintf(out, " ) ");
             break;
         case AND_F:
-            cout<<" AND ( "<<endl;
-            print_f(f->subformula_l);
+            fprintf(out, " AND ( \n");
+            print_f(out, f->subformula_l);
             cout<<endl;
-            print_f(f->subformula_r);
-            cout<<" )"<<endl;
+            print_f(out, f->subformula_r);
+            fprintf(out, " ) ");
             break;
         case ONEOF_F:
-            cout<<" ONEOF_F ( "<<endl;
-            print_f(f->subformula_l);
-            print_f(f->subformula_r);
-            cout<<" )"<<endl;
+            fprintf(out, " ONEOF_F ( \n");
+            print_f(out, f->subformula_l);
+            print_f(out, f->subformula_r);
+            fprintf(out, " ) ");
             break;   
             
         case OR_F:
-            cout<<" OR ( ";
-            print_f(f->subformula_l);
-            print_f(f->subformula_r);
-            cout<<" ) ";
+            fprintf(out, " OR ( ");
+            print_f(out, f->subformula_l);
+            print_f(out, f->subformula_r);
+            fprintf(out, " ) ");
             break;
         case EMPTY_F:
-            cout<<" EMPTY "<<endl;
+            fprintf(out, " EMPTY \n");
             break;
-
-            
+        default:
+            assert(0);
     }
     
 }

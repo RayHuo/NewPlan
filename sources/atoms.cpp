@@ -1,76 +1,66 @@
 #include "atoms.h"
 #include <stdlib.h>
-#include<fstream>
-extern ofstream fout;
-Atoms::Atoms(){
+#include <fstream>
+
+Atoms::Atoms() {
     atoms_str.clear();
     length = 0;
 }
 
-Atoms::~Atoms(){
+Atoms::~Atoms() {
     atoms_str.clear();
 }
 
-Atoms& Atoms::instance(){
+Atoms& Atoms::instance() {
     static Atoms atom;
     return atom;
 }
 
-
-
-
-int Atoms::query_atoms(string s){
-    for(int i = 0; i < atoms_str.size(); i++)
-        if(s == atoms_str[i])
-            return i+1;
+int Atoms::query_atoms(string s) {
+    for (int i = 0; i < atoms_str.size(); i++)
+        if (s == atoms_str[i])
+            return i + 1;
     return -1;
 }
 
-int Atoms::add_atoms(string s){
+int Atoms::add_atoms(string s) {
     atoms_str.push_back(s);
     length++;
     return length;
-    
+
 }
 
-string Atoms::get_atom_string(int i){
-    if(i>0)
-        return atoms_str[i-1];
-    return '~'+atoms_str[i*(-1)-1];
+string Atoms::get_atom_string(int i) {
+    if (i > 0)
+        return atoms_str[i - 1];
+    return '~' + atoms_str[i * (-1) - 1];
 }
 
-int Atoms::atoms_length(){
+int Atoms::atoms_length() {
     return length;
 }
 
-void Atoms::show(){
-    for(int i = 0; i < length; i++)
-        fout<<"i: "<<i+1<<" str: "<<atoms_str[i]<<endl;
-    fout<<"str end"<<endl;
-    //cout<<vac_to_atom.size()<<endl;
-    //for(map<int,int>::iterator it = vac_to_atom.begin(); it != vac_to_atom.end(); it++){
-    //    cout<<it->first<<" "<<it->second<<endl;
-    //}
-    fout<<"end atom show"<<endl;
+void Atoms::show(FILE *out) const {
+    for (int i = 0; i < length; i++)
+        fprintf(out, "i: %d str: %s\n", i + 1, atoms_str[i].c_str());
 }
 
-void Atoms::gen_vac_to_atom(){
-    for(int i = 0; i < length; i++){
-      char *c;
-      int len = atoms_str[i].length();
-      c = (char *)malloc((len+1)*sizeof(char));
-      atoms_str[i].copy(c,len,0);
-      c[len]='\0';
-      int cnum = Vocabulary::instance().queryAtom(c);
-      vac_to_atom[cnum] = i+1;
+void Atoms::gen_vac_to_atom() {
+    for (int i = 0; i < length; i++) {
+        char *c;
+        int len = atoms_str[i].length();
+        c = (char *) malloc((len + 1) * sizeof (char));
+        atoms_str[i].copy(c, len, 0);
+        c[len] = '\0';
+        int cnum = Vocabulary::instance().queryAtom(c);
+        vac_to_atom[cnum] = i + 1;
     }
 }
 
-
-int Atoms::get_true_num(int id){
+int Atoms::get_true_num(int id) {
     string s = Vocabulary::instance().getAtom(id);
     int k = query_atoms(s);
-    if(k == -1)
+    if (k == -1)
         return add_atoms(s);
     else
         return k;

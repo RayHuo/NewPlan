@@ -6,6 +6,7 @@
 #include <string>
 #include <string.h>
 #include <vector>
+#include <cstdio>
 #include "structs.h"
 #include "Vocabulary.h"
 using namespace std;
@@ -24,7 +25,7 @@ public:
     int add_atoms(string);
     string get_atom_string(int);
     int atoms_length();
-    void show();
+    void show(FILE *out) const;
     void gen_vac_to_atom();
     int get_true_num(int);
 };

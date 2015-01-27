@@ -158,11 +158,24 @@ list<PropTerm> PropTerm::ontic_prog(const OnticAction& ontic_action)
     return progression;
 }
 
-void PropTerm::show()
+void PropTerm::show(FILE *out, bool print_new_line) const
 {
-    fout << "Show PropTerm" << endl;
-    fout << literals << endl;
-    fout << "End PropTerm" << endl;
+    vector<int> id_atoms;
+    // 提取原子
+    for (size_t i = 0; i < literals.size(); ++ i)
+        if (literals[i])
+            id_atoms.push_back(i);
+    if (id_atoms.empty())
+        return ;
+    // 注意奇数为非
+    fprintf(out, "(%s%s", (id_atoms[0] % 2 ? "~" : ""),
+            Atoms::instance().get_atom_string(id_atoms[0] / 2 + 1).c_str());
+    for (size_t i = 1; i < id_atoms.size(); ++ i)
+        fprintf(out, " & %s%s", (id_atoms[i] % 2 ? "~" : ""),
+                Atoms::instance().get_atom_string(id_atoms[i] / 2 + 1).c_str());
+    fprintf(out, ")");
+    if (print_new_line)
+        fprintf(out, "\n");
 }
 
 bool PropDNF::consistent() const
@@ -341,21 +354,20 @@ bool PropDNF::delete_operation_in_IPIA(const PropTerm &t, list<PropTerm> &pi,
     return is_t_delete;
 }
 
-void PropDNF::show() 
+void PropDNF::show(FILE *out, bool print_new_line) const 
 {
-    fout<<"    show_PropDNF:"<<endl;
-    for(list<PropTerm>::const_iterator it = prop_terms.begin(); it != prop_terms.end(); it++){
-        //cout<<"      "<<it->literals<<endl<<
-        fout<<"(";
-        for(int i = 0; i < Atoms::instance().atoms_length(); i++){
-            if(it->literals[i*2])
-                fout<<Atoms::instance().get_atom_string(i+1)<<" , ";
-            if(it->literals[i*2+1])
-                fout<<"~"<<Atoms::instance().get_atom_string(i+1)<<" , ";
-        }
-        fout<<")"<<endl;
+    if (prop_terms.empty())
+        return ;
+    fprintf(out, "( ");
+    prop_terms.begin()->show(out, false);
+    for (list<PropTerm>::const_iterator it = (++ prop_terms.begin());
+            it != prop_terms.end(); ++ it) {
+        fprintf(out, " | ");
+        it->show(out, false);
     }
-    fout<<"    end_show_PropDNF:"<<endl;
+    fprintf(out, " )");
+    if (print_new_line)
+        fprintf(out, "\n");
 }
 
 bool EpisTerm::consistent() const
@@ -467,15 +479,15 @@ EpisTerm& EpisTerm::separable()
     return *this;
 }
 
-void EpisTerm::show()
-{
-    fout << "Show EpisTerm" << endl;
-    fout << "K part" << endl;
-    pos_propDNF.show();
-    fout << "K^ parts" << endl;
-    for(list<PropDNF>::iterator it = neg_propDNFs.begin(); it != neg_propDNFs.end(); it++)
-        it->show();
-    fout << "End EpisTerm" << endl;   
+void EpisTerm::show(FILE *out) const
+{ 
+    fprintf(out, "K");
+    pos_propDNF.show(out);
+    for (list<PropDNF>::const_iterator it = neg_propDNFs.begin();
+            it != neg_propDNFs.end(); ++ it) {
+        fprintf(out, "~K~");
+        it->show(out);
+    }
 }
 
 
@@ -580,12 +592,13 @@ vector<EpisDNF> EpisDNF::epistemic_prog(const EpisAction& epis_action)
     return result;
 }
 
-void EpisDNF::show()
-{
-    fout << "Show EpisDNF" << endl;
-    for(list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++)
-        it->show();  
-    fout << "End EpisDNF" << endl;          
+void EpisDNF::show(FILE *out) const
+{ 
+    for (list<EpisTerm>::const_iterator it = epis_terms.begin();
+            it != epis_terms.end(); ++ it) {
+        it->show(out);
+        fprintf(out, "\n");
+    }
 }
 
 void EpisDNF::convert_IPIA() {

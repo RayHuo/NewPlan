@@ -30,7 +30,7 @@ Plan::Plan(char **argv){
     
     //in.exec(argv);
     in.exec();
-    in.showmaps();
+    in.showmaps(stdout);
     cout<<"plan argv end init exec"<<endl;
     in.init.convert_IPIA();
     //in.goal.convert_IPIA();

@@ -55,39 +55,56 @@ PropClause& PropClause::minimal()
     return *this;
 }
 
-void PropClause::show()
+void PropClause::show(FILE *out, bool print_new_line) const
 {
-    fout << "Show PropClause" << endl;
-    fout << literals << endl;
-    fout << "End PropClause" << endl;
+    vector<int> id_atoms;
+    // 提取原子
+    for (size_t i = 0; i < literals.size(); ++ i)
+        if (literals[i])
+            id_atoms.push_back(i);
+    if (id_atoms.empty())
+        return ;
+    // 注意奇数为非
+    fprintf(out, "(%s%s", (id_atoms[0] % 2 ? "~" : ""),
+            Atoms::instance().get_atom_string(id_atoms[0] / 2 + 1).c_str());
+    for (size_t i = 1; i < id_atoms.size(); ++ i)
+        fprintf(out, " | %s%s", (id_atoms[i] % 2 ? "~" : ""),
+                Atoms::instance().get_atom_string(id_atoms[i] / 2 + 1).c_str());
+    fprintf(out, ")");
+    if (print_new_line)
+        fprintf(out, "\n");
 }
 
-void PropCNF::show()
-{
-    fout<<"    PropCNF begin"<<endl;
-    for(list<PropClause>::iterator it = prop_clauses.begin(); it != prop_clauses.end(); it++){
-        //cout<<it->literals<<endl<<
-        fout<<"(";
-        for(int i = 0; i < Atoms::instance().atoms_length(); i++){
-            if(it->literals[i*2])
-                fout<<Atoms::instance().get_atom_string(i+1)<<" , ";
-            if(it->literals[i*2+1])
-                fout<<"~"<<Atoms::instance().get_atom_string(i+1)<<" , ";
-        }
-        fout<<")"<<endl;
+void PropCNF::show(FILE *out, bool print_new_line) const
+{    
+    if (prop_clauses.empty())
+        return ;
+    fprintf(out, "( ");
+    prop_clauses.begin()->show(out, false);
+    for (list<PropClause>::const_iterator it = (++ prop_clauses.begin());
+            it != prop_clauses.end(); ++ it) {
+        fprintf(out, " & ");
+        it->show(out, false);
     }
-    fout<<"    PropCNF end"<<endl;
+    fprintf(out, " )");
+    if (print_new_line)
+        fprintf(out, "\n");
 }
 
-void EpisClause::show()
+void EpisClause::show(FILE *out) const
 {
-    fout << "Show EpisClause" << endl;
-    fout << "K^ part" << endl;
-    neg_propCNF.show();
-    fout << "K parts" << endl;
-    for(list<PropCNF>::iterator it = pos_propCNFs.begin(); it != pos_propCNFs.end(); it++)
-        it->show();
-    fout << "End EpisClause" << endl;
+    for (list<PropCNF>::const_iterator it = pos_propCNFs.begin();
+            it != pos_propCNFs.end(); ++ it) {
+        fprintf(out, "K");
+        it->show(out);
+    }
+    for (list<PropCNF>::const_iterator it = neg_propCNFs.begin();
+            it != neg_propCNFs.end(); ++ it) {
+        fprintf(out, "*~K~");
+        it->show(out);
+    }
+    fprintf(out, "~K~");
+    neg_propCNF.show(out);
 }
 
 PropDNF PropCNF::negation() const
@@ -177,12 +194,12 @@ EpisCNF:: EpisCNF()
         it->minimal();
 }
 
-void EpisCNF::show()
+void EpisCNF::show(FILE *out) const
 {
-    fout << "Show EpisCNF" << endl;
-    for(list<EpisClause>::iterator it = epis_clauses.begin(); it != epis_clauses.end(); it++)
-        it->show();
-    fout << "End EpisCNF" << endl;
+    for(list<EpisClause>::const_iterator it = epis_clauses.begin(); it != epis_clauses.end(); it++) {
+        it->show(out);
+        fprintf(out, "\n");
+    }
 }
 
 

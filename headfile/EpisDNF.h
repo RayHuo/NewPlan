@@ -11,6 +11,7 @@
 #include <boost/dynamic_bitset.hpp>
 #include <list>
 #include <iostream>
+#include <cstdio>
 #include "EpisCNF.h"
 
 using namespace std; 
@@ -37,7 +38,7 @@ public:
     boost::dynamic_bitset<> literals;  //一个原子对应两位，那两位分别表示该原子构成的正文字和负文字
     
     // new added
-    void show();
+    void show(FILE *out, bool print_new_line = true) const;
     list<PropTerm> ontic_prog(const OnticAction &ontic_action); //在当前PropTerm上做物理动作的演进，并且返回演进结果
 };
 
@@ -50,7 +51,7 @@ public:
     bool entails(const PropCNF &) const; //judge whether a PropDNF entails a PropDNF or not
     PropDNF& minimal(); //化简命题DNF，即若PropTerm1能够推出PropTerm2， 则从prop_terms中把PropTerm1删除
     PropDNF group(const PropDNF &) const; //merge two PropDNF
-    void show();
+    void show(FILE *out, bool print_new_line = true) const;
     list<PropTerm> prop_terms; //存储了多个命题项，这就构成了命题层面的DNF
 
     // new added
@@ -72,7 +73,7 @@ public:
     bool entails(const EpisClause &) const; //judge whether an EpisTerm entails an EpisClause or not
     EpisTerm& minimal(); //化简认知项，即若K^1 |= K^2, 则删除K^2
     EpisTerm& separable();  
-    void show();
+    void show(FILE *out) const;
   
     // new added
     EpisTerm ontic_prog(const OnticAction &ontic_action); //在当前EpisTerm上做物理动作的演进，并且返回演进结果
@@ -90,7 +91,7 @@ public:
     bool equals(const EpisDNF &); //判断两个知识库是否等价
     bool entails(const EpisCNF&) const; //判断该知识库能够推出某个动作的前置条件
     EpisDNF& minimal(); //对EpisDNF的化简，剔除冗余知识
-    void show();
+    void show(FILE *out) const;
 
     // new added
     EpisDNF ontic_prog(const OnticAction &ontic_action); //在当前知识库上做物理动作的演进，并且返回演进结果
