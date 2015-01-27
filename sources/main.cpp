@@ -33,7 +33,7 @@ map< string,vector<int> > grounding_map;
 vector<OnticAction> ontic_actions;
 vector<EpisAction> epis_acitons;
 
-#define TEST_IPIA
+//#define TEST_IPIA
 
 int main(int argc, char **argv) 
 {
@@ -62,11 +62,6 @@ int main(int argc, char **argv)
     cout << "ipia:" << endl;
     print(stdout, dnf, true);
 #endif
-    dynamic_bitset<> db(6);
-    //db.flip();
-    cout << db << endl;
-    cout << db.set() << endl;
-    
     Plan p(argv);
 //    p.exec_plan();
 //    p.BuildPlan();

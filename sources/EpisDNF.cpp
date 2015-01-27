@@ -191,12 +191,15 @@ bool PropDNF::entails(const PropDNF& propDNF) const
 { 
     //This reasoning rule is Proposition 3.6 DNF |= DNF
     for (list<PropTerm>::const_iterator pre_it = prop_terms.begin(); pre_it != prop_terms.end(); pre_it++) {
+        bool can_entail = false;
         for (list<PropTerm>::const_iterator post_it = propDNF.prop_terms.begin(); post_it != propDNF.prop_terms.end(); post_it++) {
-            if (!pre_it->entails(*post_it))
-                return false; 
-            else //if only one pre term can entail post term, we need to jump the inside loop and see next pre term 
+            if (pre_it->entails(*post_it)) {
+                can_entail = true;
                 break;
+            }
         }
+        if (! can_entail)
+            return false;
     }
     return true;
 }
@@ -266,6 +269,7 @@ void PropDNF::convert_IPIA() {
     list<PropTerm>::const_iterator it = prop_terms.begin();
     list<PropTerm> pi;
     pi.push_back(*it);
+    int j = 1;
     for (++ it; it != prop_terms.end(); ++ it) {
         // Algorithm 1: Incremental prime implicant algorithm
         PropTerm t = *it;
@@ -312,43 +316,34 @@ void PropDNF::convert_IPIA() {
 // 
 bool PropDNF::delete_operation_in_IPIA(const PropTerm &t, list<PropTerm> &pi, 
         list<PropTerm> &segma) {
-    // 化简pi和segma，删除重复元素
-    PropDNF pi_helper;  pi_helper.prop_terms = pi;      
-    pi_helper.minimal();    pi = pi_helper.prop_terms;
-    PropDNF segma_helper;       segma_helper.prop_terms = segma;
-    segma_helper.minimal();         segma = segma_helper.prop_terms;
-    // pi \cup segma
-    list<PropTerm> both;
-    both.insert(both.end(), pi.begin(), pi.end());
-    both.insert(both.end(), segma.begin(), segma.end());
-    //处理pi
+    list<PropTerm> segma_tmp = segma;
+    // 处理pi
     for (list<PropTerm>::iterator it = pi.begin(); it != pi.end(); ) {
-        int count = 0;
-        for (list<PropTerm>::const_iterator it_both = both.begin();
-                it_both != both.end(); ++ it_both) {
-            if (it_both->entails(*it))
-                ++ count;
+        bool is_delete = false;
+        for (list<PropTerm>::const_iterator it_segma = segma_tmp.begin();
+                (! is_delete) && (it_segma != segma_tmp.end()); ++ it_segma) {
+            if (it->entails(*it_segma)) {
+                is_delete = true;
+                it = pi.erase(it);
+            }
         }
-        if (count > 1)
-            it = pi.erase(it);
-        else
+        if (! is_delete)
             ++ it;
     }
     // 处理segma
     bool is_t_delete = false;
     for (list<PropTerm>::iterator it = segma.begin(); it != segma.end(); ) {
-        int count = 0;
-        for (list<PropTerm>::const_iterator it_both = both.begin();
-                it_both != both.end(); ++ it_both) {
-            if (it_both->entails(*it))
-                ++ count;
+        bool is_delete = false;
+        for (list<PropTerm>::const_iterator it_pi = pi.begin();
+                (! is_delete) && (it_pi != pi.end()); ++ it_pi) {
+            if (it->entails(*it_pi)) {
+                is_delete = true;
+                if (it->equals(t))
+                    is_t_delete = true;
+                it = segma.erase(it);
+            }
         }
-        if (count > 1) {
-            if (it->equals(t))
-                is_t_delete = true;
-            it = segma.erase(it);
-        }
-        else
+        if (! is_delete)
             ++ it;
     }
     return is_t_delete;
@@ -460,7 +455,7 @@ EpisTerm& EpisTerm::minimal()
             else
                 post_it++;
         }
-    }  
+    } 
     
     //For an EpisTerm, we need that \psi and each \eta_i are minimal 
     pos_propDNF.minimal();
@@ -594,8 +589,10 @@ vector<EpisDNF> EpisDNF::epistemic_prog(const EpisAction& epis_action)
 
 void EpisDNF::show(FILE *out) const
 { 
+    int i = 0;
     for (list<EpisTerm>::const_iterator it = epis_terms.begin();
             it != epis_terms.end(); ++ it) {
+        fprintf(out, "epis dnf %d:\n", i ++);
         it->show(out);
         fprintf(out, "\n");
     }

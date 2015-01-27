@@ -14,7 +14,7 @@
 #include<fstream>
 #include "atoms.h"
 #include "EpisCNF.h"
-extern ofstream fout;
+
 bool PropClause::entails(const PropClause& prop_clause) const {
     return true;
 }
@@ -103,8 +103,10 @@ void EpisClause::show(FILE *out) const
         fprintf(out, "*~K~");
         it->show(out);
     }
-    fprintf(out, "~K~");
-    neg_propCNF.show(out);
+    if (! neg_propCNF.prop_clauses.empty()) {
+        fprintf(out, "~K~");
+        neg_propCNF.show(out);
+    }
 }
 
 PropDNF PropCNF::negation() const
@@ -196,7 +198,9 @@ EpisCNF:: EpisCNF()
 
 void EpisCNF::show(FILE *out) const
 {
+    int i = 0;
     for(list<EpisClause>::const_iterator it = epis_clauses.begin(); it != epis_clauses.end(); it++) {
+        fprintf(out, "epis cnf %d:\n", i ++);
         it->show(out);
         fprintf(out, "\n");
     }

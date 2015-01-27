@@ -25,15 +25,8 @@ Plan::Plan(char **argv){
     
     explored_num = -1;
     searchtype = 0;
-    //searchtype = int(argv[3][0]) - int('0');
-    cout<<"plan argv to init exec"<<endl;
-    
-    //in.exec(argv);
     in.exec();
     in.showmaps(stdout);
-    cout<<"plan argv end init exec"<<endl;
-    in.init.convert_IPIA();
-    //in.goal.convert_IPIA();
     Node fnd;
     fnd.kb = in.init;
     all_nodes.push_back(fnd);
