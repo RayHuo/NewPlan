@@ -20,7 +20,6 @@
 #include "plan.h"
 #include "EpisDNF.h"
 #include "atoms.h"
-#include "util.h"
 #include "boost/dynamic_bitset.hpp"
 
 using namespace std;
