@@ -21,10 +21,14 @@ Init::~Init() {
 void Init::exec() {
     yyin = fopen("test/demo/demo_domain.pddl", "r");
 //    yyin = fopen("test/unix/unix_domain.pddl", "r");
+//    yyin = fopen("test/blocks/blocks_domain.pddl", "r");
+//    yyin = fopen("test/btc/btc_domain.pddl", "r");
     yyparse();
     fclose(yyin);
     yyin = fopen("test/demo/demo_p.pddl", "r");
 //    yyin = fopen("test/unix/unix_p1.pddl", "r");
+//    yyin = fopen("test/blocks/blocks_p3.pddl", "r");
+//    yyin = fopen("test/btc/btc_p20.pddl", "r");
     yyparse();
     fclose(yyin);
     // 根据parse时的数据结构生成物理动作和感知动作
@@ -600,15 +604,9 @@ void Init::getEpisiDNFInitAndGoal() {
         init_f = init_f->subformula_l;
     }
     init.epis_terms.push_back(getEpisTerm(init_f));
-    
-    cout << "before checkInit" << endl;
-    init.show(stdout);
-    
+
     checkInit();
-    
-    cout << "after checkInit" << endl;
-    init.show(stdout);
- 
+
     goal = getEpisCNFByFormula(goal_f);
     goal = disDKCon(goal);
 }

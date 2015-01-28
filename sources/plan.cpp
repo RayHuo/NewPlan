@@ -29,7 +29,7 @@ Plan::Plan(char **argv){
     explored_num = -1;
     searchtype = 0;
     in.exec();
-//    in.showmaps(stdout);
+    in.showmaps(stdout);
 }
 
 void Plan::exec_plan(){
@@ -64,6 +64,14 @@ void Plan::explore(int node_pos){
     bool execed = false;//deep search find new node
     // 进行感知演进
     for(int i = 0; i < epis_actions.size(); i++){
+        
+//        cout << "check epis!!!!!!!!!!" << endl;
+//        all_nodes[node_pos].kb.show(stdout);
+//        cout << ":=" << endl;
+//        epis_actions[i].pre_con.show(stdout);
+//        cout << all_nodes[node_pos].kb.entails(epis_actions[i].pre_con) << endl;
+//        cout << endl;
+        
         if(all_nodes[node_pos].kb.entails(epis_actions[i].pre_con)){
             cout << epis_actions[i].name << endl;
             vector<EpisDNF> res = all_nodes[node_pos].kb.epistemic_prog(epis_actions[i]);
@@ -144,6 +152,14 @@ void Plan::explore(int node_pos){
     }
     // 进行物理演进
     for(int i = 0; i < ontic_actions.size(); i++){
+        
+//        cout << "check ontic!!!!!!!!!!" << endl;
+//        all_nodes[node_pos].kb.show(stdout);
+//        cout << ":=" << endl;
+//        ontic_actions[i].pre_con.show(stdout);
+//        cout << all_nodes[node_pos].kb.entails(ontic_actions[i].pre_con) << endl;
+//        cout << endl;
+        
         if(all_nodes[node_pos].kb.entails(ontic_actions[i].pre_con)){
             EpisDNF res = all_nodes[node_pos].kb.ontic_prog(ontic_actions[i]);
 #ifdef SHOW_ONTIC    

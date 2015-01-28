@@ -524,10 +524,10 @@ static const yytype_uint16 yyrline[] =
      367,   370,   375,   381,   389,   395,   401,   409,   412,   415,
      418,   436,   457,   464,   477,   489,   501,   504,   507,   510,
      513,   518,   524,   527,   533,   541,   547,   550,   556,   566,
-     571,   575,   585,   592,   596,   606,   609,   614,   620,   630,
-     643,   648,   652,   664,   670,   680,   694,   708,   713,   723,
-     742,   753,   758,   761,   767,   772,   775,   781,   796,   811,
-     818
+     571,   575,   585,   592,   596,   606,   609,   614,   645,   676,
+     689,   694,   698,   710,   716,   726,   740,   754,   759,   769,
+     788,   799,   804,   807,   813,   818,   821,   827,   842,   857,
+     864
 };
 #endif
 
@@ -2238,26 +2238,72 @@ yyreduce:
 #line 614 "parse.y" /* yacc.c:1646  */
     {
       (yyval.f) = (__formula*)malloc(sizeof(_formula));
-      (yyval.f) -> formula_type = ONEOF_F;
-      (yyval.f) -> subformula_l = (yyvsp[-1].f);
-      (yyval.f) -> subformula_r = (yyvsp[0].f);
+      _formula* nl = (__formula*)malloc(sizeof(_formula));
+      _formula* nr = (__formula*)malloc(sizeof(_formula));
+      if((yyvsp[-1].f) -> formula_type != NEGA_F){
+          nl -> formula_type = NEGA_F;
+          nl -> subformula_l = (yyvsp[-1].f);
+      }
+      else{
+          nl = (yyvsp[-1].f) -> subformula_l;
+      }
+      if((yyvsp[0].f) -> formula_type != NEGA_F){
+          nr -> formula_type = NEGA_F;
+          nr -> subformula_l = (yyvsp[0].f);
+      }
+      else{
+          nr = (yyvsp[0].f) -> subformula_l;
+      }
+      _formula* ll = (__formula*)malloc(sizeof(_formula));
+      _formula* rr = (__formula*)malloc(sizeof(_formula));
+      ll -> formula_type = AND_F;
+      ll -> subformula_l = (yyvsp[-1].f);
+      ll -> subformula_r = nr;
+      rr -> formula_type = AND_F;
+      rr -> subformula_l = (yyvsp[0].f);
+      rr -> subformula_r = nl;
+
+      (yyval.f) -> formula_type = OR_F;
+      (yyval.f) -> subformula_l = ll;
+      (yyval.f) -> subformula_r = rr;
     }
-#line 2246 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2271 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 78:
-#line 620 "parse.y" /* yacc.c:1646  */
+#line 645 "parse.y" /* yacc.c:1646  */
     {
       (yyval.f) = (__formula*)malloc(sizeof(_formula));
-      (yyval.f) -> formula_type = ONEOF_F;
-      (yyval.f) -> subformula_l = (yyvsp[-1].f);
-      (yyval.f) -> subformula_r = (yyvsp[0].f);
+      _formula* nl = (__formula*)malloc(sizeof(_formula));
+      _formula* nr = (__formula*)malloc(sizeof(_formula));
+      if((yyvsp[0].f) -> formula_type != NEGA_F){
+          nl -> formula_type = NEGA_F;
+          nl -> subformula_l = (yyvsp[0].f);
+      }
+      else{
+          nl = (yyvsp[0].f) -> subformula_l;
+      }
+      nr -> formula_type = NEGA_F;
+      nr -> subformula_l = (yyvsp[-1].f);
+
+      _formula* ll = (__formula*)malloc(sizeof(_formula));
+      _formula* rr = (__formula*)malloc(sizeof(_formula));
+      ll -> formula_type = AND_F;
+      ll -> subformula_l = (yyvsp[0].f);
+      ll -> subformula_r = nr;
+      rr -> formula_type = AND_F;
+      rr -> subformula_l = (yyvsp[-1].f);
+      rr -> subformula_r = nl;
+
+      (yyval.f) -> formula_type = OR_F;
+      (yyval.f) -> subformula_l = ll;
+      (yyval.f) -> subformula_r = rr;
     }
-#line 2257 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2303 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 79:
-#line 630 "parse.y" /* yacc.c:1646  */
+#line 676 "parse.y" /* yacc.c:1646  */
     {
       (yyval.f) = (__formula*)malloc(sizeof(_formula));
       _formula* f = (__formula*)malloc(sizeof(_formula));
@@ -2271,28 +2317,28 @@ yyreduce:
       (yyval.f) -> subformula_l = f;
       (yyval.f) -> subformula_r = (yyvsp[-1].f);
     }
-#line 2275 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2321 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 80:
-#line 643 "parse.y" /* yacc.c:1646  */
+#line 689 "parse.y" /* yacc.c:1646  */
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 2283 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2329 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 81:
-#line 648 "parse.y" /* yacc.c:1646  */
+#line 694 "parse.y" /* yacc.c:1646  */
     {
       (yyval.f) = (yyvsp[0].f);
 
     }
-#line 2292 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2338 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 82:
-#line 652 "parse.y" /* yacc.c:1646  */
+#line 698 "parse.y" /* yacc.c:1646  */
     {
       (yyval.f) = (__formula*)malloc(sizeof(_formula));
       if((yyvsp[-1].f)-> formula_type != NEGA_F){
@@ -2303,20 +2349,20 @@ yyreduce:
           (yyval.f) = (yyvsp[-1].f) -> subformula_l;
 
     }
-#line 2307 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2353 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 83:
-#line 664 "parse.y" /* yacc.c:1646  */
+#line 710 "parse.y" /* yacc.c:1646  */
     {
       (yyval.f) = (yyvsp[-1].f);
 
     }
-#line 2316 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2362 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 84:
-#line 670 "parse.y" /* yacc.c:1646  */
+#line 716 "parse.y" /* yacc.c:1646  */
     {
       int id = Vocabulary::instance().queryAtom((yyvsp[-1].s));
       if(id < 0)
@@ -2327,11 +2373,11 @@ yyreduce:
       (yyval.f) -> subformula_r = (yyvsp[0].f);
 
     }
-#line 2331 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2377 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 85:
-#line 680 "parse.y" /* yacc.c:1646  */
+#line 726 "parse.y" /* yacc.c:1646  */
     {
       int id = Vocabulary::instance().queryAtom((yyvsp[0].s));
       if(id < 0)
@@ -2344,11 +2390,11 @@ yyreduce:
       string s1((yyvsp[0].s));     
       grounding_map[s1] = v;
     }
-#line 2348 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2394 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 86:
-#line 694 "parse.y" /* yacc.c:1646  */
+#line 740 "parse.y" /* yacc.c:1646  */
     {
       if((yyvsp[-1].f) -> formula_type == VAR_F){
       (yyval.f) = (__formula*)malloc(sizeof(_formula));
@@ -2363,19 +2409,19 @@ yyreduce:
       }
 
     }
-#line 2367 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2413 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 708 "parse.y" /* yacc.c:1646  */
+#line 754 "parse.y" /* yacc.c:1646  */
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 2375 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2421 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 713 "parse.y" /* yacc.c:1646  */
+#line 759 "parse.y" /* yacc.c:1646  */
     {
       int id = Vocabulary::instance().queryAtom((yyvsp[0].s));
       if(id < 0)
@@ -2386,11 +2432,11 @@ yyreduce:
 
 
     }
-#line 2390 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2436 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 723 "parse.y" /* yacc.c:1646  */
+#line 769 "parse.y" /* yacc.c:1646  */
     {
       string s0((yyvsp[-2].s));
 
@@ -2410,11 +2456,11 @@ yyreduce:
 
 
     }
-#line 2414 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2460 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 742 "parse.y" /* yacc.c:1646  */
+#line 788 "parse.y" /* yacc.c:1646  */
     {
       int id = Vocabulary::instance().queryAtom((yyvsp[0].s));
       if(id < 0)
@@ -2424,60 +2470,60 @@ yyreduce:
       (yyval.f) -> formula_type=VAR_F;
 
      }
-#line 2428 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2474 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 753 "parse.y" /* yacc.c:1646  */
+#line 799 "parse.y" /* yacc.c:1646  */
     {
       (yyval.s) = strdup((yyvsp[0].s));
     }
-#line 2436 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2482 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 758 "parse.y" /* yacc.c:1646  */
+#line 804 "parse.y" /* yacc.c:1646  */
     {
 
     }
-#line 2444 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2490 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 761 "parse.y" /* yacc.c:1646  */
+#line 807 "parse.y" /* yacc.c:1646  */
     {
 
     }
-#line 2452 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2498 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 767 "parse.y" /* yacc.c:1646  */
+#line 813 "parse.y" /* yacc.c:1646  */
     {
       //cout<<"object"<<endl;
     }
-#line 2460 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2506 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 772 "parse.y" /* yacc.c:1646  */
+#line 818 "parse.y" /* yacc.c:1646  */
     {
       //cout<<"words1"<<endl;
     }
-#line 2468 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2514 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 775 "parse.y" /* yacc.c:1646  */
+#line 821 "parse.y" /* yacc.c:1646  */
     {
       //cout<<"word2"<<endl;
 
     }
-#line 2477 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2523 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 781 "parse.y" /* yacc.c:1646  */
+#line 827 "parse.y" /* yacc.c:1646  */
     {
 
       
@@ -2493,11 +2539,11 @@ yyreduce:
 
       
     }
-#line 2497 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2543 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 796 "parse.y" /* yacc.c:1646  */
+#line 842 "parse.y" /* yacc.c:1646  */
     {
 
       string s2((yyvsp[0].s));
@@ -2509,30 +2555,30 @@ yyreduce:
 
       //cout<<"word2: "<<s2<<endl;
     }
-#line 2513 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2559 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 811 "parse.y" /* yacc.c:1646  */
+#line 857 "parse.y" /* yacc.c:1646  */
     {
       init_f = (yyvsp[-2].f);
 
       //cout<<"init"<<endl;
     }
-#line 2523 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2569 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 818 "parse.y" /* yacc.c:1646  */
+#line 864 "parse.y" /* yacc.c:1646  */
     {
       goal_f = (yyvsp[-2].f);
       //cout<<"goal"<<endl;
     }
-#line 2532 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2578 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 2536 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2582 "../sources/parse.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2760,5 +2806,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 829 "parse.y" /* yacc.c:1906  */
+#line 875 "parse.y" /* yacc.c:1906  */
 

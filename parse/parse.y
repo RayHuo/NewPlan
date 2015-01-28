@@ -613,15 +613,61 @@ oneofs
 oneof 
     : ONEOF_TOK_P imply imply{
       $$ = (__formula*)malloc(sizeof(_formula));
-      $$ -> formula_type = ONEOF_F;
-      $$ -> subformula_l = $2;
-      $$ -> subformula_r = $3;
+      _formula* nl = (__formula*)malloc(sizeof(_formula));
+      _formula* nr = (__formula*)malloc(sizeof(_formula));
+      if($2 -> formula_type != NEGA_F){
+          nl -> formula_type = NEGA_F;
+          nl -> subformula_l = $2;
+      }
+      else{
+          nl = $2 -> subformula_l;
+      }
+      if($3 -> formula_type != NEGA_F){
+          nr -> formula_type = NEGA_F;
+          nr -> subformula_l = $3;
+      }
+      else{
+          nr = $3 -> subformula_l;
+      }
+      _formula* ll = (__formula*)malloc(sizeof(_formula));
+      _formula* rr = (__formula*)malloc(sizeof(_formula));
+      ll -> formula_type = AND_F;
+      ll -> subformula_l = $2;
+      ll -> subformula_r = nr;
+      rr -> formula_type = AND_F;
+      rr -> subformula_l = $3;
+      rr -> subformula_r = nl;
+
+      $$ -> formula_type = OR_F;
+      $$ -> subformula_l = ll;
+      $$ -> subformula_r = rr;
     }
     | oneof imply{
       $$ = (__formula*)malloc(sizeof(_formula));
-      $$ -> formula_type = ONEOF_F;
-      $$ -> subformula_l = $1;
-      $$ -> subformula_r = $2;
+      _formula* nl = (__formula*)malloc(sizeof(_formula));
+      _formula* nr = (__formula*)malloc(sizeof(_formula));
+      if($2 -> formula_type != NEGA_F){
+          nl -> formula_type = NEGA_F;
+          nl -> subformula_l = $2;
+      }
+      else{
+          nl = $2 -> subformula_l;
+      }
+      nr -> formula_type = NEGA_F;
+      nr -> subformula_l = $1;
+
+      _formula* ll = (__formula*)malloc(sizeof(_formula));
+      _formula* rr = (__formula*)malloc(sizeof(_formula));
+      ll -> formula_type = AND_F;
+      ll -> subformula_l = $2;
+      ll -> subformula_r = nr;
+      rr -> formula_type = AND_F;
+      rr -> subformula_l = $1;
+      rr -> subformula_r = nl;
+
+      $$ -> formula_type = OR_F;
+      $$ -> subformula_l = ll;
+      $$ -> subformula_r = rr;
     }
 
 
