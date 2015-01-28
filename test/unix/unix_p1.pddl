@@ -18,8 +18,7 @@
      (sub_dir sub2 sub21)
      (sub_dir sub2 sub22)
      (is_cur_dir root)
-     
-        (file_in_dir my_file sub11)
+     (file_in_dir my_file sub11)
      )
    ) 
    )   

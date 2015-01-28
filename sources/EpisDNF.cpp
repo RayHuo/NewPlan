@@ -498,7 +498,8 @@ void EpisTerm::show(FILE *out) const
 
 
 void EpisTerm::convert_IPIA() {
-    pos_propDNF.convert_IPIA();
+    if (! pos_propDNF.prop_terms.empty())
+        pos_propDNF.convert_IPIA();
     for (list<PropDNF>::iterator it = neg_propDNFs.begin();
             it != neg_propDNFs.end(); ++ it) {
         it->convert_IPIA();
@@ -553,7 +554,7 @@ EpisDNF& EpisDNF::minimal()
 {
     for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++)
         it-> minimal();
-    
+
     convert_IPIA();
 }
 
@@ -563,6 +564,11 @@ EpisDNF EpisDNF::ontic_prog(const OnticAction& ontic_action)
     for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++) {
         result.epis_terms.push_back(it->ontic_prog(ontic_action));
     }
+    
+//    cout << "!!!!" << endl;
+//    show(stdout);
+//    cout << "-> ontic_prog " << endl;
+//    result.show(stdout);
 
     result.minimal();
     return result;
@@ -591,6 +597,14 @@ vector<EpisDNF> EpisDNF::epistemic_prog(const EpisAction& epis_action)
 	p_episDNF.epis_terms.push_back(p_epis_term);
 	n_episDNF.epis_terms.push_back(n_epis_term);  
     }
+    
+//    cout << "!!!!" << endl;
+//    show(stdout);
+//    cout << "-> epis_prog +" << endl;
+//    p_episDNF.show(stdout);
+//    cout << "-> epis_prog -" << endl;
+//    n_episDNF.show(stdout);
+//    cout << endl;
     
     vector<EpisDNF> result;
     p_episDNF.minimal();

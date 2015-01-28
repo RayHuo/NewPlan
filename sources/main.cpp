@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     cout << "ipia:" << endl;
     print(stdout, dnf, true);
 #endif
-    Plan p(argv);
+    Plan p = Plan(argv);
     p.exec_plan(); 
     p.BuildPlan();
     return 0;

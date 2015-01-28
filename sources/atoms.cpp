@@ -42,7 +42,7 @@ int Atoms::atoms_length() {
 
 void Atoms::show(FILE *out) const {
     for (int i = 0; i < length; i++)
-        fprintf(out, "i: %d str: %s\n", i + 1, atoms_str[i].c_str());
+        fprintf(out, "atom id: %d\tatom name: %s\n", i + 1, atoms_str[i].c_str());
 }
 
 void Atoms::gen_vac_to_atom() {

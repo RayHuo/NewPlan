@@ -125,8 +125,8 @@ void Plan::explore(int node_pos){
     }
     // 进行物理演进
     for(int i = 0; i < ontic_actions.size(); i++){
-        cout<<"in effect"<<endl;
         if(all_nodes[node_pos].kb.entails(ontic_actions[i].pre_con)){
+            cout << ontic_actions[i].name << endl;
             EpisDNF res = all_nodes[node_pos].kb.ontic_prog(ontic_actions[i]);
             if(check_zero_dead(res)) continue;
             int res_pos = checknode(res);

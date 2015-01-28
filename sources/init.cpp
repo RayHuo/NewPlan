@@ -19,10 +19,10 @@ Init::~Init() {
 }
 
 void Init::exec() {
-    yyin = fopen("test/demo/demo_domain.pddl", "r");
+    yyin = fopen("test/unix/unix_domain.pddl", "r");
     yyparse();
     fclose(yyin);
-    yyin = fopen("test/demo/demo_p.pddl", "r");
+    yyin = fopen("test/unix/unix_p2.pddl", "r");
     yyparse();
     fclose(yyin);
     // 根据parse时的数据结构生成物理动作和感知动作
@@ -553,7 +553,7 @@ void Init::showmaps(FILE *out) const {
         fprintf(out, "act_num: %d act_name: %s\n", ontic_actions[i].act_num, ontic_actions[i].name.c_str());
         fprintf(out, "show match:\n");
         for (int j = 0; j < ontic_actions[i].para_match.size(); j++)
-            fprintf(out, "%s ", ontic_actions[i].para_match[i].c_str());
+            fprintf(out, "%s ", ontic_actions[i].para_match[j].c_str());
         fprintf(out, "\naction_pre_condition:\n");
         ontic_actions[i].pre_con.show(out);
         fprintf(out, "\naction_effect:\n");
