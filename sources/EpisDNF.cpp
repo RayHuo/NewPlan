@@ -95,66 +95,65 @@ list<PropTerm> PropTerm::ontic_prog(const OnticAction& ontic_action)
     
     vector<PropTerm> conditions; //convert each con in effect triple to PropTerm 
     for (int eff_i = 0; eff_i < ontic_action.con_eff.size(); eff_i++) {
-        ConEffect cur_con_eff = ontic_action.con_eff[eff_i];  //current effect triple 
-        
+        ConEffect cur_con_eff = ontic_action.con_eff[eff_i];  //current effect triple         
         //convert vector<int> to PropTerm
         PropTerm condition(Atoms::instance().atoms_length() * 2);
         for (int i = 0; i < cur_con_eff.condition.size(); i++) { //current size of condition is 1
             if (cur_con_eff.condition[i] > 0) 
-                condition.literals[(cur_con_eff.condition[i] - 1) * 2];
+                condition.literals.set((cur_con_eff.condition[i] - 1) * 2, true);
             else
-                condition.literals[(0 - cur_con_eff.condition[i] - 1) * 2 + 1];
+                condition.literals.set((- cur_con_eff.condition[i] - 1) * 2 + 1, true);
         }
         conditions.push_back(condition);
-        
         //check current PropTerm. Mostly, splitting is necessary 
         if (!(this->entails(condition) || this->entails(condition.negation()))) {
             int pos = condition.literals.find_first(); //now we has one literal, so can implement like this
-            if (pos % 2 == 0) {
-                PropTerm tmp = *this;
-                tmp.literals[pos] = 1;
-                progression.push_back(tmp);
-                tmp = *this;
-                tmp.literals[pos + 1] = 1;
-                progression.push_back(tmp);
-            }
-            else {
-                PropTerm tmp = *this;
-                tmp.literals[pos] = 1;
-                progression.push_back(tmp);
-                tmp = *this;
-                tmp.literals[pos - 1] = 1;
-                progression.push_back(tmp);
-            }              
-        }       
+            PropTerm tmp = *this;
+            tmp.literals.set(pos, true);
+            progression.push_back(tmp);
+            tmp = *this;   
+            if (pos % 2)
+                tmp.literals.set(pos - 1, true);
+            else
+                tmp.literals.set(pos + 1, true);
+            progression.push_back(tmp);
+        }  
+        else {
+            progression.push_back(*this);
+        }
     }
-    
+    // 删除progression的重复元素
+    PropDNF helper;
+    helper.prop_terms = progression;
+    helper.minimal();
+    progression = helper.prop_terms;
+
     //begin ontic progression for each PropTerm (many PropTerms are split by current PropTerm)
     for (list<PropTerm>::iterator it = progression.begin(); it != progression.end(); it++) {
+        PropTerm origin = *it;//保存没做之前的状态，用作判断条件
         for (int eff_i = 0; eff_i < ontic_action.con_eff.size(); eff_i++) {
-            if (it->entails(conditions[eff_i])) {
+            if (origin.entails(conditions[eff_i])) {
                 // deal with the elements in the add set
                 for (int add_i = 0; add_i < ontic_action.con_eff[eff_i].add.size(); add_i++) {
-                    if (it->literals[ontic_action.con_eff[eff_i].add[add_i] * 2 + 1]) {
-                        it->literals[ontic_action.con_eff[eff_i].add[add_i] * 2 + 1] = 0;
-                        it->literals[ontic_action.con_eff[eff_i].add[add_i] * 2] = 1;
-                    }
-                    else
-                        it->literals[ontic_action.con_eff[eff_i].add[add_i] * 2] = 1;
+                    int pos_i = (ontic_action.con_eff[eff_i].add[add_i] - 1) * 2;
+                    int neg_i = pos_i + 1;
+                    if (it->literals[neg_i])
+                        it->literals.set(neg_i, false);
+                    it->literals.set(pos_i, true);
                 }
                 
                 // deal with the elements in the del set
-                for (int del_i = 0; del_i < ontic_action.con_eff[eff_i].add.size(); del_i++) {
-                    if (it->literals[ontic_action.con_eff[eff_i].add[del_i] * 2]) {
-                        it->literals[ontic_action.con_eff[eff_i].add[del_i] * 2] = 0;
-                        it->literals[ontic_action.con_eff[eff_i].add[del_i] * 2 + 1] = 1;
-                    }
-                    else
-                        it->literals[ontic_action.con_eff[eff_i].add[del_i] * 2 + 1] = 1;
+                for (int del_i = 0; del_i < ontic_action.con_eff[eff_i].del.size(); del_i++) {
+                    int pos_i = (ontic_action.con_eff[eff_i].del[del_i] - 1) * 2;
+                    int neg_i = pos_i + 1;
+                    if (it->literals[pos_i])
+                        it->literals.set(pos_i, false);
+                    it->literals.set(neg_i, true);
                 }
             }
         }
-    }   
+    }
+
     return progression;
 }
 
@@ -240,22 +239,29 @@ PropDNF PropDNF::group(const PropDNF& propDNF) const
 }
 
 PropDNF& PropDNF::minimal()
-{
-    PropDNF result;
-    for (list<PropTerm>::iterator pre_it = prop_terms.begin(); pre_it != prop_terms.end(); pre_it++) {
-        bool can_entail = false;
-        for (list<PropTerm>::iterator post_it = prop_terms.begin(); post_it != prop_terms.end(); post_it++) {
-            if (post_it != pre_it && pre_it->entails(*post_it)) {
-                can_entail = true;
-                break;
-            }       
-        }
-       
-        if(!can_entail)
-            result.prop_terms.push_back(*pre_it);
+{  
+    // 删除非consistent
+    for (list<PropTerm>::iterator it = prop_terms.begin();
+            it != prop_terms.end(); ) {
+        if (! it->consistent())
+            it = prop_terms.erase(it);
+        else 
+            ++ it;
     }
-    
-    this->prop_terms = result.prop_terms;    
+    // 处理蕴含关系
+    for (list<PropTerm>::iterator it_1 = prop_terms.begin(); it_1 != prop_terms.end(); ) {
+        bool is_delete = false;
+        for (list<PropTerm>::iterator it_2 = prop_terms.begin();
+                it_2 != prop_terms.end(); ++ it_2) {
+            if (it_1 != it_2 && it_1->entails(*it_2)) {
+                is_delete = true;
+                it_1 = prop_terms.erase(it_1);
+                break;
+            }
+        }
+        if (! is_delete)
+            ++ it_1;
+    }
     return *this;
 }
 
@@ -264,9 +270,7 @@ PropDNF PropDNF::ontic_prog(const OnticAction& ontic_action)
     PropDNF result;
     for (list<PropTerm>::iterator it = prop_terms.begin(); it != prop_terms.end(); it++) {
         list<PropTerm> res = it->ontic_prog(ontic_action);
-        for (list<PropTerm>::iterator prog_res_it = res.begin(); prog_res_it != res.end(); prog_res_it++)
-            result.prop_terms.push_back(*prog_res_it);
-        //result.prop_terms.push_back((*it).ontic_prog(ontic_action));
+        result.prop_terms.insert(result.prop_terms.end(), res.begin(), res.end());
     }
     return result;
 }
@@ -555,11 +559,11 @@ EpisDNF& EpisDNF::minimal()
 
 EpisDNF EpisDNF::ontic_prog(const OnticAction& ontic_action)
 {
-    cout << "物理演进\n" << endl;
     EpisDNF result;
     for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++) {
         result.epis_terms.push_back(it->ontic_prog(ontic_action));
     }
+
     result.minimal();
     return result;
 }
@@ -601,7 +605,7 @@ void EpisDNF::show(FILE *out) const
     int i = 0;
     for (list<EpisTerm>::const_iterator it = epis_terms.begin();
             it != epis_terms.end(); ++ it) {
-        fprintf(out, "epis dnf %d:\n", i ++);
+        fprintf(out, "epis term %d:\n", i ++);
         it->show(out);
         fprintf(out, "\n");
     }

@@ -57,7 +57,6 @@ void Plan::exec_plan(){
 }
 
 void Plan::explore(int node_pos){
-    cout<<"in explore"<<endl;
     bool execed = false;//deep search find new node
     // 进行感知演进
     for(int i = 0; i < epis_acitons.size(); i++){
@@ -173,8 +172,6 @@ void Plan::explore(int node_pos){
 }
 
 void Plan::expand(Transition ts){
-    cout<<"in expand"<<endl;
-
     if(all_nodes[ts.next_bdd_state].flag != EXPLORED){
         if(all_nodes[ts.next_bdd_state].kb.entails(in.goal))
             all_nodes[ts.next_bdd_state].flag = GOAL;
@@ -313,8 +310,9 @@ void Plan::BuildPlan(){
         if(all_nodes[all_edges[i].front_bdd_state].flag == GOAL && all_nodes[all_edges[i].next_bdd_state].flag == GOAL)
             goal_edges.push_back(all_edges[i]);
     set<int> nodes;
+    cout << endl;
     show_build_result(0, goal_edges, -1, nodes, -1);
-    cout<<endl;    
+    cout << endl;    
 }
 
 void Plan::show_build_result(int node_num, vector<Transition> goal_edges, int tab_num, set<int> nodes, int oldnode){

@@ -601,7 +601,9 @@ void Init::getEpisiDNFInitAndGoal() {
         init_f = init_f->subformula_l;
     }
     init.epis_terms.push_back(getEpisTerm(init_f));
+
     checkInit();
+ 
     goal = getEpisCNFByFormula(goal_f);
     goal = disDKCon(goal);
 }
@@ -687,7 +689,7 @@ void Init::checkInit() {
                 it->neg_propDNFs.push_back(*it1);
             }
         }
-    }
+    }    
     init.minimal();
 }
 
