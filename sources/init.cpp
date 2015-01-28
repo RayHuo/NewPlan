@@ -145,6 +145,8 @@ void Init::gen_observe_actions(_formula* f) {
 
 pre Init::gen_pre(_formula* f) {
     pre p;
+    if（f->formula_type == TRUE_F)
+        return p;
     while (f->formula_type == AND_F) {
         vector<int> xx = gen_and_nums(Formulatab::instance().getAtom(f->subformula_r->pid)->subformula_l);
         p.dk.push_back(xx);
@@ -175,6 +177,8 @@ void Init::show(FILE *out, pre p) const {
 
 pre Init::gen_pre_by_match(_formula* f, vector<string> para_str, vector<string> match_str) {
     pre p;
+    if（f->formula_type == TRUE_F)
+        return p;
     while (f->formula_type == AND_F) {
         p.dk.push_back(gen_bdd_var_nums_by_state(Formulatab::instance().getAtom(f->subformula_r->pid)->subformula_l, para_str, match_str));
         f = f->subformula_l;
