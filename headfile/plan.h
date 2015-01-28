@@ -1,5 +1,3 @@
-
-
 #ifndef PLAN_H
 #define	PLAN_H
 
@@ -14,7 +12,7 @@ extern vector<EpisDNF> epistemic_prog(EpisDNF episDNF, const EpisAction &epis_ac
 class Plan{
 public:
     Plan();
-    Plan(char **argv);
+    Plan(const char *domain, const char *p);
     void exec_plan();
     
     void explore(int);

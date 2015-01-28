@@ -13,10 +13,6 @@
 #include "Progression.h"
 #include <string.h>
 #include <cstdio>
-//#include "DataStructure.h"
-
-
-
 
 extern FILE *yyin;
 
@@ -30,25 +26,16 @@ extern vector<EpisAction> epis_actions;
 
 extern int yyparse();
 
-
-
 class Init{
 public:
     Init();
     ~Init();
     
-    void exec();//执行生成动作
-    
-    //void gen_init_and_goal();
-    //_s5_term gen_s5_from_f(_formula* f);
-    //_disj_k_state gen_dis_from_f(_formula* f);
-    //BDD gen_init_goal_b(_formula*);
-    
-    
+    void exec(const char *domain, const char *p);//执行生成动作
+
     void make_actions();
     void gen_ontic_actions(_formula*);//生成物理动作
     void gen_observe_actions(_formula*);//生成感知动作
-    //_s5_term gen_pre(_formula* f, vector<string> para_str, vector<string> match_str);
     //通过前提公式获得pre类型前提，此类型为中间量目标是生成epis_CNF的前提条件
     pre gen_pre(_formula*);
     //功能同上，适应例化中带变量，匹配生成新原子的情况
@@ -59,7 +46,6 @@ public:
     //从公式获取物理动作效果，三元组形式
     vector<ConEffect> gen_con_eff(_formula* f);
     vector<ConEffect> gen_con_eff_by_match(_formula* f, vector<string> para_str, vector<string> match_str);
-    //BDD gen_var_atom_b(_formula* f, vector<string> para_str, vector<string> match_str);
    //获取该原子公式对应的原子，此处生成原子，存在单例atoms类中返回一个原子序号
     int gen_bddnum_by_state(_formula*);
     //此处命名延用上一用bdd的版本，功能是将一个CNF公式转成
@@ -108,13 +94,7 @@ public:
     set<int> adds(set<int> s, int i);
     //原子号生成公式
     _formula* compositeToAtom(int _atom_id);
-    
-    
-    /*vector<_formula*> v_convertto_vf(vector< set<int> > l);
-    _formula* vf_convertto_formula(vector<_formula*> fl);*/
-    
-    
-    //PropTerm getProTerm(set<int>);
+
     //公式生成propdnf，这里将一个公式进行上面的转dnf步骤，
     //然后dnf已vector<set<int> >形式保存，调用getpropterm转dnf中每个cnf 
     PropDNF getPropDNF(_formula*);
@@ -130,7 +110,6 @@ public:
     
     EpisCNF getEpisCNF(pre);
     EpisCNF disDKCon(EpisCNF);
-
     
     EpisClause getEpisClausePre(vector<int>, bool);
     void getEpisiDNFInitAndGoal();
@@ -152,7 +131,5 @@ public:
     EpisDNF init;
     EpisCNF goal;
     vector<vector<string> > match_data;
-    
-    
 };
 #endif

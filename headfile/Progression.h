@@ -80,16 +80,10 @@ struct Node
 
 struct Transition
 {
-    /*int pre;
-    int next;
-    int act_num;
-    bool is_ontic;
-    bool pos;*/
     int front_bdd_state; //前一个结点
     int next_bdd_state;  //后一个结点
     bool is_observe_action; //是否为观察动作
     bool is_true; //?不明
-    //bool is_new_node;
     int action_number;  //动作的编号
 };
 

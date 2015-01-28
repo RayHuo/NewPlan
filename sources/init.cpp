@@ -18,17 +18,19 @@ Init::~Init() {
     match_data.clear();
 }
 
-void Init::exec() {
-    yyin = fopen("test/demo/demo_domain.pddl", "r");
-//    yyin = fopen("test/unix/unix_domain.pddl", "r");
-//    yyin = fopen("test/blocks/blocks_domain.pddl", "r");
-//    yyin = fopen("test/btc/btc_domain.pddl", "r");
+void Init::exec(const char *domain, const char *p) {
+    yyin = fopen(domain, "r");
+    if (yyin == NULL) {
+        fprintf(stderr, "file '%s' does not exist\n", domain);
+        exit(1);
+    }
     yyparse();
     fclose(yyin);
-    yyin = fopen("test/demo/demo_p.pddl", "r");
-//    yyin = fopen("test/unix/unix_p1.pddl", "r");
-//    yyin = fopen("test/blocks/blocks_p3.pddl", "r");
-//    yyin = fopen("test/btc/btc_p20.pddl", "r");
+    yyin = fopen(p, "r");
+    if (yyin == NULL) {
+        fprintf(stderr, "file '%s' does not exist\n", p);
+        exit(1);
+    }
     yyparse();
     fclose(yyin);
     // 根据parse时的数据结构生成物理动作和感知动作
@@ -145,7 +147,7 @@ void Init::gen_observe_actions(_formula* f) {
 
 pre Init::gen_pre(_formula* f) {
     pre p;
-    if（f->formula_type == TRUE_F)
+    if (f->formula_type == TRUE_F)
         return p;
     while (f->formula_type == AND_F) {
         vector<int> xx = gen_and_nums(Formulatab::instance().getAtom(f->subformula_r->pid)->subformula_l);
@@ -157,8 +159,7 @@ pre Init::gen_pre(_formula* f) {
         p.k = gen_and_nums(Formulatab::instance().getAtom(f->pid)->subformula_l);
     else
         p.dk.push_back(gen_and_nums(Formulatab::instance().getAtom(f->pid)->subformula_l));
-    //p;
-    //show(p);
+
     return p;
 }
 
@@ -177,7 +178,7 @@ void Init::show(FILE *out, pre p) const {
 
 pre Init::gen_pre_by_match(_formula* f, vector<string> para_str, vector<string> match_str) {
     pre p;
-    if（f->formula_type == TRUE_F)
+    if (f->formula_type == TRUE_F)
         return p;
     while (f->formula_type == AND_F) {
         p.dk.push_back(gen_bdd_var_nums_by_state(Formulatab::instance().getAtom(f->subformula_r->pid)->subformula_l, para_str, match_str));
@@ -235,7 +236,6 @@ vector<ConEffect> Init::gen_con_eff(_formula* f_eff) {
 vector<ConEffect> Init::gen_con_eff_by_match(_formula* f_eff, vector<string> para_str, vector<string> match_str) {
     vector<ConEffect> ceall;
     ConEffect ce;
-
 
     while (f_eff->formula_type == THREE_ATOMS_F) {
         if (f_eff->subformula_r->formula_type == THREE_ATOM_F) {
@@ -553,7 +553,6 @@ void Init::genObaDnfAndNeg() {
 }
 
 void Init::showmaps(FILE *out) const {
-    //Vocabulary::instance().showVocabulary();
     showground(out);
     fprintf(out, "\nshow ontic actions\n");
     for (int i = 0; i < ontic_actions.size(); i++) {
@@ -608,9 +607,7 @@ void Init::getEpisiDNFInitAndGoal() {
         init_f = init_f->subformula_l;
     }
     init.epis_terms.push_back(getEpisTerm(init_f));
-
     checkInit();
-
     goal = getEpisCNFByFormula(goal_f);
     goal = disDKCon(goal);
 }

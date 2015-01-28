@@ -4,10 +4,6 @@
  * 
  * Created on December 11, 2014, 7:01 PM
  */
-//#define xx 0
-//#if xx
-//#ifndef EPISCNF_H
-//#define	EPISCNF_H
 #include <boost/dynamic_bitset.hpp>
 #include <list>
 #include <iostream>

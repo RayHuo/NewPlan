@@ -1,13 +1,3 @@
-/*
-struct Node
-{
-    int num;
-    EpisDNF kb;
-    STATE_TYPE flag;
-    bool isloated;
-};
-*/
-
 #include"plan.h"
 
 //#define SHOW_EPIS
@@ -16,24 +6,20 @@ struct Node
 Plan::Plan(){
     all_nodes.clear();
     all_edges.clear();
-
-    //all_nodes.push_back(in.init);
     explored_num = -1;
     searchtype = 0;
 }
 
-Plan::Plan(char **argv){
+Plan::Plan(const char *domain, const char *p){
     all_nodes.clear();
     all_edges.clear();
-    
     explored_num = -1;
     searchtype = 0;
-    in.exec();
-    in.showmaps(stdout);
+    in.exec(domain, p);
+//    in.showmaps(stdout);
 }
 
 void Plan::exec_plan(){
-    cout<<"\nexec plan"<<endl;
     if(in.init.entails(in.goal)) {
         return;
     }
@@ -47,12 +33,8 @@ void Plan::exec_plan(){
         int node_pos = get_tobeexplored_node();//heuristic
         if(node_pos == -1)
             return ;
-//        cout << "all_nodes size: " << all_nodes.size() << endl;
-//        cout << "deal node: " << node_pos <<endl;
-//        cout << "kb:" << endl;
-        all_nodes[node_pos].kb.show(stdout);
+        
         explore(node_pos); 
-
         if(all_nodes[0].flag == GOAL)
             return ;//之后再调用BuildPlan，原算法中的Tree
         if(all_nodes[0].flag == DEAD)
@@ -63,17 +45,8 @@ void Plan::exec_plan(){
 void Plan::explore(int node_pos){
     bool execed = false;//deep search find new node
     // 进行感知演进
-    for(int i = 0; i < epis_actions.size(); i++){
-        
-//        cout << "check epis!!!!!!!!!!" << endl;
-//        all_nodes[node_pos].kb.show(stdout);
-//        cout << ":=" << endl;
-//        epis_actions[i].pre_con.show(stdout);
-//        cout << all_nodes[node_pos].kb.entails(epis_actions[i].pre_con) << endl;
-//        cout << endl;
-        
+    for(int i = 0; i < epis_actions.size(); i++){        
         if(all_nodes[node_pos].kb.entails(epis_actions[i].pre_con)){
-            cout << epis_actions[i].name << endl;
             vector<EpisDNF> res = all_nodes[node_pos].kb.epistemic_prog(epis_actions[i]);
 #ifdef SHOW_EPIS    
             cout << "==========================================================" << endl;
@@ -147,19 +120,9 @@ void Plan::explore(int node_pos){
                 execed = true;
             }
         }
-        else
-            cout<<"not sat"<<endl;
     }
     // 进行物理演进
     for(int i = 0; i < ontic_actions.size(); i++){
-        
-//        cout << "check ontic!!!!!!!!!!" << endl;
-//        all_nodes[node_pos].kb.show(stdout);
-//        cout << ":=" << endl;
-//        ontic_actions[i].pre_con.show(stdout);
-//        cout << all_nodes[node_pos].kb.entails(ontic_actions[i].pre_con) << endl;
-//        cout << endl;
-        
         if(all_nodes[node_pos].kb.entails(ontic_actions[i].pre_con)){
             EpisDNF res = all_nodes[node_pos].kb.ontic_prog(ontic_actions[i]);
 #ifdef SHOW_ONTIC    
@@ -356,9 +319,7 @@ void Plan::BuildPlan(){
         if(all_nodes[all_edges[i].front_bdd_state].flag == GOAL && all_nodes[all_edges[i].next_bdd_state].flag == GOAL)
             goal_edges.push_back(all_edges[i]);
     set<int> nodes;
-    cout << endl;
-    show_build_result(0, goal_edges, -1, nodes, -1);
-    cout << endl;    
+    show_build_result(0, goal_edges, -1, nodes, -1);   
 }
 
 void Plan::show_build_result(int node_num, vector<Transition> goal_edges, int tab_num, set<int> nodes, int oldnode){

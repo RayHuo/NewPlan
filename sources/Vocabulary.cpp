@@ -1,4 +1,3 @@
-
 #include "Vocabulary.h"
 #include <cstdio>
 #include <cstring>
