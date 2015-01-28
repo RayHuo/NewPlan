@@ -8,21 +8,23 @@
 
 Init::Init() {
     ontic_actions.clear();
-    epis_acitons.clear();
+    epis_actions.clear();
     match_data.clear();
 }
 
 Init::~Init() {
     ontic_actions.clear();
-    epis_acitons.clear();
+    epis_actions.clear();
     match_data.clear();
 }
 
 void Init::exec() {
-    yyin = fopen("test/unix/unix_domain.pddl", "r");
+    yyin = fopen("test/demo/demo_domain.pddl", "r");
+//    yyin = fopen("test/unix/unix_domain.pddl", "r");
     yyparse();
     fclose(yyin);
-    yyin = fopen("test/unix/unix_p2.pddl", "r");
+    yyin = fopen("test/demo/demo_p.pddl", "r");
+//    yyin = fopen("test/unix/unix_p1.pddl", "r");
     yyparse();
     fclose(yyin);
     // 根据parse时的数据结构生成物理动作和感知动作
@@ -96,8 +98,8 @@ void Init::gen_observe_actions(_formula* f) {
         oba.name = Vocabulary::instance().getAtom(f->pid);
         //oba.observe = gen_oba_eff(f->subformula_r->subformula_r->subformula_r->subformula_l);
         oba.observe = getDnfFromFormula(f->subformula_r->subformula_r->subformula_r->subformula_l);
-        oba.act_num = epis_acitons.size();
-        epis_acitons.push_back(oba);
+        oba.act_num = epis_actions.size();
+        epis_actions.push_back(oba);
     } else {
         vector<string> para_str;
         _formula* f_para = f->subformula_r->subformula_l->subformula_l;
@@ -130,9 +132,9 @@ void Init::gen_observe_actions(_formula* f) {
             //oba.observe = gen_bdd_var_nums_by_state(f->subformula_r->subformula_r->subformula_r->subformula_l, para_str,match_data[i]);
             oba.observe = getDnfFromFormulaByVar(f->subformula_r->subformula_r->subformula_r->subformula_l, para_str, match_data[i]);
             oba.name = Vocabulary::instance().getAtom(f->pid);
-            oba.act_num = epis_acitons.size();
+            oba.act_num = epis_actions.size();
             oba.para_match = match_data[i];
-            epis_acitons.push_back(oba);
+            epis_actions.push_back(oba);
         }
     }
 }
@@ -140,9 +142,6 @@ void Init::gen_observe_actions(_formula* f) {
 pre Init::gen_pre(_formula* f) {
     pre p;
     while (f->formula_type == AND_F) {
-        //print_f(out, f->subformula_r->subformula_l);
-        //int k = f->subformula_r->pid;
-        ///_formula* ff = Formulatab::instance().getAtom(k);
         vector<int> xx = gen_and_nums(Formulatab::instance().getAtom(f->subformula_r->pid)->subformula_l);
         p.dk.push_back(xx);
 
@@ -539,9 +538,9 @@ void Init::showground(FILE *out) const {
 }
 
 void Init::genObaDnfAndNeg() {
-    for (int i = 0; i < epis_acitons.size(); i++) {
-        epis_acitons[i].pos_res = getPropDNFFromVS(epis_acitons[i].observe);
-        epis_acitons[i].neg_res = getPropDNFFromVS(getNegDnf(epis_acitons[i].observe));
+    for (int i = 0; i < epis_actions.size(); i++) {
+        epis_actions[i].pos_res = getPropDNFFromVS(epis_actions[i].observe);
+        epis_actions[i].neg_res = getPropDNFFromVS(getNegDnf(epis_actions[i].observe));
     }
 }
 
@@ -575,18 +574,18 @@ void Init::showmaps(FILE *out) const {
         }
     }
     fprintf(out, "\nshow epis actions\n");
-    for (int i = 0; i < epis_acitons.size(); i++) {
-        fprintf(out, "act_num: %d act_name: %s\n", epis_acitons[i].act_num, epis_acitons[i].name.c_str());
+    for (int i = 0; i < epis_actions.size(); i++) {
+        fprintf(out, "act_num: %d act_name: %s\n", epis_actions[i].act_num, epis_actions[i].name.c_str());
         fprintf(out, "show match: \n");
-        for (int j = 0; j < epis_acitons[i].para_match.size(); j++)
-            fprintf(out, "%s ", epis_acitons[i].para_match[j].c_str());
+        for (int j = 0; j < epis_actions[i].para_match.size(); j++)
+            fprintf(out, "%s ", epis_actions[i].para_match[j].c_str());
         fprintf(out, "\naction_pre_condition:\n");
-        epis_acitons[i].pre_con.show(out);
+        epis_actions[i].pre_con.show(out);
         fprintf(out, "observe:\n");
         fprintf(out, "pos:\n");
-        epis_acitons[i].pos_res.show(out);
+        epis_actions[i].pos_res.show(out);
         fprintf(out, "neg:\n");
-        epis_acitons[i].neg_res.show(out);
+        epis_actions[i].neg_res.show(out);
         fprintf(out, "\n");
     }
     fprintf(out, "\ninit episdnf:\n");
@@ -601,8 +600,14 @@ void Init::getEpisiDNFInitAndGoal() {
         init_f = init_f->subformula_l;
     }
     init.epis_terms.push_back(getEpisTerm(init_f));
-
+    
+    cout << "before checkInit" << endl;
+    init.show(stdout);
+    
     checkInit();
+    
+    cout << "after checkInit" << endl;
+    init.show(stdout);
  
     goal = getEpisCNFByFormula(goal_f);
     goal = disDKCon(goal);
@@ -843,8 +848,8 @@ void Init::genActionPreCnd() {
     for (int i = 0; i < ontic_actions.size(); i++) {
         ontic_actions[i].pre_con = getEpisCNF(ontic_actions[i].pre_f);
     }
-    for (int i = 0; i < epis_acitons.size(); i++) {
-        epis_acitons[i].pre_con = getEpisCNF(epis_acitons[i].pre_f);
+    for (int i = 0; i < epis_actions.size(); i++) {
+        epis_actions[i].pre_con = getEpisCNF(epis_actions[i].pre_f);
     }
 }
 

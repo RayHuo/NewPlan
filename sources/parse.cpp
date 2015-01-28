@@ -525,9 +525,9 @@ static const yytype_uint16 yyrline[] =
      418,   436,   457,   464,   477,   489,   501,   504,   507,   510,
      513,   518,   524,   527,   533,   541,   547,   550,   556,   566,
      571,   575,   585,   592,   596,   606,   609,   614,   620,   630,
-     643,   648,   652,   664,   670,   680,   694,   710,   715,   725,
-     744,   755,   760,   763,   769,   774,   777,   783,   798,   813,
-     820
+     643,   648,   652,   664,   670,   680,   694,   708,   713,   723,
+     742,   753,   758,   761,   767,   772,   775,   781,   796,   811,
+     818
 };
 #endif
 
@@ -2358,26 +2358,24 @@ yyreduce:
       (yyval.f) -> pidlist[1] = (yyvsp[0].f) -> pid;
       }
       else{
-cout << (&(yyval.f)) << endl;
-cout << (&(yyvsp[-1].f)) << endl;
       (yyval.f) -> count = (yyval.f) -> count + 1;
       (yyval.f) -> pidlist[(yyval.f) -> count-1] = (yyvsp[0].f) -> pid;
       }
 
     }
-#line 2369 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2367 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 87:
-#line 710 "parse.y" /* yacc.c:1646  */
+#line 708 "parse.y" /* yacc.c:1646  */
     {
       (yyval.f) = (yyvsp[0].f);
     }
-#line 2377 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2375 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 88:
-#line 715 "parse.y" /* yacc.c:1646  */
+#line 713 "parse.y" /* yacc.c:1646  */
     {
       int id = Vocabulary::instance().queryAtom((yyvsp[0].s));
       if(id < 0)
@@ -2388,11 +2386,11 @@ cout << (&(yyvsp[-1].f)) << endl;
 
 
     }
-#line 2392 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2390 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 89:
-#line 725 "parse.y" /* yacc.c:1646  */
+#line 723 "parse.y" /* yacc.c:1646  */
     {
       string s0((yyvsp[-2].s));
 
@@ -2412,11 +2410,11 @@ cout << (&(yyvsp[-1].f)) << endl;
 
 
     }
-#line 2416 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2414 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 90:
-#line 744 "parse.y" /* yacc.c:1646  */
+#line 742 "parse.y" /* yacc.c:1646  */
     {
       int id = Vocabulary::instance().queryAtom((yyvsp[0].s));
       if(id < 0)
@@ -2426,60 +2424,60 @@ cout << (&(yyvsp[-1].f)) << endl;
       (yyval.f) -> formula_type=VAR_F;
 
      }
-#line 2430 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2428 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 91:
-#line 755 "parse.y" /* yacc.c:1646  */
+#line 753 "parse.y" /* yacc.c:1646  */
     {
       (yyval.s) = strdup((yyvsp[0].s));
     }
-#line 2438 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2436 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 92:
-#line 760 "parse.y" /* yacc.c:1646  */
+#line 758 "parse.y" /* yacc.c:1646  */
     {
 
     }
-#line 2446 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2444 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 93:
-#line 763 "parse.y" /* yacc.c:1646  */
+#line 761 "parse.y" /* yacc.c:1646  */
     {
 
     }
-#line 2454 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2452 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 769 "parse.y" /* yacc.c:1646  */
+#line 767 "parse.y" /* yacc.c:1646  */
     {
       //cout<<"object"<<endl;
     }
-#line 2462 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2460 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 95:
-#line 774 "parse.y" /* yacc.c:1646  */
+#line 772 "parse.y" /* yacc.c:1646  */
     {
       //cout<<"words1"<<endl;
     }
-#line 2470 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2468 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 96:
-#line 777 "parse.y" /* yacc.c:1646  */
+#line 775 "parse.y" /* yacc.c:1646  */
     {
       //cout<<"word2"<<endl;
 
     }
-#line 2479 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2477 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 97:
-#line 783 "parse.y" /* yacc.c:1646  */
+#line 781 "parse.y" /* yacc.c:1646  */
     {
 
       
@@ -2495,11 +2493,11 @@ cout << (&(yyvsp[-1].f)) << endl;
 
       
     }
-#line 2499 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2497 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 98:
-#line 798 "parse.y" /* yacc.c:1646  */
+#line 796 "parse.y" /* yacc.c:1646  */
     {
 
       string s2((yyvsp[0].s));
@@ -2511,30 +2509,30 @@ cout << (&(yyvsp[-1].f)) << endl;
 
       //cout<<"word2: "<<s2<<endl;
     }
-#line 2515 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2513 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 99:
-#line 813 "parse.y" /* yacc.c:1646  */
+#line 811 "parse.y" /* yacc.c:1646  */
     {
       init_f = (yyvsp[-2].f);
 
       //cout<<"init"<<endl;
     }
-#line 2525 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2523 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
   case 100:
-#line 820 "parse.y" /* yacc.c:1646  */
+#line 818 "parse.y" /* yacc.c:1646  */
     {
       goal_f = (yyvsp[-2].f);
       //cout<<"goal"<<endl;
     }
-#line 2534 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2532 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 2538 "../sources/parse.cpp" /* yacc.c:1646  */
+#line 2536 "../sources/parse.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2762,5 +2760,5 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 831 "parse.y" /* yacc.c:1906  */
+#line 829 "parse.y" /* yacc.c:1906  */
 

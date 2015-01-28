@@ -9,6 +9,10 @@ struct Node
 */
 
 #include"plan.h"
+
+//#define SHOW_EPIS
+//#define SHOW_ONTIC
+
 Plan::Plan(){
     all_nodes.clear();
     all_edges.clear();
@@ -43,9 +47,9 @@ void Plan::exec_plan(){
         int node_pos = get_tobeexplored_node();//heuristic
         if(node_pos == -1)
             return ;
-        cout << "all_nodes size: " << all_nodes.size() << endl;
-        cout << "deal node: " << node_pos <<endl;
-        cout << "kb:" << endl;
+//        cout << "all_nodes size: " << all_nodes.size() << endl;
+//        cout << "deal node: " << node_pos <<endl;
+//        cout << "kb:" << endl;
         all_nodes[node_pos].kb.show(stdout);
         explore(node_pos); 
 
@@ -59,10 +63,25 @@ void Plan::exec_plan(){
 void Plan::explore(int node_pos){
     bool execed = false;//deep search find new node
     // 进行感知演进
-    for(int i = 0; i < epis_acitons.size(); i++){
-        if(all_nodes[node_pos].kb.entails(epis_acitons[i].pre_con)){
-            cout << epis_acitons[i].name << endl;
-            vector<EpisDNF> res = all_nodes[node_pos].kb.epistemic_prog(epis_acitons[i]);
+    for(int i = 0; i < epis_actions.size(); i++){
+        if(all_nodes[node_pos].kb.entails(epis_actions[i].pre_con)){
+            cout << epis_actions[i].name << endl;
+            vector<EpisDNF> res = all_nodes[node_pos].kb.epistemic_prog(epis_actions[i]);
+#ifdef SHOW_EPIS    
+            cout << "==========================================================" << endl;
+            cout << "from KB:" << endl;
+            all_nodes[node_pos].kb.show(stdout);
+            cout << "!!!!!!!!!!!!!!!! ";
+            cout << epis_actions[i].name << ": ";
+            for (size_t j = 0; j < ontic_actions[i].para_match.size(); ++ j) {
+                cout << epis_actions[i].para_match[j] << " ";
+            }
+            cout << " !!!!!!!!!!!!!!!!" << endl;
+            cout << "++++" << endl;
+            res[0].show(stdout);
+            cout << "----" << endl;
+            res[1].show(stdout);
+#endif
             if(check_zero_dead(res[0]) || check_zero_dead(res[1]))
                 continue;
             int res_pos = checknode(res[0]);// find if old node; if it is old node, then return node number            
@@ -126,8 +145,19 @@ void Plan::explore(int node_pos){
     // 进行物理演进
     for(int i = 0; i < ontic_actions.size(); i++){
         if(all_nodes[node_pos].kb.entails(ontic_actions[i].pre_con)){
-            cout << ontic_actions[i].name << endl;
             EpisDNF res = all_nodes[node_pos].kb.ontic_prog(ontic_actions[i]);
+#ifdef SHOW_ONTIC    
+            cout << "==========================================================" << endl;
+            cout << "from KB:" << endl;
+            all_nodes[node_pos].kb.show(stdout);
+            cout << "################ ";
+            cout << ontic_actions[i].name << ": ";
+            for (size_t j = 0; j < ontic_actions[i].para_match.size(); ++ j) {
+                cout << ontic_actions[i].para_match[j] << " ";
+            }
+            cout << " ################" << endl;
+            res.show(stdout);
+#endif
             if(check_zero_dead(res)) continue;
             int res_pos = checknode(res);
             if(res_pos == node_pos) continue;
@@ -330,14 +360,14 @@ void Plan::show_build_result(int node_num, vector<Transition> goal_edges, int ta
                 cout << " ";
             if (next_trans[i].is_observe_action) {
                 if (next_trans[i].is_true){                   
-                    cout << epis_acitons[next_trans[i].action_number].name;
+                    cout << epis_actions[next_trans[i].action_number].name;
                     cout<<" +:";
-                    if(epis_acitons[next_trans[i].action_number].para_match.size()!=0){
+                    if(epis_actions[next_trans[i].action_number].para_match.size()!=0){
                         cout<<" (";
-                        for(int j = 0; j < epis_acitons[next_trans[i].action_number].para_match.size()-1; j++)
-                            cout<<epis_acitons[next_trans[i].action_number].para_match[j]<<",";
-                        if(epis_acitons[next_trans[i].action_number].para_match.size() > 0)
-                            cout<<epis_acitons[next_trans[i].action_number].para_match[epis_acitons[next_trans[i].action_number].para_match.size()-1];
+                        for(int j = 0; j < epis_actions[next_trans[i].action_number].para_match.size()-1; j++)
+                            cout<<epis_actions[next_trans[i].action_number].para_match[j]<<",";
+                        if(epis_actions[next_trans[i].action_number].para_match.size() > 0)
+                            cout<<epis_actions[next_trans[i].action_number].para_match[epis_actions[next_trans[i].action_number].para_match.size()-1];
                         cout<<")";
                     }
                     cout<<endl; 
@@ -345,14 +375,14 @@ void Plan::show_build_result(int node_num, vector<Transition> goal_edges, int ta
                     show_build_result(next_trans[i].next_bdd_state, goal_edges, tab_num, nodes, node_num);
                 }
                 else{
-                    cout << epis_acitons[next_trans[i].action_number].name;
+                    cout << epis_actions[next_trans[i].action_number].name;
                     cout<<" -:";
-                    if(epis_acitons[next_trans[i].action_number].para_match.size()!=0){
+                    if(epis_actions[next_trans[i].action_number].para_match.size()!=0){
                         cout<<" (";
-                        for(int j = 0; j < epis_acitons[next_trans[i].action_number].para_match.size()-1; j++)
-                            cout<<epis_acitons[next_trans[i].action_number].para_match[j]<<",";
-                        if(epis_acitons[next_trans[i].action_number].para_match.size() > 0)
-                            cout<<epis_acitons[next_trans[i].action_number].para_match[epis_acitons[next_trans[i].action_number].para_match.size()-1];                        
+                        for(int j = 0; j < epis_actions[next_trans[i].action_number].para_match.size()-1; j++)
+                            cout<<epis_actions[next_trans[i].action_number].para_match[j]<<",";
+                        if(epis_actions[next_trans[i].action_number].para_match.size() > 0)
+                            cout<<epis_actions[next_trans[i].action_number].para_match[epis_actions[next_trans[i].action_number].para_match.size()-1];                        
                         cout<<")";
                     }
                     cout<<endl;

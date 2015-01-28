@@ -26,7 +26,7 @@ extern vector<_formula*> actions_f;
 //例化原子中原子号和类型的对照
 extern map< string,vector<int> > grounding_map;
 extern vector<OnticAction> ontic_actions;
-extern vector<EpisAction> epis_acitons;
+extern vector<EpisAction> epis_actions;
 
 extern int yyparse();
 

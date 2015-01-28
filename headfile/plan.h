@@ -7,7 +7,7 @@
 #include <set>
 
 extern vector<OnticAction> ontic_actions;
-extern vector<EpisAction> epis_acitons;
+extern vector<EpisAction> epis_actions;
 extern EpisDNF ontic_prog(EpisDNF episDNF, const OnticAction &ontic_action);
 
 extern vector<EpisDNF> epistemic_prog(EpisDNF episDNF, const EpisAction &epis_action);
