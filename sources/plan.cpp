@@ -38,9 +38,9 @@ void Plan::exec_plan(){
         
         explore(node_pos); 
         if(all_nodes[0].flag == GOAL) {
-            BuildPlan();//之后再调用BuildPlan，原算法中的Tree
             clock_t t_end = clock();
             search_time = difftime(t_end, t_start) / 1000000.0;
+            BuildPlan();//之后再调用BuildPlan，原算法中的Tree
             return ;
         }
         if(all_nodes[0].flag == DEAD)
@@ -340,7 +340,7 @@ void Plan::show_statistic() const {
 }
     
 
-int Plan::show_build_result(int node_num, const vector<Transition> &goal_edges, int tab_num, set<int> &nodes, int oldnode){
+int Plan::show_build_result(int node_num, const vector<Transition> &goal_edges, int tab_num, set<int> nodes, int oldnode){
     int depth = 0;
     ++ plan_tree_node_num;
     tab_num++;

@@ -8,7 +8,7 @@ Plan tree:
  senseL -:
 
 Statistic:
- preprocess time: 0.0004s
+ preprocess time: 0.0005s
  search time: 0.0003s
  solution size: 6
  solution depth: 3
@@ -47,7 +47,7 @@ Plan tree:
 
 Statistic:
  preprocess time: 0.0011s
- search time: 0.3849s
+ search time: 0.3584s
  solution size: 15
  solution depth: 10
  search size: 469
@@ -61,8 +61,8 @@ Plan tree:
     drop (o1,p11)
 
 Statistic:
- preprocess time: 0.0033s
- search time: 0.8217s
+ preprocess time: 0.0029s
+ search time: 0.8066s
  solution size: 5
  solution depth: 4
  search size: 490
@@ -74,8 +74,8 @@ Plan tree:
   move (p12,p22)
 
 Statistic:
- preprocess time: 0.0034s
- search time: 0.0013s
+ preprocess time: 0.0032s
+ search time: 0.0010s
  solution size: 3
  solution depth: 2
  search size: 4
@@ -91,8 +91,8 @@ Plan tree:
       move (p43,p53)
 
 Statistic:
- preprocess time: 0.0483s
- search time: 29.3795s
+ preprocess time: 0.0509s
+ search time: 31.9453s
  solution size: 7
  solution depth: 6
  search size: 281
@@ -111,7 +111,7 @@ Plan tree:
 
 Statistic:
  preprocess time: 0.0015s
- search time: 0.0560s
+ search time: 0.0555s
  solution size: 9
  solution depth: 5
  search size: 115
@@ -124,8 +124,8 @@ Plan tree:
    pickup (o1,p11)
 
 Statistic:
- preprocess time: 0.0048s
- search time: 0.2503s
+ preprocess time: 0.0049s
+ search time: 0.2418s
  solution size: 4
  solution depth: 3
  search size: 147
@@ -138,8 +138,8 @@ Plan tree:
    mv (my_file,sub11,root)
 
 Statistic:
- preprocess time: 0.0034s
- search time: 0.0397s
+ preprocess time: 0.0033s
+ search time: 0.0361s
  solution size: 4
  solution depth: 3
  search size: 62
@@ -152,8 +152,8 @@ Plan tree:
    mv (my_file,sub11,root)
 
 Statistic:
- preprocess time: 0.0184s
- search time: 0.5715s
+ preprocess time: 0.0168s
+ search time: 0.5847s
  solution size: 4
  solution depth: 3
  search size: 94
@@ -202,8 +202,8 @@ Plan tree:
                                        dunk (p1)
 
 Statistic:
- preprocess time: 0.0014s
- search time: 0.1375s
+ preprocess time: 0.0015s
+ search time: 0.1389s
  solution size: 40
  solution depth: 39
  search size: 230
@@ -273,7 +273,7 @@ Plan tree:
 
 Statistic:
  preprocess time: 0.0024s
- search time: 0.6184s
+ search time: 0.6272s
  solution size: 60
  solution depth: 59
  search size: 495
@@ -382,8 +382,8 @@ Plan tree:
                                                                                                    dunk (p1)
 
 Statistic:
- preprocess time: 0.0058s
- search time: 5.2989s
+ preprocess time: 0.0061s
+ search time: 5.5079s
  solution size: 100
  solution depth: 99
  search size: 1325
@@ -396,11 +396,14 @@ Plan tree:
    move-t-to-b (b2,b3)
     move-b-to-b (b2,b3,b1)
      move-t-to-b (b3,b2)
+ senseON -: (b3,b2)
+  move-b-to-b (b2,b3,b1)
+   move-t-to-b (b3,b2)
 
 Statistic:
- preprocess time: 45.5568s
- search time: 0.0334s
- solution size: 6
+ preprocess time: 49.1865s
+ search time: 0.0470s
+ solution size: 9
  solution depth: 5
  search size: 149
 

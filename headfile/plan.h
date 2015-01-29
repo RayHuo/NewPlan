@@ -27,7 +27,7 @@ public:
     int checknode(EpisDNF);
     bool check_zero_dead(EpisDNF);
     void BuildPlan();
-    int show_build_result(int, const vector<Transition> &, int , set<int> &, int );
+    int show_build_result(int, const vector<Transition> &, int , set<int>, int );
     void show_statistic() const;
 private:
     Init in;
