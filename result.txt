@@ -1,0 +1,283 @@
+domain_file(test/demo/demo_domain.pddl) p_file(test/demo/demo_p.pddl) search_type(normal)
+senseL +:
+ knock
+  senseD +:
+  senseD -:
+senseL -:
+
+domain_file(test/dispose/dispose_domain.pddl) p_file(test/dispose/dispose_p2-1.pddl) search_type(normal)
+pickup (o1,p11)
+ drop (o1,p11)
+
+domain_file(test/dispose/dispose_domain.pddl) p_file(test/dispose/dispose_p2-2.pddl) search_type(normal)
+drop (o1,p11)
+ move (p11,p12)
+  sense_object +: (p12,o1)
+   move (p12,p22)
+    move (p22,p21)
+     move (p21,p11)
+      move (p11,p12)
+       pickup (o1,p12)
+        move (p12,p11)
+         drop (o1,p11)
+  sense_object -: (p12,o1)
+   move (p12,p11)
+    pickup (o1,p11)
+     drop (o1,p11)
+
+domain_file(test/dispose/dispose_domain.pddl) p_file(test/dispose/dispose_p3-1.pddl) search_type(normal)
+move (p22,p21)
+ move (p21,p11)
+  pickup (o1,p11)
+   drop (o1,p11)
+
+domain_file(test/doors/door_domain.pddl) p_file(test/doors/door_p2.pddl) search_type(normal)
+openDoor (p12,p22)
+ move (p12,p22)
+
+domain_file(test/doors/door_domain.pddl) p_file(test/doors/door_p5.pddl) search_type(normal)
+openDoor (p13,p23)
+ move (p13,p23)
+  move (p23,p33)
+   openDoor (p33,p43)
+    move (p33,p43)
+     move (p43,p53)
+
+domain_file(test/doors/door_newdomain.pddl) p_file(test/doors/door_pnew.pddl) search_type(normal)
+senseDoor +: (p11)
+ openDoor (p11,p21)
+  move (p11,p21)
+   openDoor (p21,p22)
+    move (p21,p22)
+senseDoor -: (p11)
+ openDoor (p12,p22)
+  move (p12,p22)
+
+domain_file(test/push/push_domain.pddl) p_file(test/push/push.pddl) search_type(normal)
+move (p22,p21)
+ move (p21,p11)
+  pickup (o1,p11)
+
+domain_file(test/unix/unix_domain.pddl) p_file(test/unix/unix_p1.pddl) search_type(normal)
+cd_down (root,sub1)
+ cd_down (sub1,sub11)
+  mv (my_file,sub11,root)
+
+domain_file(test/unix/unix_domain.pddl) p_file(test/unix/unix_p2.pddl) search_type(normal)
+cd_down (root,sub1)
+ cd_down (sub1,sub11)
+  mv (my_file,sub11,root)
+
+domain_file(test/btc/btc_domain.pddl) p_file(test/btc/btc_p20.pddl) search_type(deap first)
+dunk (p20)
+ flush
+  dunk (p19)
+   flush
+    dunk (p18)
+     flush
+      dunk (p17)
+       flush
+        dunk (p16)
+         flush
+          dunk (p15)
+           flush
+            dunk (p14)
+             flush
+              dunk (p13)
+               flush
+                dunk (p12)
+                 flush
+                  dunk (p11)
+                   flush
+                    dunk (p10)
+                     flush
+                      dunk (p9)
+                       flush
+                        dunk (p8)
+                         flush
+                          dunk (p7)
+                           flush
+                            dunk (p6)
+                             flush
+                              dunk (p5)
+                               flush
+                                dunk (p4)
+                                 flush
+                                  dunk (p3)
+                                   flush
+                                    dunk (p2)
+                                     flush
+                                      dunk (p1)
+
+domain_file(test/btc/btc_domain.pddl) p_file(test/btc/btc_p30.pddl) search_type(deap first)
+dunk (p30)
+ flush
+  dunk (p29)
+   flush
+    dunk (p28)
+     flush
+      dunk (p27)
+       flush
+        dunk (p26)
+         flush
+          dunk (p25)
+           flush
+            dunk (p24)
+             flush
+              dunk (p23)
+               flush
+                dunk (p22)
+                 flush
+                  dunk (p21)
+                   flush
+                    dunk (p20)
+                     flush
+                      dunk (p19)
+                       flush
+                        dunk (p18)
+                         flush
+                          dunk (p17)
+                           flush
+                            dunk (p16)
+                             flush
+                              dunk (p15)
+                               flush
+                                dunk (p14)
+                                 flush
+                                  dunk (p13)
+                                   flush
+                                    dunk (p12)
+                                     flush
+                                      dunk (p11)
+                                       flush
+                                        dunk (p10)
+                                         flush
+                                          dunk (p9)
+                                           flush
+                                            dunk (p8)
+                                             flush
+                                              dunk (p7)
+                                               flush
+                                                dunk (p6)
+                                                 flush
+                                                  dunk (p5)
+                                                   flush
+                                                    dunk (p4)
+                                                     flush
+                                                      dunk (p3)
+                                                       flush
+                                                        dunk (p2)
+                                                         flush
+                                                          dunk (p1)
+
+domain_file(test/btc/btc_domain.pddl) p_file(test/btc/btc_p50.pddl) search_type(deap first)
+dunk (p50)
+ flush
+  dunk (p49)
+   flush
+    dunk (p48)
+     flush
+      dunk (p47)
+       flush
+        dunk (p46)
+         flush
+          dunk (p45)
+           flush
+            dunk (p44)
+             flush
+              dunk (p43)
+               flush
+                dunk (p42)
+                 flush
+                  dunk (p41)
+                   flush
+                    dunk (p40)
+                     flush
+                      dunk (p39)
+                       flush
+                        dunk (p38)
+                         flush
+                          dunk (p37)
+                           flush
+                            dunk (p36)
+                             flush
+                              dunk (p35)
+                               flush
+                                dunk (p34)
+                                 flush
+                                  dunk (p33)
+                                   flush
+                                    dunk (p32)
+                                     flush
+                                      dunk (p31)
+                                       flush
+                                        dunk (p30)
+                                         flush
+                                          dunk (p29)
+                                           flush
+                                            dunk (p28)
+                                             flush
+                                              dunk (p27)
+                                               flush
+                                                dunk (p26)
+                                                 flush
+                                                  dunk (p25)
+                                                   flush
+                                                    dunk (p24)
+                                                     flush
+                                                      dunk (p23)
+                                                       flush
+                                                        dunk (p22)
+                                                         flush
+                                                          dunk (p21)
+                                                           flush
+                                                            dunk (p20)
+                                                             flush
+                                                              dunk (p19)
+                                                               flush
+                                                                dunk (p18)
+                                                                 flush
+                                                                  dunk (p17)
+                                                                   flush
+                                                                    dunk (p16)
+                                                                     flush
+                                                                      dunk (p15)
+                                                                       flush
+                                                                        dunk (p14)
+                                                                         flush
+                                                                          dunk (p13)
+                                                                           flush
+                                                                            dunk (p12)
+                                                                             flush
+                                                                              dunk (p11)
+                                                                               flush
+                                                                                dunk (p10)
+                                                                                 flush
+                                                                                  dunk (p9)
+                                                                                   flush
+                                                                                    dunk (p8)
+                                                                                     flush
+                                                                                      dunk (p7)
+                                                                                       flush
+                                                                                        dunk (p6)
+                                                                                         flush
+                                                                                          dunk (p5)
+                                                                                           flush
+                                                                                            dunk (p4)
+                                                                                             flush
+                                                                                              dunk (p3)
+                                                                                               flush
+                                                                                                dunk (p2)
+                                                                                                 flush
+                                                                                                  dunk (p1)
+
+domain_file(test/blocks/blocks_domain.pddl) p_file(test/blocks/blocks_p3.pddl) search_type(normal)
+senseON +: (b3,b2)
+ move-to-t (b3,b2)
+  move-t-to-b (b2,b3)
+   move-b-to-b (b2,b3,b1)
+    move-t-to-b (b3,b2)
+senseON -: (b3,b2)
+ move-b-to-b (b2,b3,b1)
+  move-t-to-b (b3,b2)
+

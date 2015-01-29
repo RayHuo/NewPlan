@@ -10,11 +10,13 @@ Plan::Plan(){
     searchtype = 0;
 }
 
-Plan::Plan(const char *domain, const char *p){
+Plan::Plan(const char *domain, const char *p, int type){
+    printf("domain_file(%s) p_file(%s) search_type(%s)\n", domain, p, 
+            (type == 1) ? "deap first" : "normal");
     all_nodes.clear();
     all_edges.clear();
     explored_num = -1;
-    searchtype = 0;
+    searchtype = type;
     in.exec(domain, p);
 //    in.showmaps(stdout);
 }

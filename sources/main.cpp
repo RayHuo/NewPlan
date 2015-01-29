@@ -31,13 +31,20 @@ vector<EpisAction> epis_actions;
 
 int main(int argc, char **argv) 
 {
-    if (argc != 3) {
-        printf("Usage:\n%s domain_file p_file\n", argv[0]);
+    if (argc != 3 && argc != 4) {
+        printf("Usage:\n%s domain_file p_file (search_type)\n", argv[0]);
         return 0;
     }
-    Plan p = Plan(argv[1], argv[2]);
-    p.exec_plan(); 
-    p.BuildPlan();
+    if (argc == 4) {
+        Plan p = Plan(argv[1], argv[2], atoi(argv[3]));
+        p.exec_plan(); 
+        p.BuildPlan();
+    }
+    else {
+        Plan p = Plan(argv[1], argv[2]);
+        p.exec_plan(); 
+        p.BuildPlan();
+    }
     return 0;
 } 
 

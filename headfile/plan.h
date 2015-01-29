@@ -12,7 +12,7 @@ extern vector<EpisDNF> epistemic_prog(EpisDNF episDNF, const EpisAction &epis_ac
 class Plan{
 public:
     Plan();
-    Plan(const char *domain, const char *p);
+    Plan(const char *domain, const char *p, int type = 0);
     void exec_plan();
     
     void explore(int);
