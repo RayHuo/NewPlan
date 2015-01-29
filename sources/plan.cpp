@@ -8,6 +8,8 @@ Plan::Plan(){
     all_edges.clear();
     explored_num = -1;
     searchtype = 0;
+    plan_tree_depth = 0;
+    plan_tree_node_num = 0;
 }
 
 Plan::Plan(const char *domain, const char *p, int type){
@@ -17,6 +19,8 @@ Plan::Plan(const char *domain, const char *p, int type){
     all_edges.clear();
     explored_num = -1;
     searchtype = type;
+    plan_tree_depth = 0;
+    plan_tree_node_num = 0;
     in.exec(domain, p);
 //    in.showmaps(stdout);
 }
@@ -320,11 +324,19 @@ void Plan::BuildPlan(){
     for(int i = 0; i < all_edges.size(); i++)
         if(all_nodes[all_edges[i].front_bdd_state].flag == GOAL && all_nodes[all_edges[i].next_bdd_state].flag == GOAL)
             goal_edges.push_back(all_edges[i]);
-    set<int> nodes;
-    show_build_result(0, goal_edges, -1, nodes, -1);   
+    set<int> nodes;//标记节点是否在树里面
+    printf("Plan tree:\n");
+    plan_tree_node_num = 0;
+    plan_tree_depth = show_build_result(0, goal_edges, 0, nodes, -1);
+    printf("Statistic:\n");
+    printf("the number of the plan tree's nodes: %d\n", plan_tree_node_num);
+    printf("the depth of the plan tree: %d\n", plan_tree_depth);
+    printf("the number of nodes in searching: %lu\n", all_nodes.size());
 }
 
-void Plan::show_build_result(int node_num, vector<Transition> goal_edges, int tab_num, set<int> nodes, int oldnode){
+int Plan::show_build_result(int node_num, const vector<Transition> &goal_edges, int tab_num, set<int> &nodes, int oldnode){
+    int depth = 0;
+    ++ plan_tree_node_num;
     tab_num++;
     vector<Transition> next_trans;
     if(oldnode != -1)
@@ -349,9 +361,8 @@ void Plan::show_build_result(int node_num, vector<Transition> goal_edges, int ta
                             cout<<epis_actions[next_trans[i].action_number].para_match[epis_actions[next_trans[i].action_number].para_match.size()-1];
                         cout<<")";
                     }
-                    cout<<endl; 
-                    
-                    show_build_result(next_trans[i].next_bdd_state, goal_edges, tab_num, nodes, node_num);
+                    cout<<endl;
+                    depth = max(depth, show_build_result(next_trans[i].next_bdd_state, goal_edges, tab_num, nodes, node_num) + 1);
                 }
                 else{
                     cout << epis_actions[next_trans[i].action_number].name;
@@ -365,7 +376,7 @@ void Plan::show_build_result(int node_num, vector<Transition> goal_edges, int ta
                         cout<<")";
                     }
                     cout<<endl;
-                        show_build_result(next_trans[i].next_bdd_state, goal_edges, tab_num, nodes, node_num);
+                    depth = max(depth, show_build_result(next_trans[i].next_bdd_state, goal_edges, tab_num, nodes, node_num) + 1);
                     
                 }
             }
@@ -380,9 +391,9 @@ void Plan::show_build_result(int node_num, vector<Transition> goal_edges, int ta
                     cout<<")";  
                 }
                 cout<<endl;
-                show_build_result(next_trans[i].next_bdd_state, goal_edges, tab_num, nodes, node_num);
-            }
-            
-        }    
+                depth = max(depth, show_build_result(next_trans[i].next_bdd_state, goal_edges, tab_num, nodes, node_num) + 1);
+            }   
+        }
+    return depth;
 }
 

@@ -83,7 +83,7 @@ struct Transition
     int front_bdd_state; //前一个结点
     int next_bdd_state;  //后一个结点
     bool is_observe_action; //是否为观察动作
-    bool is_true; //?不明
+    bool is_true; //是否为感知动作的+
     int action_number;  //动作的编号
 };
 

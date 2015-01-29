@@ -28,7 +28,7 @@ public:
     int checknode(EpisDNF);
     bool check_zero_dead(EpisDNF);
     void BuildPlan();
-    void show_build_result(int, vector<Transition> , int , set<int> , int );
+    int show_build_result(int, const vector<Transition> &, int , set<int> &, int );
 private:
     Init in;
     vector<Node> all_nodes;
@@ -36,6 +36,7 @@ private:
     vector<Transition> all_edges;
     int hert_nodes;
     int searchtype;
-    
+    int plan_tree_depth;
+    int plan_tree_node_num;
 };
 #endif
