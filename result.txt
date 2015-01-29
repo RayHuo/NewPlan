@@ -1,3 +1,4 @@
+================================================================
 domain_file(test/demo/demo_domain.pddl) p_file(test/demo/demo_p.pddl) search_type(normal)
 Plan tree:
  senseL +:
@@ -5,20 +6,28 @@ Plan tree:
    senseD +:
    senseD -:
  senseL -:
-Statistic:
-the number of the plan tree's nodes: 6
-the depth of the plan tree: 3
-the number of nodes in searching: 6
 
+Statistic:
+ preprocess time: 0.0004s
+ search time: 0.0003s
+ solution size: 6
+ solution depth: 3
+ search size: 6
+
+================================================================
 domain_file(test/dispose/dispose_domain.pddl) p_file(test/dispose/dispose_p2-1.pddl) search_type(normal)
 Plan tree:
  pickup (o1,p11)
   drop (o1,p11)
-Statistic:
-the number of the plan tree's nodes: 3
-the depth of the plan tree: 2
-the number of nodes in searching: 17
 
+Statistic:
+ preprocess time: 0.0010s
+ search time: 0.0018s
+ solution size: 3
+ solution depth: 2
+ search size: 17
+
+================================================================
 domain_file(test/dispose/dispose_domain.pddl) p_file(test/dispose/dispose_p2-2.pddl) search_type(normal)
 Plan tree:
  drop (o1,p11)
@@ -35,31 +44,43 @@ Plan tree:
     move (p12,p11)
      pickup (o1,p11)
       drop (o1,p11)
-Statistic:
-the number of the plan tree's nodes: 15
-the depth of the plan tree: 10
-the number of nodes in searching: 469
 
+Statistic:
+ preprocess time: 0.0011s
+ search time: 0.3849s
+ solution size: 15
+ solution depth: 10
+ search size: 469
+
+================================================================
 domain_file(test/dispose/dispose_domain.pddl) p_file(test/dispose/dispose_p3-1.pddl) search_type(normal)
 Plan tree:
  move (p22,p21)
   move (p21,p11)
    pickup (o1,p11)
     drop (o1,p11)
-Statistic:
-the number of the plan tree's nodes: 5
-the depth of the plan tree: 4
-the number of nodes in searching: 490
 
+Statistic:
+ preprocess time: 0.0033s
+ search time: 0.8217s
+ solution size: 5
+ solution depth: 4
+ search size: 490
+
+================================================================
 domain_file(test/doors/door_domain.pddl) p_file(test/doors/door_p2.pddl) search_type(normal)
 Plan tree:
  openDoor (p12,p22)
   move (p12,p22)
-Statistic:
-the number of the plan tree's nodes: 3
-the depth of the plan tree: 2
-the number of nodes in searching: 4
 
+Statistic:
+ preprocess time: 0.0034s
+ search time: 0.0013s
+ solution size: 3
+ solution depth: 2
+ search size: 4
+
+================================================================
 domain_file(test/doors/door_domain.pddl) p_file(test/doors/door_p5.pddl) search_type(normal)
 Plan tree:
  openDoor (p13,p23)
@@ -68,11 +89,15 @@ Plan tree:
     openDoor (p33,p43)
      move (p33,p43)
       move (p43,p53)
-Statistic:
-the number of the plan tree's nodes: 7
-the depth of the plan tree: 6
-the number of nodes in searching: 281
 
+Statistic:
+ preprocess time: 0.0483s
+ search time: 29.3795s
+ solution size: 7
+ solution depth: 6
+ search size: 281
+
+================================================================
 domain_file(test/doors/door_newdomain.pddl) p_file(test/doors/door_pnew.pddl) search_type(normal)
 Plan tree:
  senseDoor +: (p11)
@@ -83,41 +108,57 @@ Plan tree:
  senseDoor -: (p11)
   openDoor (p12,p22)
    move (p12,p22)
-Statistic:
-the number of the plan tree's nodes: 9
-the depth of the plan tree: 5
-the number of nodes in searching: 115
 
+Statistic:
+ preprocess time: 0.0015s
+ search time: 0.0560s
+ solution size: 9
+ solution depth: 5
+ search size: 115
+
+================================================================
 domain_file(test/push/push_domain.pddl) p_file(test/push/push.pddl) search_type(normal)
 Plan tree:
  move (p22,p21)
   move (p21,p11)
    pickup (o1,p11)
-Statistic:
-the number of the plan tree's nodes: 4
-the depth of the plan tree: 3
-the number of nodes in searching: 147
 
+Statistic:
+ preprocess time: 0.0048s
+ search time: 0.2503s
+ solution size: 4
+ solution depth: 3
+ search size: 147
+
+================================================================
 domain_file(test/unix/unix_domain.pddl) p_file(test/unix/unix_p1.pddl) search_type(normal)
 Plan tree:
  cd_down (root,sub1)
   cd_down (sub1,sub11)
    mv (my_file,sub11,root)
-Statistic:
-the number of the plan tree's nodes: 4
-the depth of the plan tree: 3
-the number of nodes in searching: 62
 
+Statistic:
+ preprocess time: 0.0034s
+ search time: 0.0397s
+ solution size: 4
+ solution depth: 3
+ search size: 62
+
+================================================================
 domain_file(test/unix/unix_domain.pddl) p_file(test/unix/unix_p2.pddl) search_type(normal)
 Plan tree:
  cd_down (root,sub1)
   cd_down (sub1,sub11)
    mv (my_file,sub11,root)
-Statistic:
-the number of the plan tree's nodes: 4
-the depth of the plan tree: 3
-the number of nodes in searching: 94
 
+Statistic:
+ preprocess time: 0.0184s
+ search time: 0.5715s
+ solution size: 4
+ solution depth: 3
+ search size: 94
+
+================================================================
 domain_file(test/btc/btc_domain.pddl) p_file(test/btc/btc_p20.pddl) search_type(deap first)
 Plan tree:
  dunk (p20)
@@ -159,11 +200,15 @@ Plan tree:
                                      dunk (p2)
                                       flush
                                        dunk (p1)
-Statistic:
-the number of the plan tree's nodes: 40
-the depth of the plan tree: 39
-the number of nodes in searching: 230
 
+Statistic:
+ preprocess time: 0.0014s
+ search time: 0.1375s
+ solution size: 40
+ solution depth: 39
+ search size: 230
+
+================================================================
 domain_file(test/btc/btc_domain.pddl) p_file(test/btc/btc_p30.pddl) search_type(deap first)
 Plan tree:
  dunk (p30)
@@ -225,11 +270,15 @@ Plan tree:
                                                          dunk (p2)
                                                           flush
                                                            dunk (p1)
-Statistic:
-the number of the plan tree's nodes: 60
-the depth of the plan tree: 59
-the number of nodes in searching: 495
 
+Statistic:
+ preprocess time: 0.0024s
+ search time: 0.6184s
+ solution size: 60
+ solution depth: 59
+ search size: 495
+
+================================================================
 domain_file(test/btc/btc_domain.pddl) p_file(test/btc/btc_p50.pddl) search_type(deap first)
 Plan tree:
  dunk (p50)
@@ -331,11 +380,15 @@ Plan tree:
                                                                                                  dunk (p2)
                                                                                                   flush
                                                                                                    dunk (p1)
-Statistic:
-the number of the plan tree's nodes: 100
-the depth of the plan tree: 99
-the number of nodes in searching: 1325
 
+Statistic:
+ preprocess time: 0.0058s
+ search time: 5.2989s
+ solution size: 100
+ solution depth: 99
+ search size: 1325
+
+================================================================
 domain_file(test/blocks/blocks_domain.pddl) p_file(test/blocks/blocks_p3.pddl) search_type(normal)
 Plan tree:
  senseON +: (b3,b2)
@@ -343,8 +396,11 @@ Plan tree:
    move-t-to-b (b2,b3)
     move-b-to-b (b2,b3,b1)
      move-t-to-b (b3,b2)
+
 Statistic:
-the number of the plan tree's nodes: 6
-the depth of the plan tree: 5
-the number of nodes in searching: 149
+ preprocess time: 45.5568s
+ search time: 0.0334s
+ solution size: 6
+ solution depth: 5
+ search size: 149
 

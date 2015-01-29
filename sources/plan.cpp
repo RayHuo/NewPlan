@@ -3,16 +3,8 @@
 //#define SHOW_EPIS
 //#define SHOW_ONTIC
 
-Plan::Plan(){
-    all_nodes.clear();
-    all_edges.clear();
-    explored_num = -1;
-    searchtype = 0;
-    plan_tree_depth = 0;
-    plan_tree_node_num = 0;
-}
-
 Plan::Plan(const char *domain, const char *p, int type){
+    printf("================================================================\n");
     printf("domain_file(%s) p_file(%s) search_type(%s)\n", domain, p, 
             (type == 1) ? "deap first" : "normal");
     all_nodes.clear();
@@ -21,7 +13,10 @@ Plan::Plan(const char *domain, const char *p, int type){
     searchtype = type;
     plan_tree_depth = 0;
     plan_tree_node_num = 0;
+    clock_t t_start = clock();
     in.exec(domain, p);
+    clock_t t_end = clock();
+    preprocess_time = difftime(t_end, t_start) / 1000000.0;
 //    in.showmaps(stdout);
 }
 
@@ -29,6 +24,7 @@ void Plan::exec_plan(){
     if(in.init.entails(in.goal)) {
         return;
     }
+    clock_t t_start = clock();
     Node init_node;
     init_node.flag = TOBEEXPLORED;
     init_node.isolated = false;
@@ -41,8 +37,12 @@ void Plan::exec_plan(){
             return ;
         
         explore(node_pos); 
-        if(all_nodes[0].flag == GOAL)
-            return ;//之后再调用BuildPlan，原算法中的Tree
+        if(all_nodes[0].flag == GOAL) {
+            BuildPlan();//之后再调用BuildPlan，原算法中的Tree
+            clock_t t_end = clock();
+            search_time = difftime(t_end, t_start) / 1000000.0;
+            return ;
+        }
         if(all_nodes[0].flag == DEAD)
             return ;
     }  
@@ -328,11 +328,17 @@ void Plan::BuildPlan(){
     printf("Plan tree:\n");
     plan_tree_node_num = 0;
     plan_tree_depth = show_build_result(0, goal_edges, 0, nodes, -1);
-    printf("Statistic:\n");
-    printf("the number of the plan tree's nodes: %d\n", plan_tree_node_num);
-    printf("the depth of the plan tree: %d\n", plan_tree_depth);
-    printf("the number of nodes in searching: %lu\n", all_nodes.size());
 }
+
+void Plan::show_statistic() const {
+    printf("\nStatistic:\n");
+    printf(" preprocess time: %.4fs\n", preprocess_time);
+    printf(" search time: %.4fs\n", search_time);
+    printf(" solution size: %d\n", plan_tree_node_num);
+    printf(" solution depth: %d\n", plan_tree_depth);
+    printf(" search size: %lu\n", all_nodes.size());
+}
+    
 
 int Plan::show_build_result(int node_num, const vector<Transition> &goal_edges, int tab_num, set<int> &nodes, int oldnode){
     int depth = 0;
