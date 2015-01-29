@@ -36,10 +36,6 @@ string Atoms::get_atom_string(int i) {
     return '~' + atoms_str[i * (-1) - 1];
 }
 
-int Atoms::atoms_length() {
-    return length;
-}
-
 void Atoms::show(FILE *out) const {
     for (int i = 0; i < length; i++)
         fprintf(out, "atom id: %d atom name: %s\n", i + 1, atoms_str[i].c_str());

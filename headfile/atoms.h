@@ -24,7 +24,7 @@ public:
     int query_atoms(string);
     int add_atoms(string);
     string get_atom_string(int);
-    int atoms_length();
+    inline int atoms_length() const { return length; }
     void show(FILE *out) const;
     void gen_vac_to_atom();
     int get_true_num(int);

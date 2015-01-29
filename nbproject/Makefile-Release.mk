@@ -74,52 +74,52 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/newplan: ${OBJECTFILES}
 ${OBJECTDIR}/sources/EpisCNF.o: sources/EpisCNF.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/EpisCNF.o sources/EpisCNF.cpp
+	$(COMPILE.cc) -O2 -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/EpisCNF.o sources/EpisCNF.cpp
 
 ${OBJECTDIR}/sources/EpisDNF.o: sources/EpisDNF.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/EpisDNF.o sources/EpisDNF.cpp
+	$(COMPILE.cc) -O2 -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/EpisDNF.o sources/EpisDNF.cpp
 
 ${OBJECTDIR}/sources/Vocabulary.o: sources/Vocabulary.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/Vocabulary.o sources/Vocabulary.cpp
+	$(COMPILE.cc) -O2 -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/Vocabulary.o sources/Vocabulary.cpp
 
 ${OBJECTDIR}/sources/atoms.o: sources/atoms.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/atoms.o sources/atoms.cpp
+	$(COMPILE.cc) -O2 -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/atoms.o sources/atoms.cpp
 
 ${OBJECTDIR}/sources/formulatab.o: sources/formulatab.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/formulatab.o sources/formulatab.cpp
+	$(COMPILE.cc) -O2 -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/formulatab.o sources/formulatab.cpp
 
 ${OBJECTDIR}/sources/init.o: sources/init.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/init.o sources/init.cpp
+	$(COMPILE.cc) -O2 -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/init.o sources/init.cpp
 
 ${OBJECTDIR}/sources/lex.o: sources/lex.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/lex.o sources/lex.cpp
+	$(COMPILE.cc) -O2 -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/lex.o sources/lex.cpp
 
 ${OBJECTDIR}/sources/main.o: sources/main.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/main.o sources/main.cpp
+	$(COMPILE.cc) -O2 -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/main.o sources/main.cpp
 
 ${OBJECTDIR}/sources/parse.o: sources/parse.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/parse.o sources/parse.cpp
+	$(COMPILE.cc) -O2 -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/parse.o sources/parse.cpp
 
 ${OBJECTDIR}/sources/plan.o: sources/plan.cpp 
 	${MKDIR} -p ${OBJECTDIR}/sources
 	${RM} $@.d
-	$(COMPILE.cc) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/plan.o sources/plan.cpp
+	$(COMPILE.cc) -O2 -Iheadfile -MMD -MP -MF $@.d -o ${OBJECTDIR}/sources/plan.o sources/plan.cpp
 
 # Subprojects
 .build-subprojects:
