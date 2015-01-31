@@ -40,6 +40,8 @@ public:
     // new added
     void show(FILE *out, bool print_new_line = true) const;
     list<PropTerm> ontic_prog(const OnticAction &ontic_action); //在当前PropTerm上做物理动作的演进，并且返回演进结果
+    void split(const vector<int> &missing_atom, const int index, 
+                PropTerm& cur_propTerm, list<PropTerm>& result) const;//物理动作的裂项的辅助函数
 };
 
 

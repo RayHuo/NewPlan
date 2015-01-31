@@ -104,18 +104,23 @@ list<PropTerm> PropTerm::ontic_prog(const OnticAction& ontic_action)
         }
         conditions.push_back(condition);
         //check current PropTerm. Mostly, splitting is necessary 
-        if (!(this->entails(condition) || this->entails(condition.negation()))) {
-            int pos = condition.literals.find_first(); //now we has one literal, so can implement like this
-            PropTerm tmp = *this;
-            tmp.literals.set(pos, true);
-            progression.push_back(tmp);
-            tmp = *this;   
-            if (pos % 2)
-                tmp.literals.set(pos - 1, true);
-            else
-                tmp.literals.set(pos + 1, true);
-            progression.push_back(tmp);
-        }  
+        if (!(this->entails(condition) || this->entails(condition.negation()))) {            
+            // 把condition里面出现，但this里面没有出现过的原子加入missing_atom里面
+            vector<int> missing_atom;
+            for (int l = 1; l <= Atoms::instance().length; ++ l) {
+                int pos = (l - 1) * 2;
+                int neg = (l - 1) * 2 + 1;
+                if (! this->literals[pos] && ! this->literals[neg] && 
+                        (condition.literals[pos] || condition.literals[neg])) {
+                    missing_atom.push_back(l);
+                }
+            }
+            list<PropTerm> splitting_result;
+            PropTerm cur_propTerm = *this;
+            split(missing_atom, 0, cur_propTerm, splitting_result);
+            progression.insert(progression.end(), splitting_result.begin(), 
+                    splitting_result.end());
+        }
         else {
             progression.push_back(*this);
         }
@@ -173,6 +178,24 @@ void PropTerm::show(FILE *out, bool print_new_line) const
     fprintf(out, ")");
     if (print_new_line)
         fprintf(out, "\n");
+}
+
+void PropTerm::split(const vector<int>& missing_atom, const int index, PropTerm& cur_propTerm,
+        list<PropTerm>& result) const {
+    if (index >= missing_atom.size()) {
+        result.push_back(cur_propTerm);
+        return ;
+    }
+    // 处理正原子
+    int pos = (missing_atom[index] - 1) * 2;
+    cur_propTerm.literals[pos] = true;
+    split(missing_atom, index + 1, cur_propTerm, result);
+    cur_propTerm.literals[pos] = false;
+    // 处理负原子
+    int neg = (missing_atom[index] - 1) * 2 + 1;
+    cur_propTerm.literals[neg] = true;
+    split(missing_atom, index + 1, cur_propTerm, result);
+    cur_propTerm.literals[neg] = false;
 }
 
 bool PropDNF::consistent() const
