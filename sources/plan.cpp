@@ -1,8 +1,5 @@
 #include"plan.h"
 
-//#define SHOW_EPIS
-//#define SHOW_ONTIC
-
 Plan::Plan(const char *domain, const char *p, int type){
     printf("================================================================\n");
     printf("domain_file(%s) p_file(%s) search_type(%s)\n", domain, p, 
@@ -14,6 +11,7 @@ Plan::Plan(const char *domain, const char *p, int type){
     plan_tree_depth = 0;
     plan_tree_node_num = 0;
     clock_t t_start = clock();
+    printf("Preprocessing...\n");
     in.exec(domain, p);
     clock_t t_end = clock();
     preprocess_time = difftime(t_end, t_start) / 1000000.0;
@@ -21,7 +19,9 @@ Plan::Plan(const char *domain, const char *p, int type){
 }
 
 void Plan::exec_plan(){
+    printf("Planning...\n");
     if(in.init.entails(in.goal)) {
+        printf("init entails goal!\n");
         return;
     }
     clock_t t_start = clock();
@@ -54,21 +54,6 @@ void Plan::explore(int node_pos){
     for(int i = 0; i < epis_actions.size(); i++){        
         if(all_nodes[node_pos].kb.entails(epis_actions[i].pre_con)){
             vector<EpisDNF> res = all_nodes[node_pos].kb.epistemic_prog(epis_actions[i]);
-#ifdef SHOW_EPIS    
-            cout << "==========================================================" << endl;
-            cout << "from KB:" << endl;
-            all_nodes[node_pos].kb.show(stdout);
-            cout << "!!!!!!!!!!!!!!!! ";
-            cout << epis_actions[i].name << ": ";
-            for (size_t j = 0; j < ontic_actions[i].para_match.size(); ++ j) {
-                cout << epis_actions[i].para_match[j] << " ";
-            }
-            cout << " !!!!!!!!!!!!!!!!" << endl;
-            cout << "++++" << endl;
-            res[0].show(stdout);
-            cout << "----" << endl;
-            res[1].show(stdout);
-#endif
             if(check_zero_dead(res[0]) || check_zero_dead(res[1]))
                 continue;
             int res_pos = checknode(res[0]);// find if old node; if it is old node, then return node number            
@@ -131,18 +116,6 @@ void Plan::explore(int node_pos){
     for(int i = 0; i < ontic_actions.size(); i++){
         if(all_nodes[node_pos].kb.entails(ontic_actions[i].pre_con)){
             EpisDNF res = all_nodes[node_pos].kb.ontic_prog(ontic_actions[i]);
-#ifdef SHOW_ONTIC    
-            cout << "==========================================================" << endl;
-            cout << "from KB:" << endl;
-            all_nodes[node_pos].kb.show(stdout);
-            cout << "################ ";
-            cout << ontic_actions[i].name << ": ";
-            for (size_t j = 0; j < ontic_actions[i].para_match.size(); ++ j) {
-                cout << ontic_actions[i].para_match[j] << " ";
-            }
-            cout << " ################" << endl;
-            res.show(stdout);
-#endif
             if(check_zero_dead(res)) continue;
             int res_pos = checknode(res);
             if(res_pos == node_pos) continue;

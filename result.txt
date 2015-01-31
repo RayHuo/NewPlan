@@ -1,5 +1,7 @@
 ================================================================
 domain_file(test/demo/demo_domain.pddl) p_file(test/demo/demo_p.pddl) search_type(normal)
+result2
+pro
 Plan tree:
  senseL +:
   knock
@@ -16,19 +18,23 @@ Statistic:
 
 ================================================================
 domain_file(test/dispose/dispose_domain.pddl) p_file(test/dispose/dispose_p2-1.pddl) search_type(normal)
+result1
+pro
 Plan tree:
  pickup (o1,p11)
   drop (o1,p11)
 
 Statistic:
- preprocess time: 0.0010s
- search time: 0.0018s
+ preprocess time: 0.0011s
+ search time: 0.0017s
  solution size: 3
  solution depth: 2
  search size: 17
 
 ================================================================
 domain_file(test/dispose/dispose_domain.pddl) p_file(test/dispose/dispose_p2-2.pddl) search_type(normal)
+result1
+pro
 Plan tree:
  drop (o1,p11)
   move (p11,p12)
@@ -47,13 +53,15 @@ Plan tree:
 
 Statistic:
  preprocess time: 0.0011s
- search time: 0.3584s
+ search time: 0.3686s
  solution size: 15
  solution depth: 10
  search size: 469
 
 ================================================================
 domain_file(test/dispose/dispose_domain.pddl) p_file(test/dispose/dispose_p3-1.pddl) search_type(normal)
+result1
+pro
 Plan tree:
  move (p22,p21)
   move (p21,p11)
@@ -62,26 +70,30 @@ Plan tree:
 
 Statistic:
  preprocess time: 0.0029s
- search time: 0.8066s
+ search time: 0.8364s
  solution size: 5
  solution depth: 4
  search size: 490
 
 ================================================================
 domain_file(test/doors/door_domain.pddl) p_file(test/doors/door_p2.pddl) search_type(normal)
+result3
+pro
 Plan tree:
  openDoor (p12,p22)
   move (p12,p22)
 
 Statistic:
- preprocess time: 0.0032s
- search time: 0.0010s
+ preprocess time: 0.0011s
+ search time: 0.0012s
  solution size: 3
  solution depth: 2
  search size: 4
 
 ================================================================
 domain_file(test/doors/door_domain.pddl) p_file(test/doors/door_p5.pddl) search_type(normal)
+result3
+pro
 Plan tree:
  openDoor (p13,p23)
   move (p13,p23)
@@ -91,14 +103,16 @@ Plan tree:
       move (p43,p53)
 
 Statistic:
- preprocess time: 0.0509s
- search time: 31.9453s
+ preprocess time: 0.0490s
+ search time: 30.7798s
  solution size: 7
  solution depth: 6
  search size: 281
 
 ================================================================
 domain_file(test/doors/door_newdomain.pddl) p_file(test/doors/door_pnew.pddl) search_type(normal)
+result3
+pro
 Plan tree:
  senseDoor +: (p11)
   openDoor (p11,p21)
@@ -110,56 +124,64 @@ Plan tree:
    move (p12,p22)
 
 Statistic:
- preprocess time: 0.0015s
- search time: 0.0555s
+ preprocess time: 0.0013s
+ search time: 0.0676s
  solution size: 9
  solution depth: 5
  search size: 115
 
 ================================================================
 domain_file(test/push/push_domain.pddl) p_file(test/push/push.pddl) search_type(normal)
+result3
+pro
 Plan tree:
  move (p22,p21)
   move (p21,p11)
    pickup (o1,p11)
 
 Statistic:
- preprocess time: 0.0049s
- search time: 0.2418s
+ preprocess time: 0.0062s
+ search time: 0.2588s
  solution size: 4
  solution depth: 3
  search size: 147
 
 ================================================================
 domain_file(test/unix/unix_domain.pddl) p_file(test/unix/unix_p1.pddl) search_type(normal)
+result3
+pro
 Plan tree:
  cd_down (root,sub1)
   cd_down (sub1,sub11)
    mv (my_file,sub11,root)
 
 Statistic:
- preprocess time: 0.0033s
- search time: 0.0361s
+ preprocess time: 0.0037s
+ search time: 0.0365s
  solution size: 4
  solution depth: 3
  search size: 62
 
 ================================================================
 domain_file(test/unix/unix_domain.pddl) p_file(test/unix/unix_p2.pddl) search_type(normal)
+result3
+pro
 Plan tree:
  cd_down (root,sub1)
   cd_down (sub1,sub11)
    mv (my_file,sub11,root)
 
 Statistic:
- preprocess time: 0.0168s
- search time: 0.5847s
+ preprocess time: 0.0185s
+ search time: 0.6355s
  solution size: 4
  solution depth: 3
  search size: 94
 
 ================================================================
 domain_file(test/btc/btc_domain.pddl) p_file(test/btc/btc_p20.pddl) search_type(deap first)
+result1
+pro
 Plan tree:
  dunk (p20)
   flush
@@ -202,14 +224,16 @@ Plan tree:
                                        dunk (p1)
 
 Statistic:
- preprocess time: 0.0015s
- search time: 0.1389s
+ preprocess time: 0.0017s
+ search time: 0.1570s
  solution size: 40
  solution depth: 39
  search size: 230
 
 ================================================================
 domain_file(test/btc/btc_domain.pddl) p_file(test/btc/btc_p30.pddl) search_type(deap first)
+result1
+pro
 Plan tree:
  dunk (p30)
   flush
@@ -272,14 +296,16 @@ Plan tree:
                                                            dunk (p1)
 
 Statistic:
- preprocess time: 0.0024s
- search time: 0.6272s
+ preprocess time: 0.0028s
+ search time: 0.6479s
  solution size: 60
  solution depth: 59
  search size: 495
 
 ================================================================
 domain_file(test/btc/btc_domain.pddl) p_file(test/btc/btc_p50.pddl) search_type(deap first)
+result1
+pro
 Plan tree:
  dunk (p50)
   flush
@@ -382,14 +408,16 @@ Plan tree:
                                                                                                    dunk (p1)
 
 Statistic:
- preprocess time: 0.0061s
- search time: 5.5079s
+ preprocess time: 0.0062s
+ search time: 5.5648s
  solution size: 100
  solution depth: 99
  search size: 1325
 
 ================================================================
 domain_file(test/blocks/blocks_domain.pddl) p_file(test/blocks/blocks_p3.pddl) search_type(normal)
+result1
+pro
 Plan tree:
  senseON +: (b3,b2)
   move-to-t (b3,b2)
@@ -401,8 +429,8 @@ Plan tree:
    move-t-to-b (b3,b2)
 
 Statistic:
- preprocess time: 49.1865s
- search time: 0.0470s
+ preprocess time: 0.0434s
+ search time: 0.0311s
  solution size: 9
  solution depth: 5
  search size: 149

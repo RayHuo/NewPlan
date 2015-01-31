@@ -5,7 +5,7 @@
 #include "atoms.h"
 #include<bitset>
 #include<fstream>
-FILE* myout = fopen("out.out", "wb");
+
 Init::Init() {
     ontic_actions.clear();
     epis_actions.clear();
@@ -46,15 +46,7 @@ void Init::exec(const char *domain, const char *p) {
     convertConToPropTerm();
     genObaDnfAndNeg();
     genActConSingleNeg();
-
-    
-    showmaps(myout);
 }
-
-    
-
-
-    
 
 void Init::make_actions() {
     for (int i = 0; i < actions_f.size(); i++) {
@@ -573,15 +565,13 @@ void Init::genActConSingleNeg(){
 
     for(int i = 0; i < epis_actions.size(); i++){
         epis_actions[i].pre_con = disDKCon(epis_actions[i].pre_con);
-        //cout<<"show::"<<endl;
-        //epis_acitons[i].pre_con .show();
     }
 }
 
 void Init::showmaps(FILE *out) const {
     showground(out);
-    fprintf(out, "\nontic actions nums: %d\n",ontic_actions.size());
-    fprintf(out, "\nontic epis nums: %d\n",epis_actions.size());
+    fprintf(out, "\nontic actions nums: %lu\n",ontic_actions.size());
+    fprintf(out, "\nontic epis nums: %lu\n",epis_actions.size());
     fprintf(out, "\nshow ontic actions\n");
     for (int i = 0; i < ontic_actions.size(); i++) {
         fprintf(out, "act_num: %d act_name: %s\n", ontic_actions[i].act_num, ontic_actions[i].name.c_str());

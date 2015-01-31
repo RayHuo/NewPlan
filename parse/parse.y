@@ -134,32 +134,32 @@ void yyerror(const char* s)
 
 result
     : '(' DEFINE_TOK domain predicates  actions ')'{
-       cout<<"result1"<<endl;
+       //cout<<"result1"<<endl;
     }
     | '(' DEFINE_TOK domain actions ')'{
-       cout<<"result2"<<endl;
+       //cout<<"result2"<<endl;
     }   
     | '(' DEFINE_TOK domain typess predicates  actions ')'{
-       cout<<"result3"<<endl;
+       //cout<<"result3"<<endl;
     }
     |  pro{
-       cout<<"pro"<<endl;
+       //cout<<"pro"<<endl;
     }  
     |  newinput End{
        init_f = $1;
-       cout<<"newinput"<<endl;
+       //cout<<"newinput"<<endl;
     }
     | init {
-       cout<<"init1"<<endl;
+       //cout<<"init1"<<endl;
     }
     | goal{
-      cout<<"goal1"<<endl;
+     // cout<<"goal1"<<endl;
     }
     | k_and_or{
-      cout<<"k_and_or"<<endl;
+      //cout<<"k_and_or"<<endl;
     }
     | actions {
-      cout<<"acts"<<endl;
+      //cout<<"acts"<<endl;
      }
 
 

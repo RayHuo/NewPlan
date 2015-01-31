@@ -1495,7 +1495,7 @@ yyreduce:
         case 2:
 #line 136 "parse.y" /* yacc.c:1646  */
     {
-       cout<<"result1"<<endl;
+       //cout<<"result1"<<endl;
     }
 #line 1501 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
@@ -1503,7 +1503,7 @@ yyreduce:
   case 3:
 #line 139 "parse.y" /* yacc.c:1646  */
     {
-       cout<<"result2"<<endl;
+       //cout<<"result2"<<endl;
     }
 #line 1509 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
@@ -1511,7 +1511,7 @@ yyreduce:
   case 4:
 #line 142 "parse.y" /* yacc.c:1646  */
     {
-       cout<<"result3"<<endl;
+       //cout<<"result3"<<endl;
     }
 #line 1517 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
@@ -1519,7 +1519,7 @@ yyreduce:
   case 5:
 #line 145 "parse.y" /* yacc.c:1646  */
     {
-       cout<<"pro"<<endl;
+       //cout<<"pro"<<endl;
     }
 #line 1525 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
@@ -1528,7 +1528,7 @@ yyreduce:
 #line 148 "parse.y" /* yacc.c:1646  */
     {
        init_f = (yyvsp[-1].f);
-       cout<<"newinput"<<endl;
+       //cout<<"newinput"<<endl;
     }
 #line 1534 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
@@ -1536,7 +1536,7 @@ yyreduce:
   case 7:
 #line 152 "parse.y" /* yacc.c:1646  */
     {
-       cout<<"init1"<<endl;
+       //cout<<"init1"<<endl;
     }
 #line 1542 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
@@ -1544,7 +1544,7 @@ yyreduce:
   case 8:
 #line 155 "parse.y" /* yacc.c:1646  */
     {
-      cout<<"goal1"<<endl;
+     // cout<<"goal1"<<endl;
     }
 #line 1550 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
@@ -1552,7 +1552,7 @@ yyreduce:
   case 9:
 #line 158 "parse.y" /* yacc.c:1646  */
     {
-      cout<<"k_and_or"<<endl;
+      //cout<<"k_and_or"<<endl;
     }
 #line 1558 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
@@ -1560,7 +1560,7 @@ yyreduce:
   case 10:
 #line 161 "parse.y" /* yacc.c:1646  */
     {
-      cout<<"acts"<<endl;
+      //cout<<"acts"<<endl;
      }
 #line 1566 "../sources/parse.cpp" /* yacc.c:1646  */
     break;
