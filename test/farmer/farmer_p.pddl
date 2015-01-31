@@ -17,9 +17,9 @@
 		)
 	)
 	
-	(:goal (or (K (or (not(ri)) (not(si)) (and (re) (rl) (sa) (sl))))
-	           (K (or (not(si)) (not(wi)) (and (sa) (sl) (wa) (wl))))
-			   (K (or (not(ri)) (not(si)) (not(wi)) (and (re) (rl) (sa) (sl) (wa) (wl))))
-			)
+	(:goal (or (K (or (not(ri)) (not(si)) (and (re) (not (rl)) (sa) (not (sl)))))
+	           (K (or (not(si)) (not(wi)) (and (sa) (not (sl)) (wa) (not (wl)))))
+	           (K (or (not(ri)) (not(si)) (not(wi)) (and (re) (not (rl)) (sa) (not (sl)) (wa) (not (wl)))))
+		)
 	)
 )
