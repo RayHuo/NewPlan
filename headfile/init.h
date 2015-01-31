@@ -12,7 +12,10 @@
 #include "Vocabulary.h"
 #include "Progression.h"
 #include <string.h>
-#include <cstdio>
+//#include "DataStructure.h"
+
+
+
 
 extern FILE *yyin;
 
@@ -26,13 +29,15 @@ extern vector<EpisAction> epis_actions;
 
 extern int yyparse();
 
+
+
 class Init{
 public:
     Init();
     ~Init();
     
     void exec(const char *domain, const char *p);//执行生成动作
-
+    
     void make_actions();
     void gen_ontic_actions(_formula*);//生成物理动作
     void gen_observe_actions(_formula*);//生成感知动作
@@ -69,12 +74,16 @@ public:
     
     //转换到CNF
     _formula* convertToConjuntiveNormalForm(_formula*& fml);
+    
+    _formula* convertToDNF(_formula*& fml);
     //组合两个公式
     _formula* compositeByConnective(FORMULA_TYPE _formulaType, _formula* _subformulaL, _formula* _subformulaR);
     //复制，避免调用的时候修改了原公式
     _formula* copyFormula(const _formula* _fml) ;
     //拆分CNF为DNF序列的vector
     void divideCNFFormula(_formula* fml, vector<_formula*>& division);
+    
+    void divideDNFFormula(_formula* fml, vector<_formula*>& division);
     //将vector<_formula*> 转换成 vector< set<int> > 来实现转dnf
     vector< set<int> > convertToSATInput(vector<_formula*> cnfDlp);
     //上面函数调用的子函数，每个公式转set<int>形式
@@ -94,7 +103,15 @@ public:
     set<int> adds(set<int> s, int i);
     //原子号生成公式
     _formula* compositeToAtom(int _atom_id);
+    
+    
+    vector<_formula*> v_convertto_vf(vector< set<int> > l);
+    _formula* vf_convertto_formula(vector<_formula*> fl);
+    
+    _formula* compositeToAtomWithNega(int _atom_id);
 
+    
+    //PropTerm getProTerm(set<int>);
     //公式生成propdnf，这里将一个公式进行上面的转dnf步骤，
     //然后dnf已vector<set<int> >形式保存，调用getpropterm转dnf中每个cnf 
     PropDNF getPropDNF(_formula*);
@@ -110,9 +127,11 @@ public:
     
     EpisCNF getEpisCNF(pre);
     EpisCNF disDKCon(EpisCNF);
-    
+
     EpisClause getEpisClausePre(vector<int>, bool);
     void getEpisiDNFInitAndGoal();
+    void genKDNFInit();
+    vector<set<int> > Kand(vector<set<int> > vs);
     void genActionPreCnd();
     //此处进行k后部分合取到dk后的操作，逻辑上的问题杨睿让这么写的
     void checkInit();
@@ -123,9 +142,10 @@ public:
     PropDNF getPropDNFFromVS(vector<set<int> >);
     void convertConToPropTerm();
     void genObaDnfAndNeg();
-    void showground(FILE *out) const;
+    void genActConSingleNeg();
+    void showground(FILE *out)const;
     void showmaps(FILE *out) const;
-    void show(FILE *out, pre p) const;
+    void show(FILE *out, pre p)const;
     void print_f(FILE *out, _formula* f) const;
     
     EpisDNF init;

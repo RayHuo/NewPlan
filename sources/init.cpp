@@ -5,7 +5,7 @@
 #include "atoms.h"
 #include<bitset>
 #include<fstream>
-
+FILE* myout = fopen("out.out", "wb");
 Init::Init() {
     ontic_actions.clear();
     epis_actions.clear();
@@ -34,13 +34,27 @@ void Init::exec(const char *domain, const char *p) {
     yyparse();
     fclose(yyin);
     // 根据parse时的数据结构生成物理动作和感知动作
+    //print_f(stdout,init_f);
     make_actions();
     // 生成初始状态和目标状态
+    
+    genKDNFInit();
+
+    
     getEpisiDNFInitAndGoal();
     genActionPreCnd();
     convertConToPropTerm();
     genObaDnfAndNeg();
+    genActConSingleNeg();
+
+    
+    showmaps(myout);
 }
+
+    
+
+
+    
 
 void Init::make_actions() {
     for (int i = 0; i < actions_f.size(); i++) {
@@ -552,8 +566,22 @@ void Init::genObaDnfAndNeg() {
     }
 }
 
+void Init::genActConSingleNeg(){
+  
+    for(int i = 0; i < ontic_actions.size(); i++)
+        ontic_actions[i].pre_con = disDKCon(ontic_actions[i].pre_con);
+
+    for(int i = 0; i < epis_actions.size(); i++){
+        epis_actions[i].pre_con = disDKCon(epis_actions[i].pre_con);
+        //cout<<"show::"<<endl;
+        //epis_acitons[i].pre_con .show();
+    }
+}
+
 void Init::showmaps(FILE *out) const {
     showground(out);
+    fprintf(out, "\nontic actions nums: %d\n",ontic_actions.size());
+    fprintf(out, "\nontic epis nums: %d\n",epis_actions.size());
     fprintf(out, "\nshow ontic actions\n");
     for (int i = 0; i < ontic_actions.size(); i++) {
         fprintf(out, "act_num: %d act_name: %s\n", ontic_actions[i].act_num, ontic_actions[i].name.c_str());
@@ -602,14 +630,113 @@ void Init::showmaps(FILE *out) const {
 }
 
 void Init::getEpisiDNFInitAndGoal() {
+
     while (init_f->formula_type == OR_F) {
         init.epis_terms.push_back(getEpisTerm(init_f->subformula_r));
         init_f = init_f->subformula_l;
     }
     init.epis_terms.push_back(getEpisTerm(init_f));
+    
     checkInit();
     goal = getEpisCNFByFormula(goal_f);
     goal = disDKCon(goal);
+}
+
+void Init::genKDNFInit(){
+    _formula* fml = convertToDNF(init_f);
+    vector<_formula*> result;
+    divideDNFFormula(fml, result);
+    vector< set<int> > vs = convertToSATInput(result);
+    absorb(vs);
+    vs = Kand(vs);
+    vector<_formula*> result2 = v_convertto_vf(vs);
+    _formula* f = vf_convertto_formula(result2);
+    init_f = f;
+}
+
+vector<set<int> > Init::Kand(vector<set<int> > vs){
+    vector<set<int> > vs1;
+    for(int i = 0; i < vs.size(); i++){
+        int m = -1;
+        set<int> s;
+        for(set<int>::iterator it = vs[i].begin(); it != vs[i].end(); it++){
+            if(Formulatab::instance().getAtom(*it)->formula_type == DK_F)
+                s.insert(*it);
+            else{
+                if(m == -1)
+                    m = *it;
+                else{
+                    _formula* f = (__formula*)malloc(sizeof(_formula));
+                    _formula* f1 = (__formula*)malloc(sizeof(_formula));
+                    f->formula_type = AND_F;
+                    f->subformula_l = Formulatab::instance().getAtom(m)->subformula_l;
+                    f->subformula_r = Formulatab::instance().getAtom(*it)->subformula_l;
+                    f1->formula_type = K_F;
+                    f1->subformula_l = f;
+                    m = Formulatab::instance().addAtom(f1);
+                }
+            }
+        }
+        if(m!=-1)
+            s.insert(m);
+        vs1.push_back(s);
+    }
+    return vs1;
+}
+
+vector<_formula*> Init::v_convertto_vf(vector< set<int> > l){
+    vector<_formula*> vf;
+    _formula* temp;
+    set<int>::iterator it;
+    set<int>::iterator it1;
+    for(int i = 0; i < l.size(); i++){
+        if(l[i].size() == 1){
+            it = l[i].begin();
+            temp = compositeToAtomWithNega(*it);
+        }
+        if(l[i].size() > 1)
+        {
+            it = l[i].begin();
+            it1 = l[i].begin();
+            it1++;
+            temp = compositeByConnective(AND_F,compositeToAtomWithNega(*it),compositeToAtomWithNega(*(it1)));
+            it1++;
+            for(; it1 != l[i].end(); it1++)
+                temp = compositeByConnective(AND_F, temp, compositeToAtomWithNega(*(it1)));
+        }
+        vf.push_back(temp);
+    }
+    return vf;
+}
+
+
+_formula* Init::vf_convertto_formula(vector<_formula*> fl){
+    _formula* f = (__formula*)malloc(sizeof(_formula));
+    if(fl.size() == 0)
+        return f;
+
+    if(fl.size() == 1)
+        return fl[0];
+    else{
+        f = compositeByConnective(OR_F, fl[0], fl[1]);
+        for(int i = 2; i < fl.size(); i++)
+            f = compositeByConnective(OR_F, f, fl[i]);
+        return f;
+    }
+}
+
+_formula* Init::compositeToAtomWithNega(int _atom_id) {
+    _formula* fml = (_formula*)malloc(sizeof(_formula));
+    assert(fml);
+    
+    if(_atom_id>0)
+    return compositeToAtom(_atom_id);
+    
+    else{
+        fml->formula_type=NEGA_F;
+        fml->subformula_l=compositeToAtom(-1*_atom_id);
+    }
+    return fml;
 }
 
 EpisCNF Init::getEpisCNFByFormula(_formula* f) {
@@ -701,7 +828,12 @@ EpisTerm Init::getEpisTerm(_formula* f) {
     EpisTerm ep;
     list<PropDNF> neg;
     while (f->formula_type == AND_F) {
-        ep.neg_propDNFs.push_back(getPropDNF(f->subformula_r));
+        if (Formulatab::instance().getAtom(f->subformula_r->pid)->formula_type == K_F) {
+            ep.pos_propDNF = getPropDNF(f->subformula_r);
+        } 
+        else {
+            ep.neg_propDNFs.push_back(getPropDNF(f->subformula_r));
+        }
         f = f->subformula_l;
     }
     if (Formulatab::instance().getAtom(f->pid)->formula_type == K_F) {
@@ -735,58 +867,11 @@ vector<set<int> > Init::getDnfFromFormulaByVar(_formula* f, vector<string> para_
 vector<set<int> > Init::getDnfFromFormula(_formula* f) {
     if (f->formula_type == K_atom)
         f = Formulatab::instance().getAtom(f->pid)->subformula_l;
-    //cout<<"process f : "<<endl;
-    //print_f(out, f);
-    _formula* fm = convertToConjuntiveNormalForm(f);
-    //cout<<"end cnf"<<endl;
-    //print_f(out, fm);
-    //cout<<"here"<<endl;
-    //cout<<"process cnf f : "<<endl;
-    //print_f(out, fm);
-    //print_f(out, fm);
-    //cout<<endl;
+    _formula* fm = convertToDNF(f);
     vector<_formula*> result;
-    divideCNFFormula(fm, result);
-    //cout<<result.size()<<endl;
-    //for(int i = 0; i < result.size(); i++){
-    //    print_f(result[i]);
-    //    cout<<endl;   
-    //}
-    //cout<<"end result"<<endl;
+    divideDNFFormula(fm, result);
     vector< set<int> > vs = convertToSATInput(result);
-
-    //cout<<"\n show this vs cnf "<<vs.size()<<endl;
-    //cout<<vs.size()<<endl;
-
-    //for(int i = 0; i < vs.size(); i++){
-    //    for(set<int>::iterator it = vs[i].begin(); it != vs[i].end(); it++){
-    //        cout<<*it<<" ";
-    //    }
-    //    cout<<endl;
-    //}
     absorb(vs);
-    vs = vcnf_to_vdnf(vs);
-    absorb(vs);
-    //cout<<"show this dnf"<<endl;
-    //print_f(out, f);
-    //cout<<endl;
-
-
-    //cout<<"\n show this vs dnf"<<vs.size()<<endl;
-    //for(int i = 0; i < vs.size(); i++){
-    //    for(set<int>::iterator it = vs[i].begin(); it != vs[i].end(); it++){
-    //        cout<<*it<<" ";
-    //    }
-    //    cout<<endl;
-    //}
-
-    //cout<<"showvs"<<endl;
-    //for(int i = 0; i < vs.size(); i++){
-    //    for(set<int>::iterator it = vs[i].begin(); it != vs[i].end(); it++)
-    //        cout<<*it<<" ";
-    //    cout<<endl;    
-    //}
-    //cout<<endl;
     return vs;
 
 }
@@ -1021,8 +1106,12 @@ vector< set<int> > Init::convertToSATInput(vector<_formula*> cnfDlp) {
 
 void Init::convertCNFformulaToLits(_formula* rule, set<int>& lits) {
 
-    if (rule->formula_type == K_atom || rule->formula_type == ONE_ATOM_STATE_F) {
+    if (rule->formula_type == ONE_ATOM_STATE_F) {
         lits.insert(Atoms::instance().get_true_num(rule->pid));
+        return;
+    }
+    if(rule->formula_type == K_atom){
+        lits.insert(rule->pid);
         return;
     }
     if (rule->formula_type == STATE_F) {
@@ -1072,6 +1161,15 @@ void Init::divideCNFFormula(_formula* fml, vector<_formula*>& division) {
     }
 }
 
+void Init::divideDNFFormula(_formula* fml, vector<_formula*>& division){
+    if (fml->formula_type == OR_F) {
+        divideDNFFormula(fml->subformula_l, division);
+        divideDNFFormula(fml->subformula_r, division);
+    } else {
+        division.push_back(fml);
+    }
+}
+
 _formula* Init::convertToConjuntiveNormalForm(_formula*& fml) {
 
     if (fml->formula_type == OR_F) {
@@ -1116,6 +1214,48 @@ _formula* Init::convertToConjuntiveNormalForm(_formula*& fml) {
     return fml;
 }
 
+_formula* Init::convertToDNF(_formula*& fml){
+    if (fml->formula_type == AND_F) {
+        convertToDNF(fml->subformula_l);
+        convertToDNF(fml->subformula_r);
+
+        _formula* subfor_l = fml->subformula_l;
+        _formula* subfor_r = fml->subformula_r;
+
+        if (subfor_l->formula_type == OR_F || subfor_r->formula_type == OR_F) {
+            if (subfor_l->formula_type == OR_F && subfor_r->formula_type == OR_F) {
+                _formula* f1 = compositeByConnective(AND_F, subfor_l->subformula_l, subfor_r->subformula_l);
+                _formula* f2 = compositeByConnective(AND_F, subfor_l->subformula_r, copyFormula(subfor_r->subformula_l));
+                _formula* f3 = compositeByConnective(AND_F, copyFormula(subfor_l->subformula_l), subfor_r->subformula_r);
+                _formula* f4 = compositeByConnective(AND_F, copyFormula(subfor_l->subformula_r), copyFormula(subfor_r->subformula_r));
+
+                _formula* f12 = compositeByConnective(OR_F, f1, f2);
+                _formula* f34 = compositeByConnective(OR_F, f3, f4);
+
+                fml = compositeByConnective(OR_F, f12, f34);
+            } else {
+                if (subfor_r->formula_type == OR_F) {
+                    fml->subformula_l = subfor_r;
+                    fml->subformula_r = subfor_l;
+                    subfor_l = fml->subformula_l;
+                    subfor_r = fml->subformula_r;
+                }
+                _formula* f1 = compositeByConnective(AND_F, subfor_l->subformula_l, subfor_r);
+                _formula* f2 = compositeByConnective(AND_F, subfor_l->subformula_r, copyFormula(subfor_r));
+
+                fml = compositeByConnective(OR_F, f1, f2);
+            }
+            convertToDNF(fml->subformula_l);
+            convertToDNF(fml->subformula_r);
+        }
+    } else if (fml->formula_type == OR_F) {
+        convertToDNF(fml->subformula_l);
+        convertToDNF(fml->subformula_r);
+    }
+    return fml;
+}
+
+
 _formula* Init::compositeByConnective(FORMULA_TYPE _formulaType, _formula* _subformulaL, _formula* _subformulaR) {
 
     //assert( _formulaType == OR_F || _formulaType == _F);
@@ -1159,7 +1299,8 @@ void Init::print_f(FILE *out, _formula* f) const {
     switch (f->formula_type) {
         case K_atom:
             fprintf(out, " K_atom ( ");
-            print_f(out, Formulatab::instance().getAtom(f->pid));
+            //fprintf(out, "%d",f->pid);
+            print_f(out,Formulatab::instance().getAtom(f->pid));
             fprintf(out, " ) ");
             break;
         case K_F: //k_f
@@ -1176,9 +1317,9 @@ void Init::print_f(FILE *out, _formula* f) const {
             fprintf(out, " TRUE_F ");
             break;
         case ONE_ATOM_STATE_F:
-            fprintf(out, " ONE_ATOM_STATE_F (");
+            fprintf(out, " (");
             fprintf(out, "%s", Vocabulary::instance().getAtom(f->pid));
-            fprintf(out, " ) ");
+            fprintf(out, ") ");
             break;
         case THREE_ATOM_BEHIND_F:
             fprintf(out, " THREE_ATOM_BEHIND_F ( \n");
@@ -1277,17 +1418,11 @@ void Init::print_f(FILE *out, _formula* f) const {
             fprintf(out, " ) ");
             break;
         case AND_F:
-            fprintf(out, " AND ( \n");
+            fprintf(out, " (");
             print_f(out, f->subformula_l);
+            fprintf(out, ") & (");
             print_f(out, f->subformula_r);
-            fprintf(out, " )\n");
-            break;
-        case DISJ_F:
-            fprintf(out, " OR ( \n");
-            print_f(out, f->subformula_l);
-            fprintf(out, "\n");
-            print_f(out, f->subformula_r);
-            fprintf(out, " )\n");
+            fprintf(out, ") ");
             break;
         case ONEOF_F:
             fprintf(out, " ONEOF_F ( \n");
@@ -1298,10 +1433,11 @@ void Init::print_f(FILE *out, _formula* f) const {
             break;
 
         case OR_F:
-            fprintf(out, " OR ( ");
+            fprintf(out, " (");
             print_f(out, f->subformula_l);
+            fprintf(out, ") | (");
             print_f(out, f->subformula_r);
-            fprintf(out, " ) ");
+            fprintf(out, ") ");
             break;
         case EMPTY_F:
             fprintf(out, " EMPTY \n");
@@ -1309,5 +1445,6 @@ void Init::print_f(FILE *out, _formula* f) const {
             //        default:
             //            assert(0);
     }
+    
 
 }

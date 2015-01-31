@@ -114,34 +114,53 @@ void yyerror(const char* s)
 %type <f> or_and
 %type <f> ands
 %type <f> and_ors
+%type <f> and_orss
+%type <f> and_orsss
 %type <f> newinput
+
+%type <f> input_k
+%type <f> and_or_k_atom
+%type <f> or_k_atoms
 
 %left S_IMPL
 %left S_DISJ S_CONJ
 %left S_NEG
+%left IMPLY_TOK
+%left OR_TOK AND_TOK
+%left NOT_TOK
+
 
 %%
 
 result
     : '(' DEFINE_TOK domain predicates  actions ')'{
-       //cout<<"result1"<<endl;
+       cout<<"result1"<<endl;
     }
     | '(' DEFINE_TOK domain actions ')'{
-       //cout<<"result2"<<endl;
+       cout<<"result2"<<endl;
     }   
     | '(' DEFINE_TOK domain typess predicates  actions ')'{
-       //cout<<"result3"<<endl;
+       cout<<"result3"<<endl;
     }
     |  pro{
-       //cout<<"pro"<<endl;
+       cout<<"pro"<<endl;
     }  
     |  newinput End{
        init_f = $1;
-       //cout<<"newinput"<<endl;
+       cout<<"newinput"<<endl;
     }
-
-
-
+    | init {
+       cout<<"init1"<<endl;
+    }
+    | goal{
+      cout<<"goal1"<<endl;
+    }
+    | k_and_or{
+      cout<<"k_and_or"<<endl;
+    }
+    | actions {
+      cout<<"acts"<<endl;
+     }
 
 
 domain
@@ -165,10 +184,12 @@ types
 actions
     : actions action{
       actions_f.push_back($2);
+      //cout<<"one acts"<<endl;
 
     }
     | action{
       actions_f.push_back($1);
+      //cout<<"one act"<<endl;
 
     }
 
@@ -470,11 +491,75 @@ newinput
     }     
 
 
+input_k 
+    :  and_or_k_atom {
+      $$ = $1;
+      //cout<<"imput_k"<<endl;
+    }
+    |  or_k_atoms  {
+      $$ = $1;
+    }
+    |  k_and_or {
+      $$ = $1;
+    }
+    |  dk_and_or  {
+      $$ = $1;
+    }
 
+and_or_k_atom
+    : AND_TOK  '(' or_k_atoms ')' {
+      $$ = $3;
+    }
+    | AND_TOK  '(' k_and_or ')' {
+      $$ = $3;
+    }
+    
+    | AND_TOK  '(' dk_and_or ')' {
+      $$ = $3;
+    }
+    | and_or_k_atom '(' or_k_atoms ')'{
+      $$ = (__formula*)malloc(sizeof(_formula));
+      $$ -> formula_type = AND_F;
+      $$ -> subformula_l = $1;
+      $$ -> subformula_r = $3;     
+    }
+    | and_or_k_atom  '(' k_and_or ')' {
+      $$ = (__formula*)malloc(sizeof(_formula));
+      $$ -> formula_type = AND_F;
+      $$ -> subformula_l = $1;
+      $$ -> subformula_r = $3;     
+    }
+    | and_or_k_atom  '(' dk_and_or ')' {
+      $$ = (__formula*)malloc(sizeof(_formula));
+      $$ -> formula_type = AND_F;
+      $$ -> subformula_l = $1;
+      $$ -> subformula_r = $3;     
+    }
+
+
+or_k_atoms
+    : OR_TOK '(' k_and_or ')'{
+      $$ = $3;
+    }
+    | OR_TOK '(' dk_and_or ')'{
+      $$ = $3;
+    }
+    | or_k_atoms  '(' k_and_or ')' {
+      $$ = (__formula*)malloc(sizeof(_formula));
+      $$ -> formula_type = OR_F;
+      $$ -> subformula_l = $1;
+      $$ -> subformula_r = $3;
+    }
+    | or_k_atoms  '(' dk_and_or ')' {
+      $$ = (__formula*)malloc(sizeof(_formula));
+      $$ -> formula_type = OR_F;
+      $$ -> subformula_l = $1;
+      $$ -> subformula_r = $3;
+    }
 
 
 k_and_or
-    : K_TOK  and_ors{
+    : K_TOK  and_orsss{
       _formula* f = (__formula*)malloc(sizeof(_formula));
       f -> formula_type = K_F;
       f -> subformula_l = $2;
@@ -486,7 +571,7 @@ k_and_or
     }
 
 dk_and_or
-    : DK_TOK and_ors{
+    : DK_TOK and_orsss{
       _formula* f = (__formula*)malloc(sizeof(_formula));
       f -> formula_type = DK_F;
       f -> subformula_l = $2;
@@ -496,6 +581,31 @@ dk_and_or
       $$ -> pid = id;
     }
 
+
+and_orsss
+    : '(' and_orss ')'{
+      $$ = $2;
+    }
+    | and_ors{
+      $$ = $1;
+    }
+
+and_orss 
+    : and '(' or_and ')'{
+      $$ = (__formula*)malloc(sizeof(_formula));
+      $$ -> formula_type = AND_F;
+      $$ -> subformula_l = $1;
+      $$ -> subformula_r = $3;     
+    }
+    | AND_TOK  '(' or_and ')'{
+      $$ = $3;
+    }
+    | and_orss '(' or_and ')'{
+      $$ = (__formula*)malloc(sizeof(_formula));
+      $$ -> formula_type = AND_F;
+      $$ -> subformula_l = $1;
+      $$ -> subformula_r = $3;    
+    }
 
 and_ors
     : '(' or_and ')'{
@@ -514,7 +624,7 @@ and_ors
       $$ = $1;
     }
 
-and_or
+and_or 
     : and ors{
       $$ = (__formula*)malloc(sizeof(_formula));
       $$ -> formula_type = AND_F;
@@ -682,7 +792,7 @@ imply
       }
       else
           f = $3-> subformula_l;
-      $$ -> formula_type = DISJ_F;
+      $$ -> formula_type = OR_F;
       $$ -> subformula_l = f;
       $$ -> subformula_r = $4;
     }
@@ -802,10 +912,10 @@ vartok
 
 pro
     : '(' DEFINE_TOK '(' WORD_TOK WORD_TOK ')' '(' DOMAIN_TOK_P WORD_TOK ')' object init goal ')'{
-
+      
     }
     |'(' DEFINE_TOK '(' WORD_TOK WORD_TOK ')' '(' DOMAIN_TOK_P WORD_TOK ')' init goal ')'{
-
+      //cout<<"right"<<endl;
     }
     
 
@@ -854,14 +964,14 @@ word
 
 
 init
-    : '(' INIT_TOK_P '(' ig_k_and_or ')' ')'{
+    : '(' INIT_TOK_P '(' input_k ')' ')'{
       init_f = $4;
 
       //cout<<"init"<<endl;
     }
 
 goal
-    : '(' GOAL_TOK_P '(' ig_k_and_or ')' ')'{
+    : '(' GOAL_TOK_P '(' input_k ')' ')'{
       goal_f = $4;
       //cout<<"goal"<<endl;
     }

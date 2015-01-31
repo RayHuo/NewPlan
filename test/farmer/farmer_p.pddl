@@ -2,24 +2,24 @@
 	(:domain farmer)
 	
 	(:init (and 
-	    (or (K (imply (ri) (si)))
-		    (K (imply (wi) (si)))
+        (or (K (or (not(ri)) (si)))
+		    (K (or (not(wi)) (si)))
 		)
 	    (K (and (fl)
-		        (imply (ri) (and (re) (rl)))
-				(imply (si) (and (sa) (sl)))
-				(imply (ri) (and (re) (rl)))
+		        (or (not(ri)) (and (re) (rl)))
+				(or (not(si)) (and (sa) (sl)))
+				(or (not(wi)) (and (wa) (wl)))
 			) 
 		)
 		(DK (d))
 		(DK (not (d)))
+
 		)
 	)
 	
-	(:goal (or (K (imply (and (ri) (si)) (and (re) (rl) (sa) (sl))))
-	           (K (imply (and (si) (wi)) (and (sa) (sl) (wa) (wl))))
-			   (K (imply (and (ri) (si) (wi)) (and (re) (rl) (sa) (sl) (wa) (wl))))
+	(:goal (or (K (or (not(ri)) (not(si)) (and (re) (rl) (sa) (sl))))
+	           (K (or (not(si)) (not(wi)) (and (sa) (sl) (wa) (wl))))
+			   (K (or (not(ri)) (not(si)) (not(wi)) (and (re) (rl) (sa) (sl) (wa) (wl))))
 			)
 	)
 )
-

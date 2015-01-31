@@ -1,0 +1,25 @@
+(define (problem farmer)
+	(:domain farmer)
+	
+	(:init (and 
+	    (or (K (imply (ri) (si)))
+		    (K (imply (wi) (si)))
+		)
+	    (K (and (fl)
+		        (imply (ri) (and (re) (rl)))
+				(imply (si) (and (sa) (sl)))
+				(imply (ri) (and (re) (rl)))
+			) 
+		)
+		(DK (d))
+		(DK (not (d)))
+		)
+	)
+	
+	(:goal (or (K (imply (and (ri) (si)) (and (re) (rl) (sa) (sl))))
+	           (K (imply (and (si) (wi)) (and (sa) (sl) (wa) (wl))))
+			   (K (imply (and (ri) (si) (wi)) (and (re) (rl) (sa) (sl) (wa) (wl))))
+			)
+	)
+)
+
