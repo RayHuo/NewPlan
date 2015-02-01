@@ -13,13 +13,4 @@ test/btc/btc_domain.pddl test/btc/btc_p20.pddl 1
 test/btc/btc_domain.pddl test/btc/btc_p30.pddl 1
 test/btc/btc_domain.pddl test/btc/btc_p50.pddl 1
 test/blocks/blocks_domain.pddl test/blocks/blocks_p3.pddl
-test/grid/grid_domain.pddl test/grid/grid_p3.pddl
-test/grid/grid_domain.pddl test/grid/grid_p4.pddl
-test/grid/grid_domain.pddl test/grid/grid_p5.pddl
-test/egrid/egrid_domain.pddl test/egrid/egrid_p3.pddl
-test/egrid/egrid_domain.pddl test/egrid/egrid_p4.pddl
-test/egrid/egrid_domain.pddl test/egrid/egrid_p5.pddl
-test/cube/cube_domain40-20.pddl test/cube/cube_p40-20.pddl
-test/cube/cube_domain75-37.pddl test/cube/cube_p75-37.pddl
-test/cube/cube_domain99-49.pddl test/cube/cube_p99-49.pddl
-test/medpks/medpks2_domain.pddl test/medpks/medpks_p2.pddl
+

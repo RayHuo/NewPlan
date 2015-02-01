@@ -2,20 +2,20 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <data xmlns="http://www.netbeans.org/ns/make-project-private/1">
         <activeConfTypeElem>1</activeConfTypeElem>
-        <activeConfIndexElem>0</activeConfIndexElem>
+        <activeConfIndexElem>1</activeConfIndexElem>
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/xhd/Desktop/130/NewPlan/parse/lex.l</file>
-            <file>file:/home/xhd/Desktop/130/NewPlan/sources/main.cpp</file>
-            <file>file:/home/xhd/Desktop/130/NewPlan/sources/formulatab.cpp</file>
-            <file>file:/home/xhd/Desktop/130/NewPlan/headfile/init.h</file>
-            <file>file:/home/xhd/Desktop/130/NewPlan/sources/plan.cpp</file>
-            <file>file:/home/xhd/Desktop/130/NewPlan/sources/lex.cpp</file>
-            <file>file:/home/xhd/Desktop/130/NewPlan/parse/parse.y</file>
-            <file>file:/home/xhd/Desktop/130/NewPlan/headfile/parse.h</file>
-            <file>file:/home/xhd/Desktop/130/NewPlan/sources/init.cpp</file>
+            <file>file:/home/ideapad/NetBeansProjects/NewPlan/sources/EpisCNF.cpp</file>
+            <file>file:/home/ideapad/NetBeansProjects/NewPlan/test/farmer/farmer_p.pddl</file>
+            <file>file:/home/ideapad/NetBeansProjects/NewPlan/headfile/EpisCNF.h</file>
+            <file>file:/home/ideapad/NetBeansProjects/NewPlan/sources/plan.cpp</file>
+            <file>file:/home/ideapad/NetBeansProjects/NewPlan/sources/EpisDNF.cpp</file>
+            <file>file:/home/ideapad/NetBeansProjects/NewPlan/sources/init.cpp</file>
+            <file>file:/home/ideapad/NetBeansProjects/NewPlan/sources/main.cpp</file>
+            <file>file:/home/ideapad/NetBeansProjects/NewPlan/headfile/Progression.h</file>
+            <file>file:/home/ideapad/NetBeansProjects/NewPlan/headfile/EpisDNF.h</file>
         </group>
     </open-files>
 </project-private>

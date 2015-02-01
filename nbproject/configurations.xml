@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="89">
+<configurationDescriptor version="94">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -42,12 +42,21 @@
       <logicalFolder name="blocks" displayName="blocks" projectFiles="true">
         <itemPath>test/blocks/blocks_domain.pddl</itemPath>
         <itemPath>test/blocks/blocks_p3.pddl</itemPath>
+        <itemPath>test/blocks/blocks_p7.pddl</itemPath>
       </logicalFolder>
       <logicalFolder name="btc" displayName="btc" projectFiles="true">
         <itemPath>test/btc/btc_domain.pddl</itemPath>
         <itemPath>test/btc/btc_p20.pddl</itemPath>
         <itemPath>test/btc/btc_p30.pddl</itemPath>
         <itemPath>test/btc/btc_p50.pddl</itemPath>
+      </logicalFolder>
+      <logicalFolder name="cube" displayName="cube" projectFiles="true">
+        <itemPath>test/cube/cube_domain40-20.pddl</itemPath>
+        <itemPath>test/cube/cube_domain75-37.pddl</itemPath>
+        <itemPath>test/cube/cube_domain99-49.pddl</itemPath>
+        <itemPath>test/cube/cube_p40-20.pddl</itemPath>
+        <itemPath>test/cube/cube_p75-37.pddl</itemPath>
+        <itemPath>test/cube/cube_p99-49.pddl</itemPath>
       </logicalFolder>
       <logicalFolder name="demo" displayName="demo" projectFiles="true">
         <itemPath>test/demo/demo_domain.pddl</itemPath>
@@ -64,11 +73,28 @@
         <itemPath>test/doors/door_newdomain.pddl</itemPath>
         <itemPath>test/doors/door_p2.pddl</itemPath>
         <itemPath>test/doors/door_p5.pddl</itemPath>
+        <itemPath>test/doors/door_p9.pddl</itemPath>
         <itemPath>test/doors/door_pnew.pddl</itemPath>
+      </logicalFolder>
+      <logicalFolder name="egrid" displayName="egrid" projectFiles="true">
+        <itemPath>test/egrid/egrid_domain.pddl</itemPath>
+        <itemPath>test/egrid/egrid_p3.pddl</itemPath>
+        <itemPath>test/egrid/egrid_p4.pddl</itemPath>
+        <itemPath>test/egrid/egrid_p5.pddl</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="farmer" projectFiles="true">
         <itemPath>test/farmer/farmer_domain.pddl</itemPath>
         <itemPath>test/farmer/farmer_p.pddl</itemPath>
+      </logicalFolder>
+      <logicalFolder name="grid" displayName="grid" projectFiles="true">
+        <itemPath>test/grid/grid_domain.pddl</itemPath>
+        <itemPath>test/grid/grid_p3.pddl</itemPath>
+        <itemPath>test/grid/grid_p4.pddl</itemPath>
+        <itemPath>test/grid/grid_p5.pddl</itemPath>
+      </logicalFolder>
+      <logicalFolder name="medpks" displayName="medpks" projectFiles="true">
+        <itemPath>test/medpks/medpks2_domain.pddl</itemPath>
+        <itemPath>test/medpks/medpks_p2.pddl</itemPath>
       </logicalFolder>
       <logicalFolder name="push" displayName="push" projectFiles="true">
         <itemPath>test/push/push.pddl</itemPath>
@@ -105,7 +131,6 @@
   <confs>
     <conf name="Debug" type="1">
       <toolsSet>
-        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
@@ -174,6 +199,8 @@
       </item>
       <item path="test/blocks/blocks_p3.pddl" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="test/blocks/blocks_p7.pddl" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="test/btc/btc_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
       <item path="test/btc/btc_p20.pddl" ex="false" tool="3" flavor2="0">
@@ -181,6 +208,18 @@
       <item path="test/btc/btc_p30.pddl" ex="false" tool="3" flavor2="0">
       </item>
       <item path="test/btc/btc_p50.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/cube/cube_domain40-20.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/cube/cube_domain75-37.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/cube/cube_domain99-49.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/cube/cube_p40-20.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/cube/cube_p75-37.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/cube/cube_p99-49.pddl" ex="false" tool="3" flavor2="0">
       </item>
       <item path="test/demo/demo_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
@@ -202,11 +241,33 @@
       </item>
       <item path="test/doors/door_p5.pddl" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="test/doors/door_p9.pddl" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="test/doors/door_pnew.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/egrid/egrid_domain.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/egrid/egrid_p3.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/egrid/egrid_p4.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/egrid/egrid_p5.pddl" ex="false" tool="3" flavor2="0">
       </item>
       <item path="test/farmer/farmer_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
       <item path="test/farmer/farmer_p.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/grid/grid_domain.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/grid/grid_p3.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/grid/grid_p4.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/grid/grid_p5.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/medpks/medpks2_domain.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/medpks/medpks_p2.pddl" ex="false" tool="3" flavor2="0">
       </item>
       <item path="test/push/push.pddl" ex="false" tool="3" flavor2="0">
       </item>
@@ -227,7 +288,6 @@
     </conf>
     <conf name="Release" type="1">
       <toolsSet>
-        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>default</compilerSet>
         <dependencyChecking>true</dependencyChecking>
         <rebuildPropChanged>false</rebuildPropChanged>
@@ -244,6 +304,7 @@
           <incDir>
             <pElem>headfile</pElem>
           </incDir>
+          <commandLine>-pg</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -302,6 +363,8 @@
       </item>
       <item path="test/blocks/blocks_p3.pddl" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="test/blocks/blocks_p7.pddl" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="test/btc/btc_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
       <item path="test/btc/btc_p20.pddl" ex="false" tool="3" flavor2="0">
@@ -309,6 +372,18 @@
       <item path="test/btc/btc_p30.pddl" ex="false" tool="3" flavor2="0">
       </item>
       <item path="test/btc/btc_p50.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/cube/cube_domain40-20.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/cube/cube_domain75-37.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/cube/cube_domain99-49.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/cube/cube_p40-20.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/cube/cube_p75-37.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/cube/cube_p99-49.pddl" ex="false" tool="3" flavor2="0">
       </item>
       <item path="test/demo/demo_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
@@ -330,11 +405,33 @@
       </item>
       <item path="test/doors/door_p5.pddl" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="test/doors/door_p9.pddl" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="test/doors/door_pnew.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/egrid/egrid_domain.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/egrid/egrid_p3.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/egrid/egrid_p4.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/egrid/egrid_p5.pddl" ex="false" tool="3" flavor2="0">
       </item>
       <item path="test/farmer/farmer_domain.pddl" ex="false" tool="3" flavor2="0">
       </item>
       <item path="test/farmer/farmer_p.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/grid/grid_domain.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/grid/grid_p3.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/grid/grid_p4.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/grid/grid_p5.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/medpks/medpks2_domain.pddl" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="test/medpks/medpks_p2.pddl" ex="false" tool="3" flavor2="0">
       </item>
       <item path="test/push/push.pddl" ex="false" tool="3" flavor2="0">
       </item>
