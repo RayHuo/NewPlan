@@ -8,6 +8,7 @@
 #include "structs.h"
 #include <iostream>
 #include <map>
+#include <vector>
 using namespace std;
 
 extern _formula* init_f;
@@ -153,7 +154,7 @@ result
        //cout<<"init1"<<endl;
     }
     | goal{
-     // cout<<"goal1"<<endl;
+      //cout<<"goal1"<<endl;
     }
     | k_and_or{
       //cout<<"k_and_or"<<endl;
@@ -161,6 +162,10 @@ result
     | actions {
       //cout<<"acts"<<endl;
      }
+    | oneofs {
+      //cout<<"oneofs"<<endl;
+      init_f = $1;
+    }
 
 
 domain
@@ -236,7 +241,7 @@ conobserve
     }
 
 observe
-    : OBSERVE_TOK nstate{
+    : OBSERVE_TOK and_ors{
       $$ = (__formula*)malloc(sizeof(_formula));
       $$ -> formula_type = OBSERVE_F;
       $$ -> subformula_l = $2;
@@ -714,71 +719,154 @@ or
 
 oneofs
     : '(' oneof ')'{
-      $$ = $2;
+      vector<_formula*> fm;
+      for(int i = 0; i < $2->count; i++){
+         _formula* f = (__formula*)malloc(sizeof(_formula));
+         f -> formula_type = ONE_ATOM_STATE_F;
+         f -> pid = $2->pidlist[i];
+         fm.push_back(f);
+      }
+      vector<_formula*> fm1;
+      for(int i = 0; i < $2->count; i++){
+         _formula* f = (__formula*)malloc(sizeof(_formula));
+         if(i==0)
+             f = fm[0];
+         if(i!=0){
+             f->formula_type = NEGA_F;
+             f->subformula_l = fm[0];
+          }
+          
+         for(int j = 1; j < $2->count; j++){
+            if(i!=j){
+               _formula* f1 = (__formula*)malloc(sizeof(_formula));
+               f1->formula_type = NEGA_F;
+               f1->subformula_l = fm[j];
+               _formula* f2 = (__formula*)malloc(sizeof(_formula));
+               f2->formula_type = AND_F;
+               f2->subformula_l = f;
+               f2->subformula_r = f1;
+               f = f2;
+            }
+            else{
+               _formula* f2 = (__formula*)malloc(sizeof(_formula));
+               f2->formula_type = AND_F;
+               f2->subformula_l = f;
+               f2->subformula_r = fm[j];
+               f = f2;
+            }
+            
+         }
+         fm1.push_back(f);
+      }
+
+      _formula* f = (__formula*)malloc(sizeof(_formula));
+      f->formula_type = OR_F;
+      f->subformula_l = fm1[0];
+      f->subformula_r = fm1[1];
+      for(int i=2; i < $2->count; i++)
+      {
+        _formula* f1 = (__formula*)malloc(sizeof(_formula));
+        f1->formula_type = OR_F;
+        f1->subformula_l = f;
+        f1->subformula_r = fm1[i];
+        f = f1;
+      }
+      $$ = f;
+      
     }
     | imply{
       $$ = $1;
     }
 
 oneof 
-    : ONEOF_TOK_P imply imply{
+    : ONEOF_TOK_P state{
+      _formula* f = (__formula*)malloc(sizeof(_formula));
+      f = $2;
+      int ie;
+      switch (f->formula_type) {
+        case ONE_ATOM_STATE_F:
+        {   
+            ie = f->pid;
+            break;
+        }
+        case STATE_F:
+        {
+            string s = Vocabulary::instance().getAtom(f->pid);
+            string temp;
+            if (f->subformula_r->formula_type == VAR_F) {
+                temp = Vocabulary::instance().getAtom(f->subformula_r->pid);
+                s = s + "." + temp;
+            } else
+                for (int i = 0; i < f->subformula_r->count; i++) {
+                    temp = Vocabulary::instance().getAtom(f->subformula_r->pidlist[i]);
+                    s = s + "." + temp;
+                }
+            char *c;
+            int len = s.length();
+            c = (char *)malloc((len+1)*sizeof(char));
+            s.copy(c,len,0);
+            c[len]='\0';
+            ie = Vocabulary::instance().queryAtom(c);
+
+            if (ie == -1)
+                ie = Vocabulary::instance().addAtom(c);
+
+
+            //else
+            //return ie;
+            break;
+        }
+      }
       $$ = (__formula*)malloc(sizeof(_formula));
-      _formula* nl = (__formula*)malloc(sizeof(_formula));
-      _formula* nr = (__formula*)malloc(sizeof(_formula));
-      if($2 -> formula_type != NEGA_F){
-          nl -> formula_type = NEGA_F;
-          nl -> subformula_l = $2;
-      }
-      else{
-          nl = $2 -> subformula_l;
-      }
-      if($3 -> formula_type != NEGA_F){
-          nr -> formula_type = NEGA_F;
-          nr -> subformula_l = $3;
-      }
-      else{
-          nr = $3 -> subformula_l;
-      }
-      _formula* ll = (__formula*)malloc(sizeof(_formula));
-      _formula* rr = (__formula*)malloc(sizeof(_formula));
-      ll -> formula_type = AND_F;
-      ll -> subformula_l = $2;
-      ll -> subformula_r = nr;
-      rr -> formula_type = AND_F;
-      rr -> subformula_l = $3;
-      rr -> subformula_r = nl;
-
-      $$ -> formula_type = OR_F;
-      $$ -> subformula_l = ll;
-      $$ -> subformula_r = rr;
+      $$ -> formula_type = ONEOF_F;
+      $$ -> count = 1;
+      $$ -> pidlist[0] = ie;
     }
-    | oneof imply{
-      $$ = (__formula*)malloc(sizeof(_formula));
-      _formula* nl = (__formula*)malloc(sizeof(_formula));
-      _formula* nr = (__formula*)malloc(sizeof(_formula));
-      if($2 -> formula_type != NEGA_F){
-          nl -> formula_type = NEGA_F;
-          nl -> subformula_l = $2;
-      }
-      else{
-          nl = $2 -> subformula_l;
-      }
-      nr -> formula_type = NEGA_F;
-      nr -> subformula_l = $1;
+    | oneof state{
+      _formula* f = (__formula*)malloc(sizeof(_formula));
+      f = $2;
+      int ie;
+      switch (f->formula_type) {
+        case ONE_ATOM_STATE_F:
+        {   
+            ie = f->pid;
+            break;
+        }
+        case STATE_F:
+        {
+            string s = Vocabulary::instance().getAtom(f->pid);
+            string temp;
+            if (f->subformula_r->formula_type == VAR_F) {
+                temp = Vocabulary::instance().getAtom(f->subformula_r->pid);
+                s = s + "." + temp;
+            } else
+                for (int i = 0; i < f->subformula_r->count; i++) {
+                    temp = Vocabulary::instance().getAtom(f->subformula_r->pidlist[i]);
+                    s = s + "." + temp;
+                }
+            char *c;
+            int len = s.length();
+            c = (char *)malloc((len+1)*sizeof(char));
+            s.copy(c,len,0);
+            c[len]='\0';
+            ie = Vocabulary::instance().queryAtom(c);
 
-      _formula* ll = (__formula*)malloc(sizeof(_formula));
-      _formula* rr = (__formula*)malloc(sizeof(_formula));
-      ll -> formula_type = AND_F;
-      ll -> subformula_l = $2;
-      ll -> subformula_r = nr;
-      rr -> formula_type = AND_F;
-      rr -> subformula_l = $1;
-      rr -> subformula_r = nl;
+            if (ie == -1)
+                ie = Vocabulary::instance().addAtom(c);
 
-      $$ -> formula_type = OR_F;
-      $$ -> subformula_l = ll;
-      $$ -> subformula_r = rr;
+
+            //else
+            //return ie;
+            break;
+        }
+      }
+      $$ = $1;
+      $$->pidlist[$1->count] = ie;
+      $$->count = $1->count+1;
+
     }
+
+
 
 
 
@@ -840,10 +928,6 @@ statewithoutp
       $$ = (__formula*)malloc(sizeof(_formula));
       $$ -> formula_type = ONE_ATOM_STATE_F;
       $$ -> pid = id;
-      vector<int> v;
-      v.push_back(id); 
-      string s1($1);     
-      grounding_map[s1] = v;
     }
 
 vars 

@@ -1,10 +1,5 @@
 (define (domain cube)
 	
-	(:types pos)
-	(:predicates (x ?p - pos)
-	             (y ?p - pos)
-				 (z ?p - pos)  
-	)
 
     (:action sense_right
 	 :parameters ()
@@ -358,7 +353,8 @@
        
   
 	(:action up
-     :precondition (not (y p1))
+	 :parameters ()
+     :precondition (K(not (y p1)))
      :effect (((y p2), (y p1), (y p2)),
 			  ((y p3), (y p2), (y p3)),
 			  ((y p4), (y p3), (y p4)),

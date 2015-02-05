@@ -114,7 +114,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 32 "parse.y" /* yacc.c:1909  */
+#line 33 "parse.y" /* yacc.c:1909  */
 
     char* s;
     struct __formula* f;

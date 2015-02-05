@@ -11,10 +11,10 @@
 			f1-2f 
 			f2-2f - POS
 			shape0 
-			shape1 -SHAPE
+			shape1 - SHAPE
 			key0-0 
 			key1-0 
-			key1-1 -KEY
+			key1-1 - KEY
 	)
 	
 	(:init (K (and

@@ -627,9 +627,11 @@ void Init::getEpisiDNFInitAndGoal() {
     }
     init.epis_terms.push_back(getEpisTerm(init_f));
     
-    checkInit();
     goal = getEpisCNFByFormula(goal_f);
     goal = disDKCon(goal);
+    
+    checkInit();
+
 }
 
 void Init::genKDNFInit(){
@@ -798,6 +800,7 @@ EpisCNF Init::disDKCon(EpisCNF ec) {
 }
 
 void Init::checkInit() {
+    init.minimal();
     PropDNF pk;
     for (list<EpisTerm>::iterator it = init.epis_terms.begin(); it != init.epis_terms.end(); it++) {
         if (it->pos_propDNF.prop_terms.size() != 0) {
@@ -860,8 +863,8 @@ vector<set<int> > Init::getDnfFromFormula(_formula* f) {
     _formula* fm = convertToDNF(f);
     vector<_formula*> result;
     divideDNFFormula(fm, result);
-    vector< set<int> > vs = convertToSATInput(result);
-    absorb(vs);
+    vector< set<int> > vs = convertToDNFSATInput(result);
+    //absorb(vs);
     return vs;
 
 }
@@ -1113,18 +1116,55 @@ void Init::convertCNFformulaToLits(_formula* rule, set<int>& lits) {
         set<int> se;
         convertCNFformulaToLits(rule->subformula_l, se);
         lits.insert((*(se.begin()))*(-1));
-        //lits.insert(rule->subformula_l->pid*(-1));
-        //convertCNFformulaToLits(rule->subformula_l, lits);
-        //set<int> se;
-        //se.insert((*lits.begin())*(-1));
-        //lits = se;
     } else {
         convertCNFformulaToLits(rule->subformula_l, lits);
         convertCNFformulaToLits(rule->subformula_r, lits);
     }
 
 }
+vector< set<int> > Init::convertToDNFSATInput(vector<_formula*> cnfDlp) {
+    vector< set<int> > res;
+    for (int i = 0; i < cnfDlp.size(); i++) {
+        set<int> lits;
+        //while(cnfDlp[i]->formula_type == AND_OR)
+        //convertCNFformulaToLits(cnfDlp[i], lits);
+        vector<_formula*> lits_f;
+        divideCNFFormula(cnfDlp[i],lits_f);
+        for(int i = 0; i < lits_f.size(); i++){
+            lits.insert(convertDNFformulaToLits(lits_f[i]));
+        }
+        res.push_back(lits);
+    }
+    return res;
+}
 
+
+int Init::convertDNFformulaToLits(_formula* rule) {
+
+    if (rule->formula_type == ONE_ATOM_STATE_F) {
+        
+        return Atoms::instance().get_true_num(rule->pid);
+    }
+    if(rule->formula_type == K_atom){
+        return rule->pid;
+    }
+    if (rule->formula_type == STATE_F) {
+        return gen_bddnum_by_state(rule);
+    }
+    if (rule->formula_type == NEGA_F) {
+        //print_f(rule);
+        if(rule->subformula_l->formula_type == ONE_ATOM_STATE_F)
+            return (-1)*Atoms::instance().get_true_num(rule->subformula_l->pid);
+        if(rule->subformula_l->formula_type == K_atom){
+            return (-1)*rule->subformula_l->pid;
+        }
+        if (rule->subformula_l->formula_type == STATE_F) {
+            return (-1)*gen_bddnum_by_state(rule->subformula_l);
+        }
+    } 
+    
+
+}
 void Init::deleteFormula(_formula* _fml) {
     assert(_fml);
 

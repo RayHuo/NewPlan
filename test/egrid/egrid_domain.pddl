@@ -1,19 +1,5 @@
 (define (domain egrid)
 
-	(:predicates (conn ?x ?y)
-				 (key-shape ?k ?s)
-                 (lock-shape ?x ?s)
-                 (at ?r ?x )
-	             (at-robot ?x)
-                 (place ?p)
-                 (key ?k)
-                 (shape ?s)
-                 (locked ?x)
-                 (holding ?k)
-                 (open ?x)
-                 (arm-empty)
-	)
-
 
 	(:action observe-lock-shape
 	 :parameters (?curpos - POS ?lockpos - POS ?shape - SHAPE)
@@ -28,7 +14,7 @@
 	)
 
 	(:action unlock
-	 :parameters (?curpos -POS ?lockpos -POS ?key - KEY ?shape -SHAPE)
+	 :parameters (?curpos - POS ?lockpos - POS ?key - KEY ?shape - SHAPE)
 	 :precondition (K (and (place ?curpos) 
 	                       (place ?lockpos) 
 						   (key ?key)
@@ -45,7 +31,7 @@
 
 
 	(:action move
-	 :parameters (?curpos - POS ?nextpos -POS)
+	 :parameters (?curpos - POS ?nextpos - POS)
 	 :precondition (K (and (place ?curpos) 
 	                       (place ?nextpos)
 						   (at-robot ?curpos)
@@ -65,7 +51,7 @@
 						   (arm-empty)
 					   )
 					)
-	 :effect (( ,(holding ?key), ((at ?key ?curpos), (arm-empty))))
+	 :effect (( ,(holding ?key), (at ?key ?curpos, arm-empty)))
 	)
 
 	(:action putdown
@@ -76,9 +62,8 @@
 						   (holding ?key)
 					   )
 					)
-	 :effect (( ,((arm-empty), (at ?key ?curpos)), (holding ?key)))
+	 :effect (( ,(arm-empty, at ?key ?curpos), (holding ?key)))
 	 )
 )
-
 
 	

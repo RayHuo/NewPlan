@@ -590,17 +590,9 @@
 				(opened p7-7)
 				(opened p7-8)
 				(opened p7-9)
-				 (oneof
+
 					(opened p8-1)
-					(opened p8-2)
-					(opened p8-3)
-					(opened p8-4)
-					(opened p8-5)
-					(opened p8-6)
-					(opened p8-7)
-					(opened p8-8)
-					(opened p8-9)
-				 )
+
 				(opened p9-1)
 				(opened p9-2)
 				(opened p9-3)

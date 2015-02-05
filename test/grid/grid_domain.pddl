@@ -16,7 +16,7 @@
 
 
 	(:action sense-lock-shape
-	 :parameters (?curpos - POS ?lockpos - POS ?shape -SHAPE)
+	 :parameters (?curpos - POS ?lockpos - POS ?shape - SHAPE)
 	 :precondition (K (and (place ?curpos) 
 	                       (place ?lockpos) 
 						   (shape ?shape)
@@ -24,7 +24,7 @@
 						   (at-robot ?curpos)
 					   )
 					)
-	 :observe ((lock-shape ?lockpos ?shape))
+	 :observe (lock-shape ?lockpos ?shape)
 	)
 
 	(:action unlock
@@ -64,7 +64,7 @@
 						   (arm-empty )
 					   )
 					)
-	 :effect (( ,(holding ?key), ((at ?key ?curpos), (arm-empty ))))
+	 :effect (( ,(holding ?key), (at ?key ?curpos, arm-empty )))
 	)
 
 	(:action putdown
@@ -75,6 +75,6 @@
 						   (holding ?key)
 					   )
 					)
-	 :effect (( ,((arm-empty), (at ?key ?curpos)), (holding ?key)))
+	 :effect (( ,(arm-empty, at ?key ?curpos), (holding ?key)))
 	)
 )

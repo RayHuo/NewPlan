@@ -3,13 +3,13 @@
 	
 	(:init (and 
         	   (or (K (and (ri) (si)))
-		       (K (and (wi) (si)))
-		   )
+		           (K (and (wi) (si)))
+		       )
 	    	   (K (and (fl)
 		           (or (not(ri)) (and (re) (rl)))
 			   (or (not(si)) (and (sa) (sl)))
 			   (or (not(wi)) (and (wa) (wl)))
-		      ) 
+		       ) 
 		   )
 		  (DK (d))
 		  (DK (not (d)))
@@ -18,7 +18,7 @@
 	
 	(:goal (or (K (or (not(ri)) (not(si)) (and (re) (not (rl)) (sa) (not (sl)))))
 	           (K (or (not(si)) (not(wi)) (and (sa) (not (sl)) (wa) (not (wl)))))
-	           (K (or (not(ri)) (not(si)) (not(wi)) (and (re) (not (rl)) (sa) (not (sl)) (wa) (not (wl)))))
+	           (K (or (not(ri)) (not(si)) (not(wi)) (and (re) (not (rl)) (sa) (not (sl)) (wa) (not (wl)) ) ) )
 		)
 	)
 )

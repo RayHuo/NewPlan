@@ -87,6 +87,10 @@ public:
     //将vector<_formula*> 转换成 vector< set<int> > 来实现转dnf
     vector< set<int> > convertToSATInput(vector<_formula*> cnfDlp);
     //上面函数调用的子函数，每个公式转set<int>形式
+    vector< set<int> > convertToDNFSATInput(vector<_formula*> cnfDlp);
+    //上面函数调用的子函数，每个公式转set<int>形式
+    int convertDNFformulaToLits(_formula* rule);
+    
     void convertCNFformulaToLits(_formula* rule, set<int>& lits);
     void deleteFormula(_formula* _fml);
     //cnf转dnf生成后化简

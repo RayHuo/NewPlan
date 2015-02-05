@@ -14,7 +14,7 @@
 	 
 	(:action medicate
 	 :parameters (?i - ILLNESS)
-	 :preondition (K (and (not (dead)) (not (ill i0))))
+	 :precondition (K (and (not (dead)) (not (ill i0))))
 	 :effect (((ill ?i), (ill i0), ),
 	          ((not (ill ?i)), (dead), )
 			 )
