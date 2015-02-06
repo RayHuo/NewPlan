@@ -303,7 +303,7 @@ precondition
       $$ -> subformula_l = $2;
 
     }
-    | PRECONDITION_TOK '(' TRUE_TOK ')'{
+    | PRECONDITION_TOK '('K_TOK '(' TRUE_TOK ')' ')'{
       _formula* f = (__formula*)malloc(sizeof(_formula));
       f -> formula_type = TRUE_F;
       $$ = (__formula*)malloc(sizeof(_formula));
