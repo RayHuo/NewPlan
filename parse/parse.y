@@ -510,7 +510,13 @@ input_k
     |  dk_and_or  {
       $$ = $1;
     }
-
+    | OR_TOK '(' and_or_k_atom ')' '(' and_or_k_atom ')'{
+      $$ = (__formula*)malloc(sizeof(_formula));
+      $$ -> formula_type = OR_F;
+      $$ -> subformula_l = $3;
+      $$ -> subformula_r = $6;
+    }
+    
 and_or_k_atom
     : AND_TOK  '(' or_k_atoms ')' {
       $$ = $3;
