@@ -1,4 +1,5 @@
 #include"plan.h"
+#include "atoms.h"
 
 Plan::Plan(const char *domain, const char *p, int type){
     printf("================================================================\n");
@@ -15,7 +16,7 @@ Plan::Plan(const char *domain, const char *p, int type){
     in.exec(domain, p);
     clock_t t_end = clock();
     preprocess_time = difftime(t_end, t_start) / 1000000.0;
-//    in.showmaps(stdout);
+    in.showmaps(stdout);
 }
 
 void Plan::exec_plan(){
@@ -29,13 +30,13 @@ void Plan::exec_plan(){
     init_node.flag = TOBEEXPLORED;
     init_node.isolated = false;
     init_node.kb = in.init;
-    all_nodes.push_back(init_node);
+    add_node(init_node);
     hert_nodes = 0; //for deep search
     while(true) {
         int node_pos = get_tobeexplored_node();//heuristic
         if(node_pos == -1)
             return ;
-        
+         
         explore(node_pos); 
         if(all_nodes[0].flag == GOAL) {
             clock_t t_end = clock();
@@ -54,13 +55,28 @@ void Plan::explore(int node_pos){
     for(int i = 0; i < epis_actions.size(); i++){        
         if(all_nodes[node_pos].kb.entails(epis_actions[i].pre_con)){
             vector<EpisDNF> res = all_nodes[node_pos].kb.epistemic_prog(epis_actions[i]);
+#ifdef SHOW_EPIS  
+            cout << "==========================================================" << endl;
+            cout << "from KB:" << endl;
+            all_nodes[node_pos].kb.show(stdout);
+            cout << "!!!!!!!!!!!!!!!! ";
+            cout << epis_actions[i].name << ": ";
+            for (size_t j = 0; j < ontic_actions[i].para_match.size(); ++ j) {
+                cout << epis_actions[i].para_match[j] << " ";
+            }
+            cout << " !!!!!!!!!!!!!!!!" << endl;
+            cout << "++++" << endl;
+            res[0].show(stdout);
+            cout << "----" << endl;
+            res[1].show(stdout);
+#endif
             if(check_zero_dead(res[0]) || check_zero_dead(res[1]))
                 continue;
             int res_pos = checknode(res[0]);// find if old node; if it is old node, then return node number            
             if(res_pos == node_pos) continue;
             if(res_pos == -1){
                 Node newNode(TOBEEXPLORED,false,res[0],all_nodes.size());
-                all_nodes.push_back(newNode);
+                add_node(newNode);
                 res_pos = all_nodes.size()-1;
             }
             else{
@@ -83,7 +99,7 @@ void Plan::explore(int node_pos){
             if(res_pos1 == node_pos) continue;
             if(res_pos1 == -1){
                 Node newNode(TOBEEXPLORED,false,res[1],all_nodes.size());
-                all_nodes.push_back(newNode);
+                add_node(newNode);
                 res_pos1 = all_nodes.size()-1;
             }
             else{
@@ -116,12 +132,24 @@ void Plan::explore(int node_pos){
     for(int i = 0; i < ontic_actions.size(); i++){
         if(all_nodes[node_pos].kb.entails(ontic_actions[i].pre_con)){
             EpisDNF res = all_nodes[node_pos].kb.ontic_prog(ontic_actions[i]);
+#ifdef SHOW_ONTIC
+            cout << "==========================================================" << endl;
+            cout << "from KB:" << endl;
+            all_nodes[node_pos].kb.show(stdout);
+            cout << "################ ";
+            cout << ontic_actions[i].name << ": ";
+            for (size_t j = 0; j < ontic_actions[i].para_match.size(); ++ j) {
+                cout << ontic_actions[i].para_match[j] << " ";
+            }
+            cout << " ################" << endl;
+            res.show(stdout);
+#endif
             if(check_zero_dead(res)) continue;
             int res_pos = checknode(res);
             if(res_pos == node_pos) continue;
             if(res_pos == -1){
                 Node newNode(TOBEEXPLORED,false,res,all_nodes.size());
-                all_nodes.push_back(newNode);
+                add_node(newNode);
                 res_pos = all_nodes.size()-1;
             }
             else{
@@ -228,12 +256,31 @@ void Plan::reconnection_propagation(int node_num){
 }
 
 int Plan::get_tobeexplored_node(){
-    if(searchtype == 1 && all_nodes[hert_nodes].flag == TOBEEXPLORED && !all_nodes[hert_nodes].isolated)
-        return hert_nodes;
-    for(int i = explored_num + 1; i < all_nodes.size(); i++)
-        if(all_nodes[i].flag == TOBEEXPLORED && !all_nodes[i].isolated)
-            return i;
-    return -1;    
+//    if(searchtype == 1 && all_nodes[hert_nodes].flag == TOBEEXPLORED && !all_nodes[hert_nodes].isolated)
+//        return hert_nodes;
+//    for(int i = explored_num + 1; i < all_nodes.size(); i++)
+//        if(all_nodes[i].flag == TOBEEXPLORED && !all_nodes[i].isolated)
+//            return i;
+//    return -1;    
+    if (heuristic_que_.empty())
+        return -1;
+    int ret = -1;
+    vector<PlanHelper> phv;
+    while (! heuristic_que_.empty()) {
+        PlanHelper ph = heuristic_que_.top();
+        heuristic_que_.pop();
+        if (all_nodes[ph.node_id_].flag == TOBEEXPLORED && ! all_nodes[ph.node_id_].isolated) {
+            ret = ph.node_id_;
+            break;
+        }
+        else {
+            phv.push_back(ph);
+        }
+    }
+    for (size_t i = 0; i < phv.size(); ++ i) {
+        heuristic_que_.push(phv[i]);
+    }
+    return ret;
 }
     
 
@@ -376,3 +423,71 @@ int Plan::show_build_result(int node_num, const vector<Transition> &goal_edges, 
     return depth;
 }
 
+void Plan::add_node(const Node& node) {
+    all_nodes.push_back(node);
+    int node_id = all_nodes.size() - 1;
+    int heuristic_value = calculate_node_heuristic_value(all_nodes.back());
+    heuristic_que_.push(PlanHelper(node_id, heuristic_value));
+}
+#define METHOD_1
+int Plan::calculate_node_heuristic_value(const Node& node) const {
+    assert(! in.goal.epis_clauses.empty());
+#ifdef METHOD_1
+    int count = 0;
+    for (list<EpisClause>::const_iterator it_goal = in.goal.epis_clauses.begin();
+            it_goal != in.goal.epis_clauses.end(); ++ it_goal) {
+        for (list<EpisTerm>::const_iterator it_node = node.kb.epis_terms.begin();
+                it_node != node.kb.epis_terms.end(); ++ it_node) {
+            if (it_node->entails(*it_goal))
+                ++ count;
+        }
+    }
+    return count / in.goal.epis_clauses.size();
+#else
+    static set<int> goal_atom;
+    static vector<EpisDNF> goal_epis_dnf;
+    // 生成goal_atom，只生成一次
+    if (goal_atom.empty()) {
+        for (list<EpisClause>::const_iterator it_epis_clause = in.goal.epis_clauses.begin();
+                it_epis_clause != in.goal.epis_clauses.end(); ++ it_epis_clause) {
+            // 处理K
+            for (list<PropCNF>::const_iterator it_epis_cnf = it_epis_clause->pos_propCNFs.begin();
+                    it_epis_cnf != it_epis_clause->pos_propCNFs.end(); ++ it_epis_cnf) {
+                for (list<PropClause>::const_iterator it_prop_clause = it_epis_cnf->prop_clauses.begin();
+                        it_prop_clause != it_epis_cnf->prop_clauses.end(); ++ it_prop_clause) {
+                    for (size_t i = 0; i < it_prop_clause->literals.size(); ++ i) {
+                        if (it_prop_clause->literals[i])
+                            goal_atom.insert(i);
+                    }
+                }
+            }
+            // 处理K^
+            for (list<PropClause>::const_iterator it_prop_clause = it_epis_clause->neg_propCNF.prop_clauses.begin();
+                        it_prop_clause != it_epis_clause->neg_propCNF.prop_clauses.end(); ++ it_prop_clause) {
+                for (size_t i = 0; i < it_prop_clause->literals.size(); ++ i) {
+                    if (it_prop_clause->literals[i])
+                        goal_atom.insert(i);
+                }
+            }
+        }
+        for (set<int>::const_iterator it = goal_atom.begin();
+                it != goal_atom.end(); ++ it) {
+            PropTerm pt(Atoms::instance().length * 2);
+            pt.literals[*it] = true;
+            PropDNF pd;
+            pd.prop_terms.push_back(pt);
+            EpisTerm et;
+            et.pos_propDNF = pd;
+            EpisDNF ed;
+            ed.epis_terms.push_back(et);
+            goal_epis_dnf.push_back(ed);
+        }
+    }
+    int count = 0;
+    for (size_t i = 0; i < goal_epis_dnf.size(); ++ i) {
+        if (node.kb.entails(goal_epis_dnf[i]))
+            ++ count;
+    }
+    return count;
+#endif
+}

@@ -30,8 +30,10 @@
           <runcommandpicklistitem>"${OUTPUT_PATH}" test/doors/door_domain.pddl test/doors/door_p9.pddl</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" test/doors/door_domain.pddl test/doors/doors_p9.pddl</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" test/farmer/farmer_domain.pddl test/farmer/farmer_p.pddl</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" test/unix/unix_domain.pddl test/unix/unix_p.pddl</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" test/unix/unix_domain.pddl test/unix/unix_p1.pddl</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" test/farmer/farmer_domain.pddl test/farmer/farmer_p.pddl</runcommand>
+        <runcommand>"${OUTPUT_PATH}" test/unix/unix_domain.pddl test/unix/unix_p1.pddl</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
