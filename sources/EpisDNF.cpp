@@ -297,6 +297,7 @@ PropDNF PropDNF::ontic_prog(const OnticAction& ontic_action)
 }
 
 void PropDNF::convert_IPIA() {
+    assert(false);
     assert(! prop_terms.empty());
     list<PropTerm>::const_iterator it = prop_terms.begin();
     list<PropTerm> pi;
@@ -576,7 +577,7 @@ EpisDNF& EpisDNF::minimal()
     for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++)
         it-> minimal();
 
-    convert_IPIA();
+    //convert_IPIA();
 }
 
 EpisDNF EpisDNF::ontic_prog(const OnticAction& ontic_action)
