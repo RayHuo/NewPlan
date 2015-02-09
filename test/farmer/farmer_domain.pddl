@@ -1,7 +1,7 @@
 (define (domain farmer)
     
 
-    (:action name
+    (:action double
      :parameters ()
      :precondition (True)
      :observe (d)

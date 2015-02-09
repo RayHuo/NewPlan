@@ -12,6 +12,7 @@ test/unix/unix_domain.pddl test/unix/unix_p2.pddl
 test/btc/btc_domain.pddl test/btc/btc_p20.pddl 1
 test/btc/btc_domain.pddl test/btc/btc_p30.pddl 1
 test/btc/btc_domain.pddl test/btc/btc_p50.pddl 1
+test/btc/btc_domain.pddl test/btc/btc_p100.pddl 1
 test/blocks/blocks_domain.pddl test/blocks/blocks_p3.pddl
 test/egrid/egrid_domain.pddl test/egrid/egrid_p3.pddl
 test/egrid/egrid_domain.pddl test/egrid/egrid_p4.pddl
