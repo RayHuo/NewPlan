@@ -721,7 +721,7 @@ _formula* Init::compositeToAtomWithNega(int _atom_id) {
     _formula* fml = (_formula*)malloc(sizeof(_formula));
     assert(fml);
     
-    if(_atom_id>0)
+    if(_atom_id>=0)
     return compositeToAtom(_atom_id);
     
     else{
