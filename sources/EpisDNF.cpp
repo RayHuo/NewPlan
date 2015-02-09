@@ -591,8 +591,10 @@ EpisDNF EpisDNF::ontic_prog(const OnticAction& ontic_action)
 //    show(stdout);
 //    cout << "-> ontic_prog " << endl;
 //    result.show(stdout);
-
+    clock_t t_start = clock();
     result.minimal();
+    clock_t t_end = clock();
+    printf("minimal in %s: %lfs\n", ontic_action.name.c_str(), difftime(t_end, t_start)/1000000.0);
     return result;
 }
 
@@ -629,9 +631,15 @@ vector<EpisDNF> EpisDNF::epistemic_prog(const EpisAction& epis_action)
 //    cout << endl;
     
     vector<EpisDNF> result;
+    clock_t t_start = clock();
     p_episDNF.minimal();
+    clock_t t_end = clock();
+    printf("minimal in %s: %lfs\n", epis_action.name.c_str(), difftime(t_end, t_start)/1000000.0);
     result.push_back(p_episDNF);
+    t_start = clock();
     n_episDNF.minimal();
+    t_end = clock();
+    printf("minimal in %s: %lfs\n", epis_action.name.c_str(), difftime(t_end, t_start)/1000000.0);
     result.push_back(n_episDNF);
     return result;
 }
