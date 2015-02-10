@@ -304,12 +304,14 @@ void Plan::PropagateGoalNode(int start_node_num, bool is_observe_action, int act
             if(!all_edges[i].is_observe_action)
                 PropagateGoalNode(all_edges[i].front_bdd_state, false, all_edges[i].action_number);
             else
-                for(int j = i+1; j < all_edges.size(); j++)
+                for(int j = 0; j < all_edges.size(); j++)
+                if(j!=i){
                     if(all_edges[j].is_observe_action && all_edges[j].front_bdd_state == all_edges[i].front_bdd_state && all_edges[j].action_number == all_edges[i].action_number){
                         if(all_nodes[all_edges[j].next_bdd_state].flag == GOAL)
                             PropagateGoalNode(all_edges[i].front_bdd_state, true, all_edges[i].action_number);
                         break;
                     }
+                }
             
         } 
 }
