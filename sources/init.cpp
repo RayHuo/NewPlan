@@ -62,8 +62,10 @@ void Init::gen_ontic_actions(_formula* f) {
     OnticAction eba;
     string eff_name = Vocabulary::instance().getAtom(f->pid);
     if (f->subformula_r->subformula_l->subformula_l->formula_type == EMPTY_F) {
+        vector<string> match_str;
+        vector<string> para_str;
         eba.pre_f = gen_pre(f->subformula_r->subformula_r->subformula_l->subformula_l);
-        eba.con_eff = gen_con_eff(f->subformula_r->subformula_r->subformula_r->subformula_l);
+        eba.con_eff = gen_con_eff_by_match(f->subformula_r->subformula_r->subformula_r->subformula_l, para_str, match_str);
         eba.name = eff_name;
         eba.act_num = ontic_actions.size();
         ontic_actions.push_back(eba);
