@@ -54,7 +54,7 @@ private:
     int explored_num;
     vector<Transition> all_edges;
     int hert_nodes;
-    int searchtype;
+    SearchType searchtype;
     // 统计信息，搜索的节点数就是all_nodes.size()
     int plan_tree_depth;//树的深度
     int plan_tree_node_num;//树的节点数

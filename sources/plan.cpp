@@ -8,7 +8,7 @@ Plan::Plan(const char *domain, const char *p, int type){
     all_nodes.clear();
     all_edges.clear();
     explored_num = -1;
-    searchtype = type;
+    searchtype = type == 0 ? kHeuristic : (type == 1 ? kDepthFirst : kWidthFirst);
     plan_tree_depth = 0;
     plan_tree_node_num = 0;
     clock_t t_start = clock();
@@ -256,31 +256,35 @@ void Plan::reconnection_propagation(int node_num){
 }
 
 int Plan::get_tobeexplored_node(){
-//    if(searchtype == 1 && all_nodes[hert_nodes].flag == TOBEEXPLORED && !all_nodes[hert_nodes].isolated)
-//        return hert_nodes;
-//    for(int i = explored_num + 1; i < all_nodes.size(); i++)
-//        if(all_nodes[i].flag == TOBEEXPLORED && !all_nodes[i].isolated)
-//            return i;
-//    return -1;    
-    if (heuristic_que_.empty())
-        return -1;
-    int ret = -1;
-    vector<PlanHelper> phv;
-    while (! heuristic_que_.empty()) {
-        PlanHelper ph = heuristic_que_.top();
-        heuristic_que_.pop();
-        if (all_nodes[ph.node_id_].flag == TOBEEXPLORED && ! all_nodes[ph.node_id_].isolated) {
-            ret = ph.node_id_;
-            break;
-        }
-        else {
-            phv.push_back(ph);
-        }
+    if (searchtype == kWidthFirst || searchtype == kDepthFirst) {
+        if(searchtype == kDepthFirst && all_nodes[hert_nodes].flag == TOBEEXPLORED && !all_nodes[hert_nodes].isolated)
+            return hert_nodes;
+        for(int i = explored_num + 1; i < all_nodes.size(); i++)
+            if(all_nodes[i].flag == TOBEEXPLORED && !all_nodes[i].isolated)
+                return i;
+        return -1;    
     }
-    for (size_t i = 0; i < phv.size(); ++ i) {
-        heuristic_que_.push(phv[i]);
+    else{
+        if (heuristic_que_.empty())
+            return -1;
+        int ret = -1;
+        vector<PlanHelper> phv;
+        while (! heuristic_que_.empty()) {
+            PlanHelper ph = heuristic_que_.top();
+            heuristic_que_.pop();
+            if (all_nodes[ph.node_id_].flag == TOBEEXPLORED && ! all_nodes[ph.node_id_].isolated) {
+                ret = ph.node_id_;
+                break;
+            }
+            else {
+                phv.push_back(ph);
+            }
+        }
+        for (size_t i = 0; i < phv.size(); ++ i) {
+            heuristic_que_.push(phv[i]);
+        }
+        return ret;
     }
-    return ret;
 }
     
 
@@ -431,10 +435,9 @@ void Plan::add_node(const Node& node) {
     int heuristic_value = calculate_node_heuristic_value(all_nodes.back());
     heuristic_que_.push(PlanHelper(node_id, heuristic_value));
 }
-#define METHOD_1
+
 int Plan::calculate_node_heuristic_value(const Node& node) const {
     assert(! in.goal.epis_clauses.empty());
-#ifdef METHOD_1
     int count = 0;
     for (list<EpisClause>::const_iterator it_goal = in.goal.epis_clauses.begin();
             it_goal != in.goal.epis_clauses.end(); ++ it_goal) {
@@ -445,51 +448,4 @@ int Plan::calculate_node_heuristic_value(const Node& node) const {
         }
     }
     return count / in.goal.epis_clauses.size();
-#else
-    static set<int> goal_atom;
-    static vector<EpisDNF> goal_epis_dnf;
-    // 生成goal_atom，只生成一次
-    if (goal_atom.empty()) {
-        for (list<EpisClause>::const_iterator it_epis_clause = in.goal.epis_clauses.begin();
-                it_epis_clause != in.goal.epis_clauses.end(); ++ it_epis_clause) {
-            // 处理K
-            for (list<PropCNF>::const_iterator it_epis_cnf = it_epis_clause->pos_propCNFs.begin();
-                    it_epis_cnf != it_epis_clause->pos_propCNFs.end(); ++ it_epis_cnf) {
-                for (list<PropClause>::const_iterator it_prop_clause = it_epis_cnf->prop_clauses.begin();
-                        it_prop_clause != it_epis_cnf->prop_clauses.end(); ++ it_prop_clause) {
-                    for (size_t i = 0; i < it_prop_clause->literals.size(); ++ i) {
-                        if (it_prop_clause->literals[i])
-                            goal_atom.insert(i);
-                    }
-                }
-            }
-            // 处理K^
-            for (list<PropClause>::const_iterator it_prop_clause = it_epis_clause->neg_propCNF.prop_clauses.begin();
-                        it_prop_clause != it_epis_clause->neg_propCNF.prop_clauses.end(); ++ it_prop_clause) {
-                for (size_t i = 0; i < it_prop_clause->literals.size(); ++ i) {
-                    if (it_prop_clause->literals[i])
-                        goal_atom.insert(i);
-                }
-            }
-        }
-        for (set<int>::const_iterator it = goal_atom.begin();
-                it != goal_atom.end(); ++ it) {
-            PropTerm pt(Atoms::instance().length * 2);
-            pt.literals[*it] = true;
-            PropDNF pd;
-            pd.prop_terms.push_back(pt);
-            EpisTerm et;
-            et.pos_propDNF = pd;
-            EpisDNF ed;
-            ed.epis_terms.push_back(et);
-            goal_epis_dnf.push_back(ed);
-        }
-    }
-    int count = 0;
-    for (size_t i = 0; i < goal_epis_dnf.size(); ++ i) {
-        if (node.kb.entails(goal_epis_dnf[i]))
-            ++ count;
-    }
-    return count;
-#endif
 }

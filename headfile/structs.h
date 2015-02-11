@@ -46,16 +46,8 @@ enum FORMULA_TYPE {
              
 };
 
-/*enum STATE_TYPE {
-    TOBEEXPLORED = 0,
-    EXPLORED, 
-    DEAD,
-    GOAL 
-};*/
-
 typedef struct __formula {
     FORMULA_TYPE formula_type;
-    //vector <string>  vars;
     int count;
     union {
         __formula* subformula_l;   //NEGA,CONJ,DISJ,IMPL
@@ -68,6 +60,12 @@ typedef struct __formula {
 struct pre {
     vector<int> k;
     vector<vector<int> > dk; 
+};
+
+enum SearchType {
+    kHeuristic = 0,
+    kDepthFirst = 1,
+    kWidthFirst = 2,
 };
 
 #endif
