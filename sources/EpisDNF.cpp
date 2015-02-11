@@ -91,6 +91,7 @@ list<PropTerm> PropTerm::ontic_prog(const OnticAction& ontic_action)
     list<PropTerm> progression; //Maybe need to make current PropTerm split into some PropTerms
     //boost::dynamic_bitset<> cur_prop_term = literals; //Do not change the PropTerm itself, so need a copy
     
+    vector<int> missing_atom;
     vector<PropTerm> conditions; //convert each con in effect triple to PropTerm 
     for (int eff_i = 0; eff_i < ontic_action.con_eff.size(); eff_i++) {
         ConEffect cur_con_eff = ontic_action.con_eff[eff_i];  //current effect triple         
@@ -106,7 +107,6 @@ list<PropTerm> PropTerm::ontic_prog(const OnticAction& ontic_action)
         //check current PropTerm. Mostly, splitting is necessary 
         if (!(this->entails(condition) || this->entails(condition.negation()))) {            
             // 把condition里面出现，但this里面没有出现过的原子加入missing_atom里面
-            vector<int> missing_atom;
             for (int l = 1; l <= Atoms::instance().length; ++ l) {
                 int pos = (l - 1) * 2;
                 int neg = (l - 1) * 2 + 1;
@@ -115,21 +115,17 @@ list<PropTerm> PropTerm::ontic_prog(const OnticAction& ontic_action)
                     missing_atom.push_back(l);
                 }
             }
-            list<PropTerm> splitting_result;
-            PropTerm cur_propTerm = *this;
-            split(missing_atom, 0, cur_propTerm, splitting_result);
-            progression.insert(progression.end(), splitting_result.begin(), 
-                    splitting_result.end());
-        }
-        else {
-            progression.push_back(*this);
         }
     }
-    // 删除progression的重复元素
-    PropDNF helper;
-    helper.prop_terms = progression;
-    helper.minimal();
-    progression = helper.prop_terms;
+    if (missing_atom.empty())
+        progression.push_back(*this);
+    else {
+        list<PropTerm> splitting_result;
+        PropTerm cur_propTerm = *this;
+        split(missing_atom, 0, cur_propTerm, splitting_result);
+        progression.insert(progression.end(), splitting_result.begin(), 
+                splitting_result.end());
+    }
 
     //begin ontic progression for each PropTerm (many PropTerms are split by current PropTerm)
     for (list<PropTerm>::iterator it = progression.begin(); it != progression.end(); it++) {
