@@ -62,10 +62,8 @@ void Init::gen_ontic_actions(_formula* f) {
     OnticAction eba;
     string eff_name = Vocabulary::instance().getAtom(f->pid);
     if (f->subformula_r->subformula_l->subformula_l->formula_type == EMPTY_F) {
-        vector<string> match_str;
-        vector<string> para_str;
         eba.pre_f = gen_pre(f->subformula_r->subformula_r->subformula_l->subformula_l);
-        eba.con_eff = gen_con_eff_by_match(f->subformula_r->subformula_r->subformula_r->subformula_l, para_str, match_str);
+        eba.con_eff = gen_con_eff(f->subformula_r->subformula_r->subformula_r->subformula_l);
         eba.name = eff_name;
         eba.act_num = ontic_actions.size();
         ontic_actions.push_back(eba);
@@ -276,11 +274,16 @@ vector<int> Init::gen_and_nums(_formula* f) {
             return v;
             break;
 
-        case AND_F:
+        case AND_F:{
+            vector<int> v1;
             v = gen_and_nums(f->subformula_r);
-            v.push_back(gen_bddnum_by_state(f->subformula_l));
+            v1 = gen_and_nums(f->subformula_l);
+            //v.push_back(gen_bddnum_by_state(f->subformula_l));
+            for(int i = 0; i < v1.size(); i++)
+                v.push_back(v1[i]);
             return v;
             break;
+        }
         case NEGA_F:
             v.push_back((-1) * gen_bddnum_by_state(f->subformula_l));
             return v;
