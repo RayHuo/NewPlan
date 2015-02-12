@@ -49,7 +49,7 @@ void Init::exec(const char *domain, const char *p) {
 }
 
 void Init::make_actions() {
-    for (int i = 0; i < actions_f.size(); i++) {
+    for (size_t i = 0; i < actions_f.size(); i++) {
         if (actions_f[i]->subformula_r->subformula_r->formula_type == CONOBSERVE_F)
             gen_observe_actions(actions_f[i]);
         else
@@ -91,7 +91,7 @@ void Init::gen_ontic_actions(_formula* f) {
         vector<string> match_str;
         match_data.clear();
         get_str(0, match_str, para_str);
-        for (int i = 0; i < match_data.size(); i++) {
+        for (size_t i = 0; i < match_data.size(); i++) {
             eba.pre_f = gen_pre_by_match(f->subformula_r->subformula_r->subformula_l->subformula_l, para_str, match_data[i]);
             eba.con_eff = gen_con_eff_by_match(f->subformula_r->subformula_r->subformula_r->subformula_l, para_str, match_data[i]);
             eba.name = eff_name;
@@ -138,7 +138,7 @@ void Init::gen_observe_actions(_formula* f) {
         match_data.clear();
         get_str(0, match_str, para_str);
 
-        for (int i = 0; i < match_data.size(); i++) {
+        for (size_t i = 0; i < match_data.size(); i++) {
 
             oba.pre_f = gen_pre_by_match(f->subformula_r->subformula_r->subformula_l->subformula_l, para_str, match_data[i]);
             //oba.observe = gen_bdd_var_nums_by_state(f->subformula_r->subformula_r->subformula_r->subformula_l, para_str,match_data[i]);
@@ -171,12 +171,12 @@ pre Init::gen_pre(_formula* f) {
 
 void Init::show(FILE *out, pre p) const {
     fprintf(out, "K\n");
-    for (int i = 0; i < p.k.size(); i++)
+    for (size_t i = 0; i < p.k.size(); i++)
         fprintf(out, "%d ", p.k[i]);
     fprintf(out, "\n");
     fprintf(out, "DK\n");
-    for (int i = 0; i < p.dk.size(); i++) {
-        for (int j = 0; j < p.dk[i].size(); j++)
+    for (size_t i = 0; i < p.dk.size(); i++) {
+        for (size_t j = 0; j < p.dk[i].size(); j++)
             fprintf(out, "%d ", p.dk[i][j]);
         fprintf(out, "\n");
     }
@@ -272,32 +272,30 @@ vector<int> Init::gen_and_nums(_formula* f) {
         case STATE_F:
             v.push_back(gen_bddnum_by_state(f));
             return v;
-            break;
-
         case AND_F:{
             vector<int> v1;
             v = gen_and_nums(f->subformula_r);
             v1 = gen_and_nums(f->subformula_l);
             //v.push_back(gen_bddnum_by_state(f->subformula_l));
-            for(int i = 0; i < v1.size(); i++)
+            for(size_t i = 0; i < v1.size(); i++)
                 v.push_back(v1[i]);
             return v;
-            break;
         }
         case NEGA_F:
             v.push_back((-1) * gen_bddnum_by_state(f->subformula_l));
             return v;
-            break;
         case MULTI_THREE_ATOMS:
         {
             vector<int> fl = gen_and_nums(f->subformula_l);
             vector<int> fr = gen_and_nums(f->subformula_r);
-            for (int i = 0; i < fl.size(); i++)
+            for (size_t i = 0; i < fl.size(); i++)
                 v.push_back(fl[i]);
-            for (int i = 0; i < fr.size(); i++)
+            for (size_t i = 0; i < fr.size(); i++)
                 v.push_back(fr[i]);
             return v;
         }
+        default:
+            return v;
     }
 }
 
@@ -310,7 +308,6 @@ int Init::gen_bddnum_by_state(_formula* f) {
             if (ie == -1)
                 ie = Atoms::instance().add_atoms(s);
             return ie;
-            break;
         }
         case STATE_F:
         {
@@ -329,12 +326,10 @@ int Init::gen_bddnum_by_state(_formula* f) {
 
             if (ie == -1)
                 ie = Atoms::instance().add_atoms(s);
-
-
-            //else
             return ie;
-            break;
         }
+        default:
+            return -1;
     }
 }
 
@@ -345,7 +340,6 @@ _formula* Init::getMatchFormula(_formula* f, vector<string> para_str, vector<str
         case ONE_ATOM_STATE_F:
         {
             return f;
-            break;
         }
         case STATE_F:
         {
@@ -354,7 +348,7 @@ _formula* Init::getMatchFormula(_formula* f, vector<string> para_str, vector<str
             string temp;
             if (f->subformula_r->formula_type == VAR_F) {
                 char* c = Vocabulary::instance().getAtom(f->subformula_r->pid);
-                for (int i = 0; i < para_str.size(); i++) {
+                for (size_t i = 0; i < para_str.size(); i++) {
                     if (match_string(c, para_str[i])) {
                         temp = match_str[i];
                         break;
@@ -366,7 +360,7 @@ _formula* Init::getMatchFormula(_formula* f, vector<string> para_str, vector<str
                 for (int i = 0; i < f->subformula_r->count; i++) {
                     char* c = Vocabulary::instance().getAtom(f->subformula_r->pidlist[i]);
 
-                    for (int i = 0; i < para_str.size(); i++)
+                    for (size_t i = 0; i < para_str.size(); i++)
                         if (match_string(c, para_str[i])) {
                             temp = match_str[i];
                             s = s + "." + temp;
@@ -388,7 +382,6 @@ _formula* Init::getMatchFormula(_formula* f, vector<string> para_str, vector<str
             f2->formula_type = ONE_ATOM_STATE_F;
             f2->pid = id;
             return f2;
-            break;
         }
         case MULTI_THREE_ATOMS:
         case AND_F:
@@ -401,15 +394,15 @@ _formula* Init::getMatchFormula(_formula* f, vector<string> para_str, vector<str
             f2->subformula_l = f3;
             f2->subformula_r = f4;
             return f2;
-            break;
         }
         case NEGA_F:
         {
             f2->formula_type = f->formula_type;
             f2->subformula_l = getMatchFormula(f->subformula_l, para_str, match_str);
             return f2;
-            break;
         }
+        default:
+            return NULL;
     }
 }
 
@@ -419,7 +412,6 @@ vector<int> Init::gen_bdd_var_nums_by_state(_formula* f, vector<string> para_str
         case EMPTY_F:
         {
             return nums;
-            break;
         }
 
         case ONE_ATOM_STATE_F:
@@ -430,7 +422,6 @@ vector<int> Init::gen_bdd_var_nums_by_state(_formula* f, vector<string> para_str
                 ie = Atoms::instance().add_atoms(s);
             nums.push_back(ie);
             return nums;
-            break;
         }
         case STATE_F:
         {
@@ -439,7 +430,7 @@ vector<int> Init::gen_bdd_var_nums_by_state(_formula* f, vector<string> para_str
             string temp;
             if (f->subformula_r->formula_type == VAR_F) {
                 char* c = Vocabulary::instance().getAtom(f->subformula_r->pid);
-                for (int i = 0; i < para_str.size(); i++) {
+                for (size_t i = 0; i < para_str.size(); i++) {
                     if (match_string(c, para_str[i])) {
                         temp = match_str[i];
                         break;
@@ -451,7 +442,7 @@ vector<int> Init::gen_bdd_var_nums_by_state(_formula* f, vector<string> para_str
                 for (int i = 0; i < f->subformula_r->count; i++) {
                     char* c = Vocabulary::instance().getAtom(f->subformula_r->pidlist[i]);
 
-                    for (int i = 0; i < para_str.size(); i++)
+                    for (size_t i = 0; i < para_str.size(); i++)
                         if (match_string(c, para_str[i])) {
                             temp = match_str[i];
                             s = s + "." + temp;
@@ -468,7 +459,6 @@ vector<int> Init::gen_bdd_var_nums_by_state(_formula* f, vector<string> para_str
             //else
             nums.push_back(ie);
             return nums;
-            break;
         }
         case MULTI_THREE_ATOMS:
         case AND_F:
@@ -480,28 +470,27 @@ vector<int> Init::gen_bdd_var_nums_by_state(_formula* f, vector<string> para_str
             for (int i = 0; i < i_s; i++)
                 nums.push_back(r[i]);
             return nums;
-            break;
         }
         case NEGA_F:
         {
             nums.push_back((-1) * gen_bdd_var_nums_by_state(f->subformula_l, para_str, match_str)[0]);
             return nums;
-            break;
         }
-
+        default:
+            return nums;
     }
 }
 
 void Init::get_str(int pos, vector<string> match_str, vector<string> para_str) {
-    if (pos == para_str.size()) {
+    if (pos == static_cast<int>(para_str.size())) {
         match_data.push_back(match_str);
         return;
     }
     string s = get_str_type(para_str[pos]);
-    for (int i = 0; i < grounding_map[s].size(); i++) {
+    for (size_t i = 0; i < grounding_map[s].size(); i++) {
         string s1 = Vocabulary::instance().getAtom(grounding_map[s][i]);
-        if (!is_used_str(s1, match_str) && pos < para_str.size()) {
-            if (match_str.size() <= pos)
+        if (!is_used_str(s1, match_str) && pos < static_cast<int>(para_str.size())) {
+            if (static_cast<int>(match_str.size()) <= pos)
                 match_str.push_back(s1);
             else
                 match_str[pos] = s1;
@@ -511,23 +500,24 @@ void Init::get_str(int pos, vector<string> match_str, vector<string> para_str) {
 }
 
 bool Init::is_used_str(string s, vector<string> v) {
-    for (int i = 0; i < v.size(); i++)
+    for (size_t i = 0; i < v.size(); i++)
         if (s == v[i])
             return true;
     return false;
 }
 
 string Init::get_str_type(string s) {
-    for (int i = 0; i < s.size(); i++)
+    for (size_t i = 0; i < s.size(); i++)
         if (s[i] == '.') {
             s = s.substr(i + 1, s.size() - i - 1);
             return s;
         }
+    return "";
 }
 
 bool Init::match_string(char* a, string b) {
     string a1 = a;
-    for (int i = 0; i < a1.length(); i++)
+    for (size_t i = 0; i < a1.length(); i++)
         if (a1[i] != b[i])
             return false;
 
@@ -538,7 +528,7 @@ bool Init::check_if_add_to_vector(int i, vector<int> v) {
     if (i == -1)
         return false;
     else {
-        for (int j = 0; j < v.size(); j++)
+        for (size_t j = 0; j < v.size(); j++)
             if (i == v[j])
                 return false;
     }
@@ -549,7 +539,7 @@ void Init::showground(FILE *out) const {
     fprintf(out, "grounding_map\n");
     for (map<string, vector<int> >::const_iterator it = grounding_map.begin(); it != grounding_map.end(); it++) {
         fprintf(out, "%s:", it->first.c_str());
-        for (int i = 0; i < it->second.size(); i++)
+        for (size_t i = 0; i < it->second.size(); i++)
             fprintf(out, "%s ", Vocabulary::instance().getAtom(it->second[i]));
         fprintf(out, "\n");
     }
@@ -557,7 +547,7 @@ void Init::showground(FILE *out) const {
 }
 
 void Init::genObaDnfAndNeg() {
-    for (int i = 0; i < epis_actions.size(); i++) {
+    for (size_t i = 0; i < epis_actions.size(); i++) {
         epis_actions[i].pos_res = getPropDNFFromVS(epis_actions[i].observe);
         epis_actions[i].neg_res = getPropDNFFromVS(getNegDnf(epis_actions[i].observe));
     }
@@ -565,10 +555,10 @@ void Init::genObaDnfAndNeg() {
 
 void Init::genActConSingleNeg(){
   
-    for(int i = 0; i < ontic_actions.size(); i++)
+    for(size_t i = 0; i < ontic_actions.size(); i++)
         ontic_actions[i].pre_con = disDKCon(ontic_actions[i].pre_con);
 
-    for(int i = 0; i < epis_actions.size(); i++){
+    for(size_t i = 0; i < epis_actions.size(); i++){
         epis_actions[i].pre_con = disDKCon(epis_actions[i].pre_con);
     }
 }
@@ -578,36 +568,36 @@ void Init::showmaps(FILE *out) const {
     fprintf(out, "\nontic actions nums: %lu\n",ontic_actions.size());
     fprintf(out, "\nontic epis nums: %lu\n",epis_actions.size());
     fprintf(out, "\nshow ontic actions\n");
-    for (int i = 0; i < ontic_actions.size(); i++) {
+    for (size_t i = 0; i < ontic_actions.size(); i++) {
         fprintf(out, "act_num: %d act_name: %s\n", ontic_actions[i].act_num, ontic_actions[i].name.c_str());
         fprintf(out, "show match:\n");
-        for (int j = 0; j < ontic_actions[i].para_match.size(); j++)
+        for (size_t j = 0; j < ontic_actions[i].para_match.size(); j++)
             fprintf(out, "%s ", ontic_actions[i].para_match[j].c_str());
         fprintf(out, "\naction_pre_condition:\n");
         ontic_actions[i].pre_con.show(out);
         fprintf(out, "\naction_effect:\n");
-        for (int m = 0; m < ontic_actions[i].con_eff.size(); m++) {
+        for (size_t m = 0; m < ontic_actions[i].con_eff.size(); m++) {
             fprintf(out, "con: ");
-            for (int j = 0; j < ontic_actions[i].con_eff[m].condition.size(); ++j) {
+            for (size_t j = 0; j < ontic_actions[i].con_eff[m].condition.size(); ++j) {
                 fprintf(out, "%d:%s ", ontic_actions[i].con_eff[m].condition[j],
                         Atoms::instance().get_atom_string(ontic_actions[i].con_eff[m].condition[j]).c_str());
             }
             fprintf(out, "\nadd: ");
-            for (int j = 0; j < ontic_actions[i].con_eff[m].add.size(); j++)
+            for (size_t j = 0; j < ontic_actions[i].con_eff[m].add.size(); j++)
                 fprintf(out, "%d:%s ", ontic_actions[i].con_eff[m].add[j],
                     Atoms::instance().get_atom_string(ontic_actions[i].con_eff[m].add[j]).c_str());
             fprintf(out, "\ndel: ");
-            for (int j = 0; j < ontic_actions[i].con_eff[m].del.size(); j++)
+            for (size_t j = 0; j < ontic_actions[i].con_eff[m].del.size(); j++)
                 fprintf(out, "%d:%s ", ontic_actions[i].con_eff[m].del[j],
                     Atoms::instance().get_atom_string(ontic_actions[i].con_eff[m].del[j]).c_str());
             fprintf(out, "\n");
         }
     }
     fprintf(out, "\nshow epis actions\n");
-    for (int i = 0; i < epis_actions.size(); i++) {
+    for (size_t i = 0; i < epis_actions.size(); i++) {
         fprintf(out, "act_num: %d act_name: %s\n", epis_actions[i].act_num, epis_actions[i].name.c_str());
         fprintf(out, "show match: \n");
-        for (int j = 0; j < epis_actions[i].para_match.size(); j++)
+        for (size_t j = 0; j < epis_actions[i].para_match.size(); j++)
             fprintf(out, "%s ", epis_actions[i].para_match[j].c_str());
         fprintf(out, "\naction_pre_condition:\n");
         epis_actions[i].pre_con.show(out);
@@ -653,7 +643,7 @@ void Init::genKDNFInit(){
 
 vector<set<int> > Init::Kand(vector<set<int> > vs){
     vector<set<int> > vs1;
-    for(int i = 0; i < vs.size(); i++){
+    for(size_t i = 0; i < vs.size(); i++){
         int m = -1;
         set<int> s;
         for(set<int>::iterator it = vs[i].begin(); it != vs[i].end(); it++){
@@ -686,7 +676,7 @@ vector<_formula*> Init::v_convertto_vf(vector< set<int> > l){
     _formula* temp;
     set<int>::iterator it;
     set<int>::iterator it1;
-    for(int i = 0; i < l.size(); i++){
+    for(size_t i = 0; i < l.size(); i++){
         if(l[i].size() == 1){
             it = l[i].begin();
             temp = compositeToAtomWithNega(*it);
@@ -716,7 +706,7 @@ _formula* Init::vf_convertto_formula(vector<_formula*> fl){
         return fl[0];
     else{
         f = compositeByConnective(OR_F, fl[0], fl[1]);
-        for(int i = 2; i < fl.size(); i++)
+        for(size_t i = 2; i < fl.size(); i++)
             f = compositeByConnective(OR_F, f, fl[i]);
         return f;
     }
@@ -772,17 +762,9 @@ PropCNF Init::getPropCNFFromFormula(_formula* f) {
     absorb(vs);
     PropCNF pc;
 
-    for (int i = 0; i < vs.size(); i++) {
+    for (size_t i = 0; i < vs.size(); i++) {
         PropClause pcl(Atoms::instance().atoms_length()*2);
-        //for(int i = 0; i < literalsLegnth; i++)
-        //p.literals.push_back(false);
-        //cout<<"lit length : "<<Atoms::instance().atoms_length()<<endl;
-        //cout<<s.size()<<endl;
-        int temp = 0;
         for (set<int>::iterator it = vs[i].begin(); it != vs[i].end(); it++) {
-            //cout<<"*it: "<<*it<<endl;
-            //cout<<Atoms::instance().get_true_num(*it)<<" ";
-            //cout<<Atoms::instance().get_true_num(*it*(-1))<<" ";
             if (*it > 0)
                 pcl.literals[((*it) - 1)*2] = 1;
             else
@@ -845,7 +827,7 @@ EpisTerm Init::getEpisTerm(_formula* f) {
 vector<set<int> > Init::getNegDnf(vector<set<int> > vs) {
     vector<set<int> > vsNeg;
     set<int> temp;
-    for (int i = 0; i < vs.size(); i++) {
+    for (size_t i = 0; i < vs.size(); i++) {
         temp.clear();
         for (set<int>::iterator it = vs[i].begin(); it != vs[i].end(); it++)
             temp.insert((*it)*(-1));
@@ -876,7 +858,7 @@ vector<set<int> > Init::getDnfFromFormula(_formula* f) {
 
 PropDNF Init::getPropDNFFromVS(vector<set<int> > vs) {
     PropDNF p;
-    for (int i = 0; i < vs.size(); i++) {
+    for (size_t i = 0; i < vs.size(); i++) {
         p.prop_terms.push_back(getPropTerm(vs[i]));
     }
     return p;
@@ -887,30 +869,20 @@ PropDNF Init::getPropDNF(_formula* f) {
 }
 
 void Init::convertConToPropTerm() {
-    for (int i = 0; i < ontic_actions.size(); i++)
-        for (int j = 0; j < ontic_actions[i].con_eff.size(); j++)
+    for (size_t i = 0; i < ontic_actions.size(); i++)
+        for (size_t j = 0; j < ontic_actions[i].con_eff.size(); j++)
             ontic_actions[i].con.push_back(getPropTermFromV(ontic_actions[i].con_eff[j].condition));
 }
 
 PropTerm Init::getPropTermFromV(vector<int> s) {
     //grounding_map;id_to_vac
     PropTerm p(Atoms::instance().atoms_length()*2);
-    //for(int i = 0; i < literalsLegnth; i++)
-    //p.literals.push_back(false);
-    //cout<<"lit length : "<<Atoms::instance().atoms_length()<<endl;
-    //cout<<s.size()<<endl;
-    int temp = 0;
-    for (int i = 0; i < s.size(); i++) {
-        //cout<<"*it: "<<*it<<endl;
-        //cout<<Atoms::instance().get_true_num(*it)<<" ";
-        //cout<<Atoms::instance().get_true_num(*it*(-1))<<" ";
+    for (size_t i = 0; i < s.size(); i++) {
         if (s[i] > 0)
             p.literals[(s[i] - 1)*2] = 1;
         else
             p.literals[(s[i] * (-1) - 1)*2 + 1] = 1;
     }
-    //cout<<endl;
-    //cout<<p.literals<<endl;
     return p;
 }
 
@@ -927,10 +899,10 @@ PropTerm Init::getPropTerm(set<int> s) {
 }
 
 void Init::genActionPreCnd() {
-    for (int i = 0; i < ontic_actions.size(); i++) {
+    for (size_t i = 0; i < ontic_actions.size(); i++) {
         ontic_actions[i].pre_con = getEpisCNF(ontic_actions[i].pre_f);
     }
-    for (int i = 0; i < epis_actions.size(); i++) {
+    for (size_t i = 0; i < epis_actions.size(); i++) {
         epis_actions[i].pre_con = getEpisCNF(epis_actions[i].pre_f);
     }
 }
@@ -941,7 +913,7 @@ EpisCNF Init::getEpisCNF(pre p) {
     if (p.k.size() != 0)
         ep.epis_clauses.push_back(getEpisClausePre(p.k, true));
     if (p.dk.size() != 0)
-        for (int i = 0; i < p.dk.size(); i++)
+        for (size_t i = 0; i < p.dk.size(); i++)
             ep.epis_clauses.push_back(getEpisClausePre(p.dk[i], false));
     ep = disDKCon(ep);
     //ep.show();
@@ -961,7 +933,7 @@ EpisClause Init::getEpisClausePre(vector<int> s, bool isK) {
     EpisClause ec;
     PropCNF pc;
     if (isK) {
-        for (int i = 0; i < s.size(); i++) {
+        for (size_t i = 0; i < s.size(); i++) {
             PropClause pcl(Atoms::instance().atoms_length()*2);
             if (s[i] > 0)
                 pcl.literals[(s[i] - 1)*2] = 1;
@@ -971,7 +943,7 @@ EpisClause Init::getEpisClausePre(vector<int> s, bool isK) {
         }
         ec.pos_propCNFs.push_back(pc);
     } else {
-        for (int i = 0; i < s.size(); i++) {
+        for (size_t i = 0; i < s.size(); i++) {
             PropClause pcl(Atoms::instance().atoms_length()*2);
             if (s[i] > 0)
                 pcl.literals[(s[i] - 1)*2] = 1;
@@ -1007,7 +979,7 @@ vector< set<int> > Init::vcnf_to_vdnf(vector< set<int> > l) {
         return d;
     }
     twoset(d, l[0], l[1]);
-    for (int i = 2; i < l.size(); i++) {
+    for (size_t i = 2; i < l.size(); i++) {
         doubleset(d, l[i]);
     }
     return d;
@@ -1015,7 +987,7 @@ vector< set<int> > Init::vcnf_to_vdnf(vector< set<int> > l) {
 
 void Init::doubleset(vector< set<int> > &v, set<int> s) {
     vector< set<int> > d;
-    for (int i = 0; i < v.size(); i++) {
+    for (size_t i = 0; i < v.size(); i++) {
         for (set<int>::iterator it = s.begin(); it != s.end(); it++) {
             d.push_back(adds(v[i], *it));
         }
@@ -1043,7 +1015,8 @@ set<int> Init::adds(set<int> s, int i) {
 }
 
 void Init::absorb(vector< set<int> >& l) {
-    int i, j, temp;
+    size_t i, j;
+    int temp;
     for (i = 0; i < l.size();) {
         if (!checkvalue(l[i])) {
             vector< set<int> >::iterator it = l.begin() + i;
@@ -1051,7 +1024,7 @@ void Init::absorb(vector< set<int> >& l) {
         } else
             i++;
     }
-    for (i = 0; i < (int) l.size() - 1; i++) {
+    for (i = 0; i < l.size() - 1; i++) {
         for (j = i + 1; j < l.size();) {
             temp = isabsorb(l[i], l[j]);
             if (temp == 1) {
@@ -1094,7 +1067,7 @@ bool Init::checkvalue(set<int> l) {
 
 vector< set<int> > Init::convertToSATInput(vector<_formula*> cnfDlp) {
     vector< set<int> > res;
-    for (int i = 0; i < cnfDlp.size(); i++) {
+    for (size_t i = 0; i < cnfDlp.size(); i++) {
         set<int> lits;
         convertCNFformulaToLits(cnfDlp[i], lits);
         res.push_back(lits);
@@ -1129,13 +1102,13 @@ void Init::convertCNFformulaToLits(_formula* rule, set<int>& lits) {
 }
 vector< set<int> > Init::convertToDNFSATInput(vector<_formula*> cnfDlp) {
     vector< set<int> > res;
-    for (int i = 0; i < cnfDlp.size(); i++) {
+    for (size_t i = 0; i < cnfDlp.size(); i++) {
         set<int> lits;
         //while(cnfDlp[i]->formula_type == AND_OR)
         //convertCNFformulaToLits(cnfDlp[i], lits);
         vector<_formula*> lits_f;
         divideCNFFormula(cnfDlp[i],lits_f);
-        for(int i = 0; i < lits_f.size(); i++){
+        for(size_t i = 0; i < lits_f.size(); i++){
             lits.insert(convertDNFformulaToLits(lits_f[i]));
         }
         res.push_back(lits);
@@ -1168,7 +1141,7 @@ int Init::convertDNFformulaToLits(_formula* rule) {
         }
     } 
     
-
+    return -1;
 }
 void Init::deleteFormula(_formula* _fml) {
     assert(_fml);
@@ -1182,6 +1155,8 @@ void Init::deleteFormula(_formula* _fml) {
         case OR_F:
             assert(_fml->subformula_r);
             deleteFormula(_fml->subformula_r);
+        default:
+            break;
     }
 
     free(_fml);
@@ -1325,6 +1300,8 @@ _formula* Init::copyFormula(const _formula* _fml) {
             assert(_fml->subformula_r);
             newFormula->subformula_l = copyFormula(_fml->subformula_l);
             newFormula->subformula_r = copyFormula(_fml->subformula_r);
+            break;
+        default:
             break;
     }
     return newFormula;
@@ -1477,8 +1454,8 @@ void Init::print_f(FILE *out, _formula* f) const {
         case EMPTY_F:
             fprintf(out, " EMPTY \n");
             break;
-            //        default:
-            //            assert(0);
+        default:
+            break;
     }
     
 

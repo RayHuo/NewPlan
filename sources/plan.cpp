@@ -52,7 +52,7 @@ void Plan::exec_plan(){
 void Plan::explore(int node_pos){
     bool execed = false;//deep search find new node
     // 进行感知演进
-    for(int i = 0; i < epis_actions.size(); i++){        
+    for(size_t i = 0; i < epis_actions.size(); i++){        
         if(all_nodes[node_pos].kb.entails(epis_actions[i].pre_con)){
             vector<EpisDNF> res = all_nodes[node_pos].kb.epistemic_prog(epis_actions[i]);
 #ifdef SHOW_EPIS  
@@ -129,7 +129,7 @@ void Plan::explore(int node_pos){
         }
     }
     // 进行物理演进
-    for(int i = 0; i < ontic_actions.size(); i++){
+    for(size_t i = 0; i < ontic_actions.size(); i++){
         if(all_nodes[node_pos].kb.entails(ontic_actions[i].pre_con)){
             EpisDNF res = all_nodes[node_pos].kb.ontic_prog(ontic_actions[i]);
 #ifdef SHOW_ONTIC
@@ -198,13 +198,13 @@ void Plan::expand(Transition ts){
 }
 
 void Plan::PropagateDeadNode(int node_num){
-    for(int i = 0; i < all_edges.size();){
+    for(size_t i = 0; i < all_edges.size();){
         if(all_edges[i].next_bdd_state == node_num){
             int front = all_edges[i].front_bdd_state;
             if(!all_edges[i].is_observe_action)
                 all_edges.erase(all_edges.begin()+i);
             else{
-                for(int j = 0; j < all_edges.size(); j++){
+                for(size_t j = 0; j < all_edges.size(); j++){
                     if((all_edges[i].front_bdd_state == all_edges[j].front_bdd_state) && (all_edges[i].action_number == all_edges[j].action_number)){
                         if(j!=i){
                             isolation_propagation(all_edges[j].next_bdd_state);
@@ -223,7 +223,7 @@ void Plan::PropagateDeadNode(int node_num){
                 }
             }
             bool is_front_dead = true;
-            for(int k = 0; k < all_edges.size(); k++){
+            for(size_t k = 0; k < all_edges.size(); k++){
                 if(front == all_edges[k].front_bdd_state)
                     is_front_dead = false;
             }
@@ -239,7 +239,7 @@ void Plan::PropagateDeadNode(int node_num){
 void Plan::isolation_propagation(int node_num){
     if(!all_nodes[node_num].isolated){
         all_nodes[node_num].isolated = true;
-        for(int i = 0; i < all_edges.size(); i++)
+        for(size_t i = 0; i < all_edges.size(); i++)
             if(all_edges[i].front_bdd_state == node_num)
                 isolation_propagation(all_edges[i].next_bdd_state);
     }    
@@ -248,7 +248,7 @@ void Plan::isolation_propagation(int node_num){
 void Plan::reconnection_propagation(int node_num){
     if(all_nodes[node_num].isolated){
         all_nodes[node_num].isolated = false;
-        for(int i = 0; i < all_edges.size(); i++)
+        for(size_t i = 0; i < all_edges.size(); i++)
             if(all_edges[i].front_bdd_state == node_num){
                 reconnection_propagation(all_edges[i].next_bdd_state);
             }
@@ -259,7 +259,7 @@ int Plan::get_tobeexplored_node(){
     if (searchtype == kWidthFirst || searchtype == kDepthFirst) {
         if(searchtype == kDepthFirst && all_nodes[hert_nodes].flag == TOBEEXPLORED && !all_nodes[hert_nodes].isolated)
             return hert_nodes;
-        for(int i = explored_num + 1; i < all_nodes.size(); i++)
+        for(size_t i = explored_num + 1; i < all_nodes.size(); i++)
             if(all_nodes[i].flag == TOBEEXPLORED && !all_nodes[i].isolated)
                 return i;
         return -1;    
@@ -291,7 +291,7 @@ int Plan::get_tobeexplored_node(){
 
 void Plan::PropagateGoalNode(int start_node_num, bool is_observe_action, int act_num){
     all_nodes[start_node_num].flag = GOAL;
-    for(int i = 0; i < all_edges.size();){
+    for(size_t i = 0; i < all_edges.size();){
         if(all_edges[i].front_bdd_state == start_node_num){
             if(all_edges[i].action_number != act_num || is_observe_action != all_edges[i].is_observe_action){
                 isolation_propagation(all_edges[i].next_bdd_state);
@@ -303,12 +303,12 @@ void Plan::PropagateGoalNode(int start_node_num, bool is_observe_action, int act
         else
             i++;            
     }
-    for(int i = 0; i < all_edges.size(); i++)
+    for(size_t i = 0; i < all_edges.size(); i++)
         if(all_edges[i].next_bdd_state == start_node_num){
             if(!all_edges[i].is_observe_action)
                 PropagateGoalNode(all_edges[i].front_bdd_state, false, all_edges[i].action_number);
             else
-                for(int j = 0; j < all_edges.size(); j++)
+                for(size_t j = 0; j < all_edges.size(); j++)
                 if(j!=i){
                     if(all_edges[j].is_observe_action && all_edges[j].front_bdd_state == all_edges[i].front_bdd_state && all_edges[j].action_number == all_edges[i].action_number){
                         if(all_nodes[all_edges[j].next_bdd_state].flag == GOAL)
@@ -321,7 +321,7 @@ void Plan::PropagateGoalNode(int start_node_num, bool is_observe_action, int act
 }
 
 bool Plan::is_exist_edge_from_node(int n){
-    for(int i = 0; i < all_edges.size(); i++){
+    for(size_t i = 0; i < all_edges.size(); i++){
         if(all_edges[i].front_bdd_state == n)
             return true;
     }
@@ -330,7 +330,7 @@ bool Plan::is_exist_edge_from_node(int n){
 
 
 int Plan::checknode(EpisDNF ed){
-    for(int i = 0; i < all_nodes.size(); i++)
+    for(size_t i = 0; i < all_nodes.size(); i++)
         if( all_nodes[i].kb.equals(ed))
             return i;
     return -1;   
@@ -347,7 +347,7 @@ void Plan::BuildPlan(){
         return;
     }
     vector<Transition> goal_edges;
-    for(int i = 0; i < all_edges.size(); i++)
+    for(size_t i = 0; i < all_edges.size(); i++)
         if(all_nodes[all_edges[i].front_bdd_state].flag == GOAL && all_nodes[all_edges[i].next_bdd_state].flag == GOAL)
             goal_edges.push_back(all_edges[i]);
     set<int> nodes;//标记节点是否在树里面
@@ -377,7 +377,7 @@ int Plan::show_build_result(int node_num, const vector<Transition> &goal_edges, 
     for(int i = 0; i < num; i++)
         if(goal_edges[i].front_bdd_state == node_num)
             next_trans.push_back(goal_edges[i]);
-    for(int i = 0; i < next_trans.size(); i++)
+    for(size_t i = 0; i < next_trans.size(); i++)
         if(nodes.find(next_trans[i].next_bdd_state) == nodes.end()){
             for (int k = 0; k < tab_num; k++) 
                 cout << " ";
@@ -387,7 +387,7 @@ int Plan::show_build_result(int node_num, const vector<Transition> &goal_edges, 
                     cout<<" +:";
                     if(epis_actions[next_trans[i].action_number].para_match.size()!=0){
                         cout<<" (";
-                        for(int j = 0; j < epis_actions[next_trans[i].action_number].para_match.size()-1; j++)
+                        for(size_t j = 0; j < epis_actions[next_trans[i].action_number].para_match.size()-1; j++)
                             cout<<epis_actions[next_trans[i].action_number].para_match[j]<<",";
                         if(epis_actions[next_trans[i].action_number].para_match.size() > 0)
                             cout<<epis_actions[next_trans[i].action_number].para_match[epis_actions[next_trans[i].action_number].para_match.size()-1];
@@ -401,7 +401,7 @@ int Plan::show_build_result(int node_num, const vector<Transition> &goal_edges, 
                     cout<<" -:";
                     if(epis_actions[next_trans[i].action_number].para_match.size()!=0){
                         cout<<" (";
-                        for(int j = 0; j < epis_actions[next_trans[i].action_number].para_match.size()-1; j++)
+                        for(size_t j = 0; j < epis_actions[next_trans[i].action_number].para_match.size()-1; j++)
                             cout<<epis_actions[next_trans[i].action_number].para_match[j]<<",";
                         if(epis_actions[next_trans[i].action_number].para_match.size() > 0)
                             cout<<epis_actions[next_trans[i].action_number].para_match[epis_actions[next_trans[i].action_number].para_match.size()-1];                        
@@ -416,7 +416,7 @@ int Plan::show_build_result(int node_num, const vector<Transition> &goal_edges, 
                 cout << ontic_actions[next_trans[i].action_number].name;  
                 if(ontic_actions[next_trans[i].action_number].para_match.size() != 0){
                     cout<<" (";
-                    for(int j = 0; j < ontic_actions[next_trans[i].action_number].para_match.size()-1; j++)
+                    for(size_t j = 0; j < ontic_actions[next_trans[i].action_number].para_match.size()-1; j++)
                         cout<<ontic_actions[next_trans[i].action_number].para_match[j]<<",";
                     if(ontic_actions[next_trans[i].action_number].para_match.size() > 0)
                         cout<<ontic_actions[next_trans[i].action_number].para_match[ontic_actions[next_trans[i].action_number].para_match.size()-1];

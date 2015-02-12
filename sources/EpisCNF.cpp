@@ -20,7 +20,7 @@ PropTerm PropClause::negation() const
     PropTerm result(Atoms::instance().atoms_length() * 2);
     //cout<<"oring: "<<endl;
     //cout<<this->literals<<endl;
-    for (int i = 0; i < literals.size(); i++) {
+    for (size_t i = 0; i < literals.size(); i++) {
         if(literals[i]) {
             result.literals[i] = 0; //?dynamic_bitset constructor makes all of bis in literals 0, so this clause is useless 
             if (i % 2 == 0) 

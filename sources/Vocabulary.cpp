@@ -23,7 +23,7 @@ int Vocabulary::addAtom(char* atom) {
 }
 
 int Vocabulary::queryAtom(char* atom) {
-    for(int i = 0; i < atom_list.size(); i++) {
+    for(size_t i = 0; i < atom_list.size(); i++) {
         if(strcmp(atom, atom_list.at(i)) == 0) {
             return i + 1;
         }
@@ -33,12 +33,12 @@ int Vocabulary::queryAtom(char* atom) {
 }
 
 void Vocabulary::dumpVocabulary(FILE* _out) {
-    for(int i = 0; i < atom_list.size(); i++) {
+    for(size_t i = 0; i < atom_list.size(); i++) {
         fprintf(_out, "%s\n", atom_list.at(i));
     }
 }
 void Vocabulary::showVocabulary(){
-    for(int i = 0; i < atom_list.size(); i++) {
+    for(size_t i = 0; i < atom_list.size(); i++) {
         printf( "%s\n", atom_list.at(i));
     }
 }
@@ -53,7 +53,7 @@ int Vocabulary::apSize() {
 void Vocabulary::getmap(map<int,string> &m1, map<string,int> &m2, int &l,map<string,vector<int> > &ground, map<int,int> &id){
     int count = 0;
     for(map<string,vector<int> >::iterator it = ground.begin(); it != ground.end(); it++){
-        for(int i = 0; i < it->second.size(); i++){
+        for(size_t i = 0; i < it->second.size(); i++){
             id[count++] = it->second[i];
         }
     }

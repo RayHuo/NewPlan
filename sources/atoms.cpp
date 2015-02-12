@@ -17,7 +17,7 @@ Atoms& Atoms::instance() {
 }
 
 int Atoms::query_atoms(string s) {
-    for (int i = 0; i < atoms_str.size(); i++)
+    for (size_t i = 0; i < atoms_str.size(); i++)
         if (s == atoms_str[i])
             return i + 1;
     return -1;

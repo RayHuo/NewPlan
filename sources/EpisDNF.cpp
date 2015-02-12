@@ -40,7 +40,8 @@ bool PropTerm::entails(const PropClause& prop_clause) const
     //I understood Proposition 3.4 means if the PropTerm and PropClause has only one same literal, 
     //then return true, otherwise return false
     for (int i = 0; i < Atoms::instance().atoms_length(); i++) {
-        if (literals[2 * i] && prop_clause.literals[2 * i] || literals[2 * i + 1] && prop_clause.literals[2 * i + 1])
+        if ((literals[2 * i] && prop_clause.literals[2 * i]) || 
+                (literals[2 * i + 1] && prop_clause.literals[2 * i + 1]))
             return true;
     }
     return false;
@@ -49,7 +50,7 @@ bool PropTerm::entails(const PropClause& prop_clause) const
 PropClause PropTerm::negation()
 {
     PropClause result(Atoms::instance().atoms_length() * 2);
-    for (int i = 0; i < literals.size(); i++) {
+    for (size_t i = 0; i < literals.size(); i++) {
         if (literals[i]) {
             if (i % 2 == 0)
                 result.literals[i + 1] = 1;
@@ -93,11 +94,11 @@ list<PropTerm> PropTerm::ontic_prog(const OnticAction& ontic_action)
     
     vector<int> missing_atom;
     vector<PropTerm> conditions; //convert each con in effect triple to PropTerm 
-    for (int eff_i = 0; eff_i < ontic_action.con_eff.size(); eff_i++) {
+    for (size_t eff_i = 0; eff_i < ontic_action.con_eff.size(); eff_i++) {
         ConEffect cur_con_eff = ontic_action.con_eff[eff_i];  //current effect triple         
         //convert vector<int> to PropTerm
         PropTerm condition(Atoms::instance().atoms_length() * 2);
-        for (int i = 0; i < cur_con_eff.condition.size(); i++) { //current size of condition is 1
+        for (size_t i = 0; i < cur_con_eff.condition.size(); i++) { //current size of condition is 1
             if (cur_con_eff.condition[i] > 0) 
                 condition.literals.set((cur_con_eff.condition[i] - 1) * 2, true);
             else
@@ -130,10 +131,10 @@ list<PropTerm> PropTerm::ontic_prog(const OnticAction& ontic_action)
     //begin ontic progression for each PropTerm (many PropTerms are split by current PropTerm)
     for (list<PropTerm>::iterator it = progression.begin(); it != progression.end(); it++) {
         PropTerm origin = *it;//保存没做之前的状态，用作判断条件
-        for (int eff_i = 0; eff_i < ontic_action.con_eff.size(); eff_i++) {
+        for (size_t eff_i = 0; eff_i < ontic_action.con_eff.size(); eff_i++) {
             if (origin.entails(conditions[eff_i])) {
                 // deal with the elements in the add set
-                for (int add_i = 0; add_i < ontic_action.con_eff[eff_i].add.size(); add_i++) {
+                for (size_t add_i = 0; add_i < ontic_action.con_eff[eff_i].add.size(); add_i++) {
                     int pos_i = (ontic_action.con_eff[eff_i].add[add_i] - 1) * 2;
                     int neg_i = pos_i + 1;
                     if (it->literals[neg_i])
@@ -142,7 +143,7 @@ list<PropTerm> PropTerm::ontic_prog(const OnticAction& ontic_action)
                 }
                 
                 // deal with the elements in the del set
-                for (int del_i = 0; del_i < ontic_action.con_eff[eff_i].del.size(); del_i++) {
+                for (size_t del_i = 0; del_i < ontic_action.con_eff[eff_i].del.size(); del_i++) {
                     int pos_i = (ontic_action.con_eff[eff_i].del[del_i] - 1) * 2;
                     int neg_i = pos_i + 1;
                     if (it->literals[pos_i])
@@ -178,7 +179,7 @@ void PropTerm::show(FILE *out, bool print_new_line) const
 
 void PropTerm::split(const vector<int>& missing_atom, const int index, PropTerm& cur_propTerm,
         list<PropTerm>& result) const {
-    if (index >= missing_atom.size()) {
+    if (index >= static_cast<int>(missing_atom.size())) {
         result.push_back(cur_propTerm);
         return ;
     }
@@ -298,7 +299,6 @@ void PropDNF::convert_IPIA() {
     list<PropTerm>::const_iterator it = prop_terms.begin();
     list<PropTerm> pi;
     pi.push_back(*it);
-    int j = 1;
     for (++ it; it != prop_terms.end(); ++ it) {
         // Algorithm 1: Incremental prime implicant algorithm
         PropTerm t = *it;
@@ -319,8 +319,8 @@ void PropDNF::convert_IPIA() {
                         it_pi != pi.end(); ++ it_pi) {
                     for (list<PropTerm>::iterator it_segma = segma.begin();
                             it_segma != segma.end(); ++ it_segma) {
-                        if (it_pi->literals.test(l) && it_segma->literals.test(_l) ||
-                                it_pi->literals.test(_l) && it_segma->literals.test(l)) {
+                        if ((it_pi->literals.test(l) && it_segma->literals.test(_l)) ||
+                                (it_pi->literals.test(_l) && it_segma->literals.test(l))) {
                             // t* = term(t', t'', l);
                             PropTerm tx = *it_pi;
                             tx.literals |= it_segma->literals;
@@ -421,7 +421,7 @@ bool EpisTerm::entails(const EpisTerm& epis_term) const
             else 
                 break;
         }
-        if (count == epis_term.neg_propDNFs.size())
+        if (count == static_cast<int>(epis_term.neg_propDNFs.size()))
             return true;
         
         //The following is the second case of rule 2 in Proposition 3.5
@@ -572,8 +572,9 @@ EpisDNF& EpisDNF::minimal()
 {
     for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++)
         it-> minimal();
-
+    
     //convert_IPIA();
+    return *this;
 }
 
 EpisDNF EpisDNF::ontic_prog(const OnticAction& ontic_action)
