@@ -36,7 +36,7 @@ x [Xx]
 y [Yy]
 z [Zz]
 blank	  			[ \n\t\r]*
-word                            [a-zA-Z0-9\-_]+
+word                            [a-zA-Z0-9\-_.]+
 var                             \?[a-zA-Z][a-zA-Z0-9\-_]* 
 
 
