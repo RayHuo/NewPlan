@@ -58,7 +58,6 @@ void Init::make_actions() {
 }
 
 void Init::gen_ontic_actions(_formula* f) {
-    //cout<<"one ontic"<<endl;
     OnticAction eba;
     string eff_name = Vocabulary::instance().getAtom(f->pid);
     if (f->subformula_r->subformula_l->subformula_l->formula_type == EMPTY_F) {
@@ -103,12 +102,10 @@ void Init::gen_ontic_actions(_formula* f) {
 }
 
 void Init::gen_observe_actions(_formula* f) {
-    //cout<<"one oba"<<endl;
     EpisAction oba;
     if (f->subformula_r->subformula_l->subformula_l->formula_type == EMPTY_F) {
         oba.pre_f = gen_pre(f->subformula_r->subformula_r->subformula_l->subformula_l);
         oba.name = Vocabulary::instance().getAtom(f->pid);
-        //oba.observe = gen_oba_eff(f->subformula_r->subformula_r->subformula_r->subformula_l);
         oba.observe = getDnfFromFormula(f->subformula_r->subformula_r->subformula_r->subformula_l);
         oba.act_num = epis_actions.size();
         epis_actions.push_back(oba);
@@ -139,9 +136,7 @@ void Init::gen_observe_actions(_formula* f) {
         get_str(0, match_str, para_str);
 
         for (size_t i = 0; i < match_data.size(); i++) {
-
             oba.pre_f = gen_pre_by_match(f->subformula_r->subformula_r->subformula_l->subformula_l, para_str, match_data[i]);
-            //oba.observe = gen_bdd_var_nums_by_state(f->subformula_r->subformula_r->subformula_r->subformula_l, para_str,match_data[i]);
             oba.observe = getDnfFromFormulaByVar(f->subformula_r->subformula_r->subformula_r->subformula_l, para_str, match_data[i]);
             oba.name = Vocabulary::instance().getAtom(f->pid);
             oba.act_num = epis_actions.size();
@@ -232,11 +227,7 @@ vector<ConEffect> Init::gen_con_eff(_formula* f_eff) {
         ce.del = gen_oba_eff(f_eff->subformula_r->subformula_r);
         ceall.push_back(ce);
     }
-
-
     return ceall;
-
-
 }
 
 vector<ConEffect> Init::gen_con_eff_by_match(_formula* f_eff, vector<string> para_str, vector<string> match_str) {
@@ -260,8 +251,6 @@ vector<ConEffect> Init::gen_con_eff_by_match(_formula* f_eff, vector<string> par
         ce.del = gen_bdd_var_nums_by_state(f_eff->subformula_r->subformula_r, para_str, match_str);
         ceall.push_back(ce);
     }
-
-
     return ceall;
 }
 
@@ -376,9 +365,6 @@ _formula* Init::getMatchFormula(_formula* f, vector<string> para_str, vector<str
             int id = Vocabulary::instance().queryAtom(c);
             if (id < 0)
                 id = Vocabulary::instance().addAtom(c);
-
-
-            //else
             f2->formula_type = ONE_ATOM_STATE_F;
             f2->pid = id;
             return f2;
@@ -387,7 +373,6 @@ _formula* Init::getMatchFormula(_formula* f, vector<string> para_str, vector<str
         case AND_F:
         case OR_F:
         {
-            //nums.push_back()
             f2->formula_type = f->formula_type;
             _formula* f3 = getMatchFormula(f->subformula_l, para_str, match_str);
             _formula* f4 = getMatchFormula(f->subformula_r, para_str, match_str);
@@ -425,7 +410,6 @@ vector<int> Init::gen_bdd_var_nums_by_state(_formula* f, vector<string> para_str
         }
         case STATE_F:
         {
-
             string s = Vocabulary::instance().getAtom(f->pid);
             string temp;
             if (f->subformula_r->formula_type == VAR_F) {
@@ -452,18 +436,14 @@ vector<int> Init::gen_bdd_var_nums_by_state(_formula* f, vector<string> para_str
             }
 
             int ie = Atoms::instance().query_atoms(s);
-
             if (ie == -1)
                 ie = Atoms::instance().add_atoms(s);
-
-            //else
             nums.push_back(ie);
             return nums;
         }
         case MULTI_THREE_ATOMS:
         case AND_F:
         {
-            //nums.push_back()
             nums = gen_bdd_var_nums_by_state(f->subformula_l, para_str, match_str);
             vector<int> r = gen_bdd_var_nums_by_state(f->subformula_r, para_str, match_str);
             int i_s = r.size();
@@ -778,8 +758,6 @@ PropCNF Init::getPropCNFFromFormula(_formula* f) {
 EpisCNF Init::disDKCon(EpisCNF ec) {
     //EpisCNF ec1;
     for (list<EpisClause>::iterator it = ec.epis_clauses.begin(); it != ec.epis_clauses.end(); it++) {
-        //it->min();
-        //it->neg_propCNF = *(it->neg_propCNFs.begin());
         if (it->neg_propCNFs.size() == 1)
             it->neg_propCNF = *(it->neg_propCNFs.begin());
     }
@@ -851,9 +829,7 @@ vector<set<int> > Init::getDnfFromFormula(_formula* f) {
     vector<_formula*> result;
     divideDNFFormula(fm, result);
     vector< set<int> > vs = convertToDNFSATInput(result);
-    //absorb(vs);
     return vs;
-
 }
 
 PropDNF Init::getPropDNFFromVS(vector<set<int> > vs) {
@@ -1090,7 +1066,6 @@ void Init::convertCNFformulaToLits(_formula* rule, set<int>& lits) {
         return;
     }
     if (rule->formula_type == NEGA_F) {
-        //print_f(rule);
         set<int> se;
         convertCNFformulaToLits(rule->subformula_l, se);
         lits.insert((*(se.begin()))*(-1));
@@ -1098,14 +1073,11 @@ void Init::convertCNFformulaToLits(_formula* rule, set<int>& lits) {
         convertCNFformulaToLits(rule->subformula_l, lits);
         convertCNFformulaToLits(rule->subformula_r, lits);
     }
-
 }
 vector< set<int> > Init::convertToDNFSATInput(vector<_formula*> cnfDlp) {
     vector< set<int> > res;
     for (size_t i = 0; i < cnfDlp.size(); i++) {
         set<int> lits;
-        //while(cnfDlp[i]->formula_type == AND_OR)
-        //convertCNFformulaToLits(cnfDlp[i], lits);
         vector<_formula*> lits_f;
         divideCNFFormula(cnfDlp[i],lits_f);
         for(size_t i = 0; i < lits_f.size(); i++){
@@ -1130,7 +1102,6 @@ int Init::convertDNFformulaToLits(_formula* rule) {
         return gen_bddnum_by_state(rule);
     }
     if (rule->formula_type == NEGA_F) {
-        //print_f(rule);
         if(rule->subformula_l->formula_type == ONE_ATOM_STATE_F)
             return (-1)*Atoms::instance().get_true_num(rule->subformula_l->pid);
         if(rule->subformula_l->formula_type == K_atom){
@@ -1219,8 +1190,6 @@ _formula* Init::convertToConjuntiveNormalForm(_formula*& fml) {
         convertToConjuntiveNormalForm(fml->subformula_l);
         convertToConjuntiveNormalForm(fml->subformula_r);
     }
-
-
     return fml;
 }
 
@@ -1267,9 +1236,6 @@ _formula* Init::convertToDNF(_formula*& fml){
 
 
 _formula* Init::compositeByConnective(FORMULA_TYPE _formulaType, _formula* _subformulaL, _formula* _subformulaR) {
-
-    //assert( _formulaType == OR_F || _formulaType == _F);
-
     _formula* fml = (_formula*) malloc(sizeof (_formula));
     assert(fml);
     fml->formula_type = _formulaType;
@@ -1311,7 +1277,6 @@ void Init::print_f(FILE *out, _formula* f) const {
     switch (f->formula_type) {
         case K_atom:
             fprintf(out, " K_atom ( ");
-            //fprintf(out, "%d",f->pid);
             print_f(out,Formulatab::instance().getAtom(f->pid));
             fprintf(out, " ) ");
             break;
@@ -1457,6 +1422,4 @@ void Init::print_f(FILE *out, _formula* f) const {
         default:
             break;
     }
-    
-
 }

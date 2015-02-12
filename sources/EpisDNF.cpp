@@ -65,14 +65,6 @@ PropTerm PropTerm::group(const PropTerm& prop_term) const
 {
     PropTerm result(Atoms::instance().atoms_length() * 2);
     for (int i = 0; i < Atoms::instance().atoms_length() * 2; i++) {
-        /*if (literals[i] && prop_term.literals[i + 1] || literals[i + 1] && prop_term.literals[i]) { //generate contradiction
-            result.literals.set();
-            return result;
-        }
-        if (literals[i] || prop_term.literals[i])
-            result.literals[i] = 1;
-        if (literals[i + 1] || prop_term.literals[i + 1])
-            result.literals[i + 1] = 1;*/
         if (literals[i] || prop_term.literals[i])
             result.literals[i] = 1;
     }
@@ -90,8 +82,7 @@ PropTerm& PropTerm::minimal()
 list<PropTerm> PropTerm::ontic_prog(const OnticAction& ontic_action)
 {
     list<PropTerm> progression; //Maybe need to make current PropTerm split into some PropTerms
-    //boost::dynamic_bitset<> cur_prop_term = literals; //Do not change the PropTerm itself, so need a copy
-    
+
     vector<int> missing_atom;
     vector<PropTerm> conditions; //convert each con in effect triple to PropTerm 
     for (size_t eff_i = 0; eff_i < ontic_action.con_eff.size(); eff_i++) {
@@ -572,8 +563,6 @@ EpisDNF& EpisDNF::minimal()
 {
     for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++)
         it-> minimal();
-    
-    //convert_IPIA();
     return *this;
 }
 
@@ -583,12 +572,6 @@ EpisDNF EpisDNF::ontic_prog(const OnticAction& ontic_action)
     for (list<EpisTerm>::iterator it = epis_terms.begin(); it != epis_terms.end(); it++) {
         result.epis_terms.push_back(it->ontic_prog(ontic_action));
     }
-    
-//    cout << "!!!!" << endl;
-//    show(stdout);
-//    cout << "-> ontic_prog " << endl;
-//    result.show(stdout);
-
     result.minimal();
     return result;
 }
@@ -615,16 +598,7 @@ vector<EpisDNF> EpisDNF::epistemic_prog(const EpisAction& epis_action)
         }
 	p_episDNF.epis_terms.push_back(p_epis_term);
 	n_episDNF.epis_terms.push_back(n_epis_term);  
-    }
-    
-//    cout << "!!!!" << endl;
-//    show(stdout);
-//    cout << "-> epis_prog +" << endl;
-//    p_episDNF.show(stdout);
-//    cout << "-> epis_prog -" << endl;
-//    n_episDNF.show(stdout);
-//    cout << endl;
-    
+    }    
     vector<EpisDNF> result;
     p_episDNF.minimal();
     result.push_back(p_episDNF);

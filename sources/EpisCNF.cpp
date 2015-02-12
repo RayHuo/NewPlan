@@ -18,8 +18,6 @@ bool PropClause::entails(const PropClause& prop_clause) const {
 PropTerm PropClause::negation() const
 {
     PropTerm result(Atoms::instance().atoms_length() * 2);
-    //cout<<"oring: "<<endl;
-    //cout<<this->literals<<endl;
     for (size_t i = 0; i < literals.size(); i++) {
         if(literals[i]) {
             result.literals[i] = 0; //?dynamic_bitset constructor makes all of bis in literals 0, so this clause is useless 
@@ -29,7 +27,6 @@ PropTerm PropClause::negation() const
                 result.literals[i - 1] = 1;
         }
     }
-    //fout<<result.literals<<endl;
     return result;
 }
 
@@ -130,9 +127,6 @@ PropDNF PropCNF::negation() const
 {
     PropDNF result;
     for (list<PropClause>::const_iterator it = prop_clauses.begin(); it != prop_clauses.end(); it++) {
-        //cout<<"propcnf"<<endl;
-        //cout<<it->literals<<endl;
-        
         result.prop_terms.push_back(it->negation());
     }
     return result;	
@@ -225,7 +219,3 @@ void EpisCNF::show(FILE *out) const
     }
 }
 
-
-
-
-//#endif

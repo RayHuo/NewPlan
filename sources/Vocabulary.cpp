@@ -57,8 +57,7 @@ void Vocabulary::getmap(map<int,string> &m1, map<string,int> &m2, int &l,map<str
             id[count++] = it->second[i];
         }
     }
-    //cout<<"count: "<<count<<endl;
-    //printf( "%d\n",count);
+
     l = count*2;
     for(int i = 0; i < l; i+=2){
         m1[i] = atom_list[id[i/2]-1];
@@ -66,5 +65,4 @@ void Vocabulary::getmap(map<int,string> &m1, map<string,int> &m2, int &l,map<str
         m2[m1[i]] =  i;
         m2[m1[i+1]] = i+1;
     }
-    //printf( "%d\n",m1.size());
 }

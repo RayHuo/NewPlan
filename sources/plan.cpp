@@ -55,21 +55,6 @@ void Plan::explore(int node_pos){
     for(size_t i = 0; i < epis_actions.size(); i++){        
         if(all_nodes[node_pos].kb.entails(epis_actions[i].pre_con)){
             vector<EpisDNF> res = all_nodes[node_pos].kb.epistemic_prog(epis_actions[i]);
-#ifdef SHOW_EPIS  
-            cout << "==========================================================" << endl;
-            cout << "from KB:" << endl;
-            all_nodes[node_pos].kb.show(stdout);
-            cout << "!!!!!!!!!!!!!!!! ";
-            cout << epis_actions[i].name << ": ";
-            for (size_t j = 0; j < ontic_actions[i].para_match.size(); ++ j) {
-                cout << epis_actions[i].para_match[j] << " ";
-            }
-            cout << " !!!!!!!!!!!!!!!!" << endl;
-            cout << "++++" << endl;
-            res[0].show(stdout);
-            cout << "----" << endl;
-            res[1].show(stdout);
-#endif
             if(check_zero_dead(res[0]) || check_zero_dead(res[1]))
                 continue;
             int res_pos = checknode(res[0]);// find if old node; if it is old node, then return node number            
@@ -94,7 +79,6 @@ void Plan::explore(int node_pos){
             tbs.is_true = true;
             expand(tbs);
            
-            
             int res_pos1 = checknode(res[1]);
             if(res_pos1 == node_pos) continue;
             if(res_pos1 == -1){
@@ -117,7 +101,6 @@ void Plan::explore(int node_pos){
             tbs1.is_true = false;
             expand(tbs1);
             
-
             if(all_nodes[res_pos1].flag == GOAL && all_nodes[res_pos].flag == GOAL){
                 PropagateGoalNode(node_pos, true, i);
                 return;
@@ -132,18 +115,6 @@ void Plan::explore(int node_pos){
     for(size_t i = 0; i < ontic_actions.size(); i++){
         if(all_nodes[node_pos].kb.entails(ontic_actions[i].pre_con)){
             EpisDNF res = all_nodes[node_pos].kb.ontic_prog(ontic_actions[i]);
-#ifdef SHOW_ONTIC
-            cout << "==========================================================" << endl;
-            cout << "from KB:" << endl;
-            all_nodes[node_pos].kb.show(stdout);
-            cout << "################ ";
-            cout << ontic_actions[i].name << ": ";
-            for (size_t j = 0; j < ontic_actions[i].para_match.size(); ++ j) {
-                cout << ontic_actions[i].para_match[j] << " ";
-            }
-            cout << " ################" << endl;
-            res.show(stdout);
-#endif
             if(check_zero_dead(res)) continue;
             int res_pos = checknode(res);
             if(res_pos == node_pos) continue;
