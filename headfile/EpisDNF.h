@@ -1,10 +1,3 @@
-/* 
- * File:   EpisDNF.h
- * Author: ideapad
- *
- * Created on December 11, 2014, 6:43 PM
- */
-
 #ifndef EPISDNF_H
 #define	EPISDNF_H
 
@@ -36,8 +29,6 @@ public:
     PropClause negation(); //this function is used to judge ontic progression
     PropTerm& minimal(); //化简命题项，在这里其实就是若该命题项中同时出现一个原子的正负文字两个方面，那么该命题项就是False
     boost::dynamic_bitset<> literals;  //一个原子对应两位，那两位分别表示该原子构成的正文字和负文字
-    
-    // new added
     void show(FILE *out, bool print_new_line = true) const;
     list<PropTerm> ontic_prog(const OnticAction &ontic_action); //在当前PropTerm上做物理动作的演进，并且返回演进结果
     void split(const vector<int> &missing_atom, const int index, 
@@ -55,10 +46,7 @@ public:
     PropDNF group(const PropDNF &) const; //merge two PropDNF
     void show(FILE *out, bool print_new_line = true) const;
     list<PropTerm> prop_terms; //存储了多个命题项，这就构成了命题层面的DNF
-
-    // new added
     PropDNF ontic_prog(const OnticAction &ontic_action); //在当前PropDNF上做物理动作的演进，并且返回演进结果
-    // add by yzf
     void convert_IPIA(); //将DNF转为质蕴含形式
     bool delete_operation_in_IPIA(const PropTerm &t, list<PropTerm> &pi, 
                 list<PropTerm> &segma);
@@ -76,11 +64,7 @@ public:
     EpisTerm& minimal(); //化简认知项，即若K^1 |= K^2, 则删除K^2
     EpisTerm& separable();  
     void show(FILE *out) const;
-  
-    // new added
     EpisTerm ontic_prog(const OnticAction &ontic_action); //在当前EpisTerm上做物理动作的演进，并且返回演进结果
-
-    // add by yzf
     void convert_IPIA();
 };
 
@@ -94,16 +78,10 @@ public:
     bool entails(const EpisCNF&) const; //判断该知识库能够推出某个动作的前置条件
     EpisDNF& minimal(); //对EpisDNF的化简，剔除冗余知识
     void show(FILE *out) const;
-
-    // new added
     EpisDNF ontic_prog(const OnticAction &ontic_action); //在当前知识库上做物理动作的演进，并且返回演进结果
     vector<EpisDNF> epistemic_prog(const EpisAction &epis_action); //在当前知识库上做观察动作的演进，并且返回结果
-    // add by yzf
     void convert_IPIA();
 };
 
-
-
-//EpisTerm negation_Clause(EpisClause);
 #endif	/* EPISDNF_H */
 

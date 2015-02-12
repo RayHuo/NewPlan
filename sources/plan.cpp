@@ -16,7 +16,6 @@ Plan::Plan(const char *domain, const char *p, int type){
     in.exec(domain, p);
     clock_t t_end = clock();
     preprocess_time = difftime(t_end, t_start) / 1000000.0;
-//    in.showmaps(stdout);
 }
 
 void Plan::exec_plan(){

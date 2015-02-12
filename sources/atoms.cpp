@@ -27,7 +27,6 @@ int Atoms::add_atoms(string s) {
     atoms_str.push_back(s);
     length++;
     return length;
-
 }
 
 string Atoms::get_atom_string(int i) {

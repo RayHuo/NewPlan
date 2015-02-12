@@ -1,11 +1,3 @@
-/* 
- * File:   Progression.h
- * Author: ideapad
- *
- * Created on December 12, 2014, 3:44 PM
- */
-
-
 #ifndef PROGRESSION_H
 #define	PROGRESSION_H
 
@@ -56,9 +48,7 @@ struct EpisAction
     pre pre_f; //将前置条件转换为EpisCNF的承接存储
     vector<set<int> > observe; //需要观察的“公式”
     vector<string> para_match;
-    //vector<int> result; 
 
-    // new added
     PropDNF pos_res; //将所需要观察的“公式”化为DNF形式， 为了好做演进 positive result
     PropDNF neg_res; //将所需要观察的“公式”化为DNF形式， 为了好做演进 negative result  
 };
@@ -68,7 +58,6 @@ struct EpisAction
 //搜索算法中的结点
 struct Node
 {
-//    int num; //搜索图中的结点编号
     EpisDNF kb; //结点的知识库
     //下面两个变量分别是在搜索过程中所需要的两中标记
     STATE_TYPE flag;

@@ -1,9 +1,3 @@
-/* 
- * File:   EpisDNF.cpp
- * Author: ideapad
- * 
- * Created on December 11, 2014, 6:43 PM
- */
 #include "EpisDNF.h"
 #include "atoms.h"
 #include "Progression.h"

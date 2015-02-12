@@ -1,10 +1,3 @@
-/* 
- * File:   EpisCNF.h
- * Author: ideapad
- *
- * Created on December 11, 2014, 7:01 PM
- */
-
 #ifndef EPISCNF_H
 #define	EPISCNF_H
 

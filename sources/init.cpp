@@ -37,10 +37,7 @@ void Init::exec(const char *domain, const char *p) {
     //print_f(stdout,init_f);
     make_actions();
     // 生成初始状态和目标状态
-    
     genKDNFInit();
-
-    
     getEpisiDNFInitAndGoal();
     genActionPreCnd();
     convertConToPropTerm();
@@ -885,24 +882,14 @@ void Init::genActionPreCnd() {
 
 EpisCNF Init::getEpisCNF(pre p) {
     EpisCNF ep;
-    //EpisClause ec;
     if (p.k.size() != 0)
         ep.epis_clauses.push_back(getEpisClausePre(p.k, true));
     if (p.dk.size() != 0)
         for (size_t i = 0; i < p.dk.size(); i++)
             ep.epis_clauses.push_back(getEpisClausePre(p.dk[i], false));
     ep = disDKCon(ep);
-    //ep.show();
     return ep;
 }
-
-/*
-struct pre {
-    vector<int> k;
-    vector<vector<int> > dk; 
-};
- */
-
 
 EpisClause Init::getEpisClausePre(vector<int> s, bool isK) {
     //grounding_map;id_to_vac

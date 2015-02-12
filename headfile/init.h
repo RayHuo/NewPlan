@@ -1,9 +1,5 @@
-//实现将公式存的动作和初始目标状态转成epis的表达方式
 #ifndef INIT_H
 #define	INIT_H
-
-//#include "parse.cpp"
-//#include "lex.cpp"
 
 #include  <map>
 #include <string>
@@ -12,10 +8,6 @@
 #include "Vocabulary.h"
 #include "Progression.h"
 #include <string.h>
-//#include "DataStructure.h"
-
-
-
 
 extern FILE *yyin;
 
@@ -28,8 +20,6 @@ extern vector<OnticAction> ontic_actions;
 extern vector<EpisAction> epis_actions;
 
 extern int yyparse();
-
-
 
 class Init{
 public:

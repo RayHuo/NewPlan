@@ -1,9 +1,3 @@
-/* 
- * File:   EpisCNF.cpp
- * Author: ideapad
- * 
- * Created on December 11, 2014, 7:01 PM
- */
 #include <boost/dynamic_bitset.hpp>
 #include <list>
 #include <iostream>
@@ -203,7 +197,7 @@ EpisClause& EpisClause::minimal()
     return *this;
 }
 
-EpisCNF:: EpisCNF()
+EpisCNF::EpisCNF()
 {
     for (list<EpisClause>::iterator it = epis_clauses.begin(); it != epis_clauses.end(); it++)
         it->minimal();
